@@ -1,0 +1,454 @@
+<!DOCTYPE html>
+<html lang="ta">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
+  <title>FarmBridge | தமிழ்நாடு விவசாயிகள் நேரடி சந்தை இணைப்பு</title>
+  <meta name="description" content="Tamil Nadu farmer to buyer direct connection prototype for paddy, sugarcane and vegetables. Voice-enabled, bilingual in Tamil & English.">
+
+  <!-- Google Font: Noto Sans Tamil & Inter -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Noto+Sans+Tamil:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body class="theme-light">
+
+  <!-- HEADER -->
+  <header class="app-header" role="banner">
+    <div class="header-container">
+      <div class="brand">
+        <div class="brand-logo" aria-hidden="true">🌱</div>
+        <div class="brand-text">
+          <h1 class="brand-title" id="appTitle">ஃபார்ம்பிரிட்ஜ்</h1>
+          <p class="brand-subtitle" id="appSubtitle">தமிழ்நாடு விவசாயிகள் நேரடி சந்தை இணைப்பு</p>
+        </div>
+      </div>
+
+      <div class="header-actions">
+        <!-- Language Switch -->
+        <button id="langToggleBtn" class="pill-btn lang-pill" aria-label="Switch Language to English">
+          <span class="icon" aria-hidden="true">🌐</span>
+          <span id="langBtnText">English</span>
+        </button>
+
+        <!-- Voice Reply Toggle -->
+        <button id="voiceReplyBtn" class="pill-btn voice-pill active" aria-label="Toggle Voice Replies" title="Toggle audio responses">
+          <span class="icon" id="voiceReplyIcon" aria-hidden="true">🔊</span>
+          <span id="voiceReplyText">குரல்: ஆன்</span>
+        </button>
+
+        <!-- Theme Toggle -->
+        <button id="themeToggleBtn" class="pill-btn theme-pill" aria-label="Toggle dark/light theme">
+          <span class="icon" id="themeIcon" aria-hidden="true">🌙</span>
+        </button>
+
+        <!-- View Saved Listings button -->
+        <button id="viewListingsBtn" class="pill-btn saved-pill" aria-label="View Saved Listings">
+          <span class="icon" aria-hidden="true">📋</span>
+          <span id="savedCountBadge" class="badge">1</span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- ROLE NAVIGATION TABS (Farmer / Buyer / Deals Tracker) -->
+  <nav class="role-nav-bar" role="navigation" aria-label="Role and Views Switcher">
+    <div class="role-nav-container" role="tablist">
+      <button class="role-tab active" id="tabFarmer" role="tab" aria-selected="true" data-view="farmer">
+        <span class="tab-icon" aria-hidden="true">🌾</span>
+        <span id="tabFarmerText">உழவர் களம் (Farmer)</span>
+      </button>
+      <button class="role-tab" id="tabBuyer" role="tab" aria-selected="false" data-view="buyer">
+        <span class="tab-icon" aria-hidden="true">🏢</span>
+        <span id="tabBuyerText">வாங்குபவர் களம் (Buyer)</span>
+      </button>
+      <button class="role-tab" id="tabDeals" role="tab" aria-selected="false" data-view="deals">
+        <span class="tab-icon" aria-hidden="true">🤝</span>
+        <span id="tabDealsText">ஒப்பந்தங்கள் (Deals)</span>
+        <span id="dealsCountBadge" class="badge">1</span>
+      </button>
+    </div>
+  </nav>
+
+  <!-- MAIN CONTENT CONTAINER -->
+  <main class="main-content" id="mainContent">
+
+    <!-- DEMO / STATUS BANNER -->
+    <div class="status-strip" role="region" aria-label="Status Notice">
+      <div class="strip-content">
+        <span class="demo-tag" id="demoNoticeBadge">மாதிரி செயல்முறை (DEMO / SIMULATION)</span>
+        <span class="strip-text" id="statusNoticeText">அனைத்து விலைகள், வாங்குபவர்கள் மற்றும் கட்டணங்கள் மாதிரித் தரவு மட்டுமே (Mock Demo Data).</span>
+      </div>
+      <div id="connectionPill" class="conn-pill online" title="Backend Status">
+        <span class="dot"></span>
+        <span id="connText">இணைப்பில் உள்ளது</span>
+      </div>
+    </div>
+
+    <!-- VIEW 1: FARMER VIEW PANEL -->
+    <div id="viewFarmer" class="view-panel" role="tabpanel" aria-labelledby="tabFarmer">
+      <!-- VOICE INPUT SECTION (TOP) -->
+      <section class="card voice-hero-card" aria-labelledby="voiceSectionHeading">
+        <div class="section-header-row">
+          <div>
+            <h2 id="voiceSectionHeading" class="section-title">குரல் மூலம் எளிதாகக் கேளுங்கள்</h2>
+            <p class="section-desc" id="voiceSectionDesc">பயிர், அளவு மற்றும் ஊரை ஒரே வாக்கியத்தில் பேசுங்கள்</p>
+          </div>
+          <span class="sim-badge" id="voiceEngineBadge">உலாவி மாதிரி குரல் உள்ளீடு</span>
+        </div>
+
+        <!-- Large Center Microphone Touch Target -->
+        <div class="mic-cluster">
+          <button id="micMainBtn" class="mic-touch-target" aria-label="Press to speak in Tamil or English">
+            <div class="mic-pulse-ring" aria-hidden="true"></div>
+            <div class="mic-pulse-ring delay" aria-hidden="true"></div>
+            <div class="mic-icon-circle">
+              <svg class="mic-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3Z"></path>
+                <path d="M19 10v2a7 7 0 0 1-14 0v-2"></path>
+                <line x1="12" y1="19" x2="12" y2="22"></line>
+              </svg>
+            </div>
+          </button>
+          <div id="micStatusText" class="mic-status-label" aria-live="polite">பேச மைக் பட்டனை அழுத்தவும்</div>
+          <p class="mic-prompt-hint" id="micPromptHint">எ.கா: "நெல் இரண்டாயிரம் கிலோ திருப்போரூர்" அல்லது "ten ton sugarcane Chengalpattu"</p>
+        </div>
+
+        <!-- Speech / Mic Error Banner (Hidden by default) -->
+        <div id="voiceAlertBanner" class="alert-banner hidden" role="alert" aria-live="assertive">
+          <div class="alert-content">
+            <span class="alert-icon" id="alertIcon">⚠️</span>
+            <span class="alert-text" id="alertText">பிழை விவரம்</span>
+          </div>
+          <div class="alert-action" id="alertActionSlot"></div>
+        </div>
+
+        <!-- Live Transcript & Text Input -->
+        <div class="transcript-box-wrapper">
+          <label for="transcriptInput" class="input-label" id="transcriptLabel">பேசிய உரை / இங்கு தட்டச்சு செய்யவும்:</label>
+          <div class="transcript-input-group">
+            <textarea 
+              id="transcriptInput" 
+              class="transcript-textarea" 
+              rows="2" 
+              placeholder="பேசுங்கள் அல்லது 'நெல் இரண்டாயிரம் கிலோ திருப்போரூர்' எனத் தட்டச்சு செய்க..."
+              aria-describedby="sampleVoiceCycler"
+            ></textarea>
+          </div>
+
+          <!-- Voice Action Buttons -->
+          <div class="voice-buttons-bar">
+            <button id="trySampleVoiceBtn" class="btn btn-turmeric" aria-label="Try a sample voice query">
+              <span class="btn-icon" aria-hidden="true">🎲</span>
+              <span id="trySampleText">மாதிரி குரல் முயற்சி (Try Sample Voice)</span>
+            </button>
+            
+            <button id="clearVoiceBtn" class="btn btn-outline" aria-label="Clear speech transcript">
+              <span class="btn-icon" aria-hidden="true">🗑️</span>
+              <span id="clearBtnText">அழி</span>
+            </button>
+          </div>
+
+          <!-- Sample preview chips -->
+          <div class="sample-pills-row" id="samplePillsRow">
+            <span class="sample-tag-lead" id="sampleLeadText">மாதிரி:</span>
+            <button class="sample-pill-chip" data-phrase="நெல் இரண்டாயிரம் கிலோ திருப்போரூர்">🌾 நெல் 2000 kg (திருப்போரூர்)</button>
+            <button class="sample-pill-chip" data-phrase="ten ton sugarcane Chengalpattu">🎋 10 Ton Sugarcane (Chengalpattu)</button>
+            <button class="sample-pill-chip" data-phrase="கரும்பு ஐந்து டன் காஞ்சிபுரம்">🎋 கரும்பு 5 டன் (காஞ்சிபுரம்)</button>
+            <button class="sample-pill-chip" data-phrase="தக்காளி 500 கிலோ செங்கல்பட்டு">🍅 தக்காளி 500 kg (செங்கல்பட்டு)</button>
+          </div>
+        </div>
+
+        <!-- Editable Extracted Fields -->
+        <div class="extracted-fields-box">
+          <h3 class="subsection-title" id="fieldsTitle">சரிபார்க்கவும் & திருத்தவும்</h3>
+          
+          <div class="form-grid">
+            <!-- Crop Select -->
+            <div class="form-group">
+              <label for="cropSelect" class="form-label" id="cropLabel">பயிர் (Crop):</label>
+              <div class="select-wrapper">
+                <select id="cropSelect" class="form-select" aria-required="true">
+                  <!-- Dynamically populated -->
+                </select>
+              </div>
+            </div>
+
+            <!-- Quantity Input -->
+            <div class="form-group">
+              <label for="quantityInput" class="form-label" id="qtyLabel">அளவு (கிலோவில்):</label>
+              <div class="input-with-unit">
+                <input 
+                  type="number" 
+                  id="quantityInput" 
+                  class="form-input" 
+                  min="1" 
+                  step="any" 
+                  value="2000" 
+                  placeholder="2000" 
+                  aria-required="true"
+                >
+                <span class="unit-badge">kg</span>
+              </div>
+              <!-- Quick Quantity Increments -->
+              <div class="quick-qty-chips">
+                <button type="button" class="quick-qty-btn" data-add="500">+500 kg</button>
+                <button type="button" class="quick-qty-btn" data-add="1000">+1 டன்</button>
+                <button type="button" class="quick-qty-btn" data-set="5000">5 டன்</button>
+                <button type="button" class="quick-qty-btn" data-set="10000">10 டன்</button>
+              </div>
+            </div>
+
+            <!-- Farmer Location Select -->
+            <div class="form-group">
+              <label for="locationSelect" class="form-label" id="locLabel">உங்கள் ஊர் (Location):</label>
+              <div class="select-wrapper">
+                <select id="locationSelect" class="form-select" aria-required="true">
+                  <!-- Dynamically populated -->
+                </select>
+              </div>
+            </div>
+          </div>
+
+          <!-- URGENT / DISTRESS SALE WORKFLOW CARD -->
+          <div class="urgent-sale-card" id="urgentSaleCard">
+            <div class="urgent-toggle-row">
+              <label class="switch-control" for="urgentSaleToggle">
+                <input type="checkbox" id="urgentSaleToggle" class="switch-input" aria-describedby="urgentToggleDesc">
+                <span class="switch-track" aria-hidden="true"></span>
+                <span class="switch-title" id="urgentToggleTitle">🚨 அவசர விற்பனை (Urgent Clearance Sale)</span>
+              </label>
+              <span class="urgent-sub-desc" id="urgentToggleDesc">மழை / அழுகும் பயிர்கள் அல்லது உடனடி பணத் தேவைக்கான விரைவு விற்பனை</span>
+            </div>
+            <div id="urgentFieldsGroup" class="urgent-fields-group hidden">
+              <div class="form-grid-2">
+                <div class="form-group">
+                  <label for="urgentReasonSelect" class="form-label" id="urgentReasonLabel">அவசர காரணம் (Urgency Reason):</label>
+                  <select id="urgentReasonSelect" class="form-select">
+                    <option value="perishable">அழுகும் பயிர் - மழை/வெயில் அபாயம் (Perishable Harvest)</option>
+                    <option value="cash">உடனடி அவசர ரொக்கத் தேவை (Immediate Cash Need Today)</option>
+                    <option value="storage">அறுவடைக்கு பின் சேமிப்பு வசதி இல்லை (No Storage)</option>
+                  </select>
+                </div>
+                <div class="form-group">
+                  <label for="urgentDiscountSelect" class="form-label" id="urgentDiscountLabel">விரைவு கொள்முதல் தள்ளுபடி:</label>
+                  <select id="urgentDiscountSelect" class="form-select">
+                    <option value="5">5% விரைவு தள்ளுபடி (5% Discount)</option>
+                    <option value="10" selected>10% உடனடி கொள்முதல் தள்ளுபடி (10% Discount)</option>
+                    <option value="15">15% அதிகபட்ச அவசர தள்ளுபடி (15% Clearance)</option>
+                  </select>
+                </div>
+              </div>
+              <div class="urgent-info-strip">
+                <span>⚡</span>
+                <span id="urgentSpotNotice">அன்றே உடனடி ரொக்கம் (Spot Cash) & 24 மணி நேரத்திற்குள் பட்டுவாடா செய்யும் வாங்குபவர்களுக்கு முன்னுரிமை அளிக்கப்படுகிறது.</span>
+              </div>
+            </div>
+          </div>
+
+          <button id="calculateOffersBtn" class="btn btn-primary btn-large w-100" style="margin-top: 1rem;">
+            <span class="btn-icon" aria-hidden="true">🔍</span>
+            <span id="calculateBtnText">வாங்குபவர்களைத் தேடு (Find Matching Buyers)</span>
+          </button>
+        </div>
+      </section>
+
+      <!-- SECTION 3: ESTIMATED EARNINGS (HERO CARD FOR BEST BUYER) -->
+      <section class="card earnings-hero-card" id="earningsSection" aria-labelledby="secEarningsHeading">
+        <div class="earnings-header">
+          <div class="earnings-tag" id="bestOfferBadgeTag">⭐ சிறந்த சலுகை (Best Offer)</div>
+          <h2 id="secEarningsHeading" class="section-title">3. அதிகபட்ச வருமான மதிப்பீடு</h2>
+        </div>
+
+        <div class="earnings-content" id="earningsContent">
+          <!-- Filled by JS -->
+        </div>
+      </section>
+
+      <!-- SECTION 2: OFFER COMPARISON (RANKED BARS) -->
+      <section class="card comparison-card" id="comparisonSection" aria-labelledby="secComparisonHeading">
+        <div class="section-header-row">
+          <div>
+            <h2 id="secComparisonHeading" class="section-title">2. நிகரத் தொகை ஒப்பீடு</h2>
+            <p class="section-desc" id="secComparisonDesc">போக்குவரத்துக் கழிவிற்குப் பின் உங்களுக்குக் கிடைக்கும் உண்மையான தொகை</p>
+          </div>
+          <span class="sim-badge">மாதிரி கணக்கீடு (Demo Formula)</span>
+        </div>
+
+        <div class="comparison-bars-container" id="comparisonBarsContainer" role="list">
+          <!-- Rendered by JS -->
+        </div>
+      </section>
+
+      <!-- SECTION 1: MATCHING BUYERS (CARDS) -->
+      <section class="card buyers-section-card" id="buyersSection" aria-labelledby="secBuyersHeading">
+        <div class="section-header-row">
+          <div>
+            <h2 id="secBuyersHeading" class="section-title">1. நேரடி வாங்குபவர்கள்</h2>
+            <p class="section-desc" id="secBuyersCount">பொருத்தமான வாங்குபவர்கள்</p>
+          </div>
+          <!-- Filter chips -->
+          <div class="filter-pills" role="radiogroup" aria-label="Sort Buyers">
+            <button class="filter-pill active" data-sort="net" id="sortNetBtn">அதிக வருமானம்</button>
+            <button class="filter-pill" data-sort="distance" id="sortDistBtn">அருகில் உள்ளவை</button>
+            <button class="filter-pill" data-sort="rating" id="sortRatingBtn">மதிப்பீடு</button>
+          </div>
+        </div>
+
+        <div class="buyers-grid" id="buyersGrid" role="list">
+          <!-- Rendered by JS -->
+        </div>
+      </section>
+    </div>
+
+    <!-- VIEW 2: BUYER / MILL OPERATOR DASHBOARD -->
+    <div id="viewBuyer" class="view-panel hidden" role="tabpanel" aria-labelledby="tabBuyer">
+      <section class="card buyer-dashboard-card" aria-labelledby="secBuyerHeading">
+        <div class="section-header-row">
+          <div>
+            <h2 id="secBuyerHeading" class="section-title">விவசாயிகளின் வரத்து மற்றும் விற்பனை பதிவுகள்</h2>
+            <p class="section-desc" id="secBuyerSubtitle">நேரடி கொள்முதல் செய்ய விவசாயிகளின் பதிவுகளைப் பார்க்கவும்</p>
+          </div>
+          <!-- Filter controls -->
+          <div class="buyer-filters-bar">
+            <select id="buyerCropFilter" class="form-select" style="min-width: 140px;" aria-label="Filter by Crop">
+              <option value="all">அனைத்து பயிர்களும்</option>
+            </select>
+            <button id="buyerUrgentFilterBtn" class="filter-pill" data-active="false">
+              <span>🚨 அவசர விற்பனைகள் மட்டும்</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Incoming Farmer Listings Grid -->
+        <div id="incomingListingsGrid" class="listings-grid" role="list">
+          <!-- Populated by JS -->
+        </div>
+      </section>
+    </div>
+
+    <!-- VIEW 3: DEALS TRACKER & STATUS PIPELINE -->
+    <div id="viewDeals" class="view-panel hidden" role="tabpanel" aria-labelledby="tabDeals">
+      <section class="card deals-dashboard-card" aria-labelledby="secDealsHeading">
+        <div class="section-header-row">
+          <div>
+            <h2 id="secDealsHeading" class="section-title">ஒப்பந்தங்கள் & நேரடி நிலைக் கண்காணிப்பு</h2>
+            <p class="section-desc" id="secDealsSubtitle">உறுதி செய்யப்பட்ட ஒப்பந்தங்களின் படிநிலை முன்னேற்றம் (முழு மாதிரி செயல்முறை)</p>
+          </div>
+          <button id="createDemoDealBtn" class="btn btn-turmeric">
+            <span class="btn-icon" aria-hidden="true">➕</span>
+            <span id="createDemoDealBtnText">மாதிரி ஒப்பந்தம் உருவாக்கு</span>
+          </button>
+        </div>
+
+        <!-- Deals List Container -->
+        <div id="dealsListContainer" class="deals-container" role="list">
+          <!-- Populated by JS -->
+        </div>
+      </section>
+    </div>
+
+  </main>
+
+  <!-- SAVED LISTINGS MODAL -->
+  <div id="savedListingsModal" class="modal-overlay hidden" role="dialog" aria-modal="true" aria-labelledby="savedListingsModalTitle">
+    <div class="modal-card">
+      <div class="modal-header">
+        <h3 id="savedListingsModalTitle" class="modal-title">சேமிக்கப்பட்ட விவசாயி பதிவுகள்</h3>
+        <button id="closeSavedModalBtn" class="close-btn" aria-label="Close modal">&times;</button>
+      </div>
+      <div class="modal-body" id="savedListingsList">
+        <!-- Populated by JS -->
+      </div>
+    </div>
+  </div>
+
+  <!-- SIMULATED MANDI RECEIPT / CHALLAN MODAL -->
+  <div id="receiptModal" class="modal-overlay hidden" role="dialog" aria-modal="true" aria-labelledby="receiptModalTitle">
+    <div class="modal-card receipt-card">
+      <div class="modal-header">
+        <h3 id="receiptModalTitle" class="modal-title">மாதிரி கொள்முதல் சலான் & ரசீது</h3>
+        <button id="closeReceiptModalBtn" class="close-btn" aria-label="Close modal">&times;</button>
+      </div>
+      <div class="modal-body">
+        <div class="simulated-watermark" id="receiptWatermark">மாதிரி ஆவணம் - சட்டப்பூர்வ செல்லுபடி அற்றது / SIMULATED DEMO ONLY - NO REAL BANKING</div>
+        <div class="receipt-content" id="receiptContent">
+          <!-- Filled dynamically by JS -->
+        </div>
+        <div class="modal-actions">
+          <button type="button" id="closeReceiptBtn" class="btn btn-outline">மூடு</button>
+          <button type="button" id="printReceiptBtn" class="btn btn-primary">
+            <span>🖨️</span>
+            <span id="printReceiptBtnText">அச்சிடு / சேமி (Print)</span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SAVE LISTING FORM MODAL -->
+  <div id="saveListingModal" class="modal-overlay hidden" role="dialog" aria-modal="true" aria-labelledby="saveModalTitle">
+    <div class="modal-card">
+      <div class="modal-header">
+        <h3 id="saveModalTitle" class="modal-title">விவசாயி பதிவைச் சேமி</h3>
+        <button id="closeSaveModalBtn" class="close-btn" aria-label="Close modal">&times;</button>
+      </div>
+      <div class="modal-body">
+        <form id="saveListingForm">
+          <div class="form-group">
+            <label for="farmerNameInput" class="form-label" id="modalFarmerNameLabel">உங்கள் பெயர்:</label>
+            <input type="text" id="farmerNameInput" class="form-input" placeholder="உழவர் முருகன் / Farmer Murugan" required>
+          </div>
+          <div class="form-group">
+            <label for="farmerPhoneInput" class="form-label" id="modalFarmerPhoneLabel">தொலைபேசி எண்:</label>
+            <input type="tel" id="farmerPhoneInput" class="form-input" placeholder="+91 98412 00000" required>
+          </div>
+          <div class="summary-box" id="saveListingSummaryBox">
+            <!-- Details populated by JS -->
+          </div>
+          <div class="modal-actions">
+            <button type="button" id="cancelSaveBtn" class="btn btn-outline">ரத்து செய்</button>
+            <button type="submit" id="confirmSaveBtn" class="btn btn-primary">சேமிக்கவும்</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- TOAST NOTIFICATION -->
+  <div id="toastMessage" class="toast hidden" role="status" aria-live="polite"></div>
+
+  <!-- FOOTER -->
+  <footer class="app-footer" role="contentinfo">
+    <div class="footer-container">
+      <div class="footer-notice">
+        <span class="warning-icon">ℹ️</span>
+        <span id="footerNoticeText">விலைகள், தூரங்கள் மற்றும் மதிப்பீடுகள் மாதிரித் தரவு மட்டுமே (Prices, distances and ratings are sample data for demonstration).</span>
+      </div>
+      <div class="footer-crops">
+        <span id="supportedCropsLabel">முக்கிய பயிர்கள்:</span>
+        <span class="crop-tag">🌾 நெல் (Paddy)</span>
+        <span class="crop-tag">🎋 கரும்பு (Sugarcane)</span>
+        <span class="crop-tag">🍅 தக்காளி</span>
+        <span class="crop-tag">🧅 வெங்காயம்</span>
+        <span class="crop-tag">🥔 உருளைக்கிழங்கு</span>
+        <span class="crop-tag">🍌 வாழைப்பழம்</span>
+        <span class="crop-tag">🌶️ மிளகாய்</span>
+        <span class="crop-tag">🍆 கத்தரிக்காய்</span>
+      </div>
+      <div class="footer-hubs">
+        <span id="regionsLabel">மையங்கள்:</span> திருப்போரூர் • செங்கல்பட்டு • காஞ்சிபுரம் • திண்டிவனம்
+      </div>
+    </div>
+  </footer>
+
+  <!-- SCRIPTS -->
+  <script src="js/i18n.js"></script>
+  <script src="js/sample_data.js"></script>
+  <script src="js/parser.js"></script>
+  <script src="js/speech.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>
