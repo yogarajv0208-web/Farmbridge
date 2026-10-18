@@ -9,14 +9,15 @@ echo.
 :: Check if git command exists
 where git >nul 2>nul
 if %errorlevel% neq 0 (
-    echo [ERROR] Git is not found in your PATH.
-    echo If Git was just installed, please restart your command prompt or terminal.
-    echo.
-    echo If Git is not installed yet, download and install it from:
-    echo https://git-scm.com/download/win
-    echo.
-    pause
-    exit /b 1
+    if exist "%LOCALAPPDATA%\Microsoft\WinGet\Packages\Git.MinGit_Microsoft.Winget.Source_8wekyb3d8bbwe\cmd\git.exe" (
+        set "PATH=%LOCALAPPDATA%\Microsoft\WinGet\Packages\Git.MinGit_Microsoft.Winget.Source_8wekyb3d8bbwe\cmd;!PATH!"
+    ) else (
+        echo [ERROR] Git is not found in your PATH.
+        echo Please download and install Git from: https://git-scm.com/download/win
+        echo.
+        pause
+        exit /b 1
+    )
 )
 
 echo [1/4] Checking Git repository initialization...
