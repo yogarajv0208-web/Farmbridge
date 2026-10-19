@@ -1,0 +1,530 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FarmBridge | Smart Farmer Marketplace</title>
+<style>
+:root {
+  --green:#176b45;
+  --deep:#104b34;
+  --light:#edf7ef;
+  --gold:#f4bd55;
+  --ink:#1b3025;
+  --muted:#68786d;
+  --white:#ffffff;
+  --line:#e1eae2;
+}
+*{box-sizing:border-box}
+body{
+  margin:0;
+  font-family:Inter,"Segoe UI",Arial,sans-serif;
+  background:#f7faf6;
+  color:var(--ink);
+}
+button,input,select{font:inherit}
+button{cursor:pointer}
+header{
+  background:rgba(255,255,255,.97);
+  border-bottom:1px solid var(--line);
+  position:sticky;top:0;z-index:10;
+}
+.nav{
+  max-width:1180px;margin:auto;padding:15px 22px;
+  display:flex;align-items:center;justify-content:space-between;gap:14px;
+}
+.brand{display:flex;align-items:center;gap:10px;font-size:22px;font-weight:850;color:var(--green)}
+.logo{
+  width:43px;height:43px;border-radius:14px;
+  background:var(--green);color:white;display:grid;place-items:center;font-size:25px;
+}
+.navright{display:flex;gap:9px;align-items:center}
+.pill,.btn{
+  padding:10px 15px;border-radius:12px;border:1px solid var(--line);
+  background:white;color:var(--ink);font-weight:700;
+}
+.btn.primary{background:var(--green);color:white;border-color:var(--green)}
+.btn.gold{background:var(--gold);border-color:var(--gold);color:#33230a}
+.btn:hover{filter:brightness(.96);transform:translateY(-1px)}
+main{max-width:1180px;margin:auto;padding:28px 22px 60px}
+.hero{
+  border-radius:27px;padding:35px;overflow:hidden;position:relative;
+  background:linear-gradient(120deg,#104b34,#187448 68%,#2b8b58);
+  color:white;display:grid;grid-template-columns:1.4fr .8fr;gap:20px;
+}
+.eyebrow{font-size:12px;letter-spacing:1.7px;font-weight:800;color:#d5f2d9}
+.hero h1{font-size:clamp(32px,5vw,54px);line-height:1.08;margin:15px 0}
+.hero p{color:#e2f3e5;line-height:1.7;max-width:650px}
+.hero-art{display:grid;place-items:center;font-size:clamp(90px,14vw,160px)}
+.hero-bottom{display:flex;gap:10px;flex-wrap:wrap;margin-top:22px}
+.hero .btn{border:0}
+.notice{
+  background:#fff8e9;border:1px solid #f4e0ad;color:#795820;
+  border-radius:12px;padding:12px 15px;margin:20px 0;font-size:13px;line-height:1.6;
+}
+.section-head{
+  display:flex;justify-content:space-between;align-items:end;gap:14px;
+  margin:32px 0 17px;
+}
+.section-head h2{margin:0;font-size:25px}
+.section-head p{margin:7px 0 0;color:var(--muted);font-size:14px}
+.grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}
+.card{
+  background:white;border:1px solid var(--line);border-radius:19px;
+  padding:20px;box-shadow:0 5px 18px #153f1710;
+}
+.card h3{margin:0 0 8px;font-size:18px}
+.card p{color:var(--muted);line-height:1.55;font-size:14px}
+.iconbox{
+  width:45px;height:45px;background:var(--light);border-radius:14px;
+  display:grid;place-items:center;font-size:23px;margin-bottom:14px;
+}
+.label{font-size:12px;font-weight:800;color:var(--muted);display:block;margin-bottom:7px}
+.field{display:flex;flex-direction:column;gap:6px}
+input,select{
+  width:100%;border:1px solid #d7e2d8;border-radius:11px;padding:12px;
+  background:white;color:var(--ink);min-width:0;
+}
+input:focus,select:focus{outline:2px solid #a8d9b5;border-color:var(--green)}
+.formgrid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}
+.voicebox{
+  border:1px dashed #a8c9ae;background:#f5fbf5;border-radius:16px;
+  padding:16px;margin-bottom:17px;
+}
+.voice-row{display:flex;align-items:center;gap:12px}
+.mic{
+  width:49px;height:49px;border:0;border-radius:15px;background:var(--green);
+  color:white;font-size:22px;flex-shrink:0;
+}
+.mic.listening{background:#bc4141;animation:pulse 1s infinite}
+@keyframes pulse{50%{opacity:.6}}
+.voice-row p{margin:3px 0;color:var(--muted);font-size:13px}
+.transcript{margin-top:12px!important}
+.full{width:100%;margin-top:15px}
+.offer-list{display:grid;gap:12px}
+.offer{
+  display:grid;grid-template-columns:1fr auto;gap:15px;align-items:center;
+  padding:18px;border:1px solid var(--line);border-radius:16px;background:white;
+}
+.offer.best{border:2px solid #65a978;background:#f6fcf6}
+.offer h3{margin:0 0 6px;font-size:17px}
+.meta{font-size:13px;color:var(--muted);line-height:1.7}
+.amount{text-align:right}
+.amount strong{display:block;font-size:23px;color:var(--green)}
+.amount small{display:block;color:var(--muted);margin:5px 0 10px}
+.tag{
+  display:inline-block;padding:5px 9px;border-radius:99px;
+  background:#e4f5e7;color:#20623a;font-size:11px;font-weight:800;margin-bottom:7px;
+}
+.tag.goldtag{background:#fff1ce;color:#7c5700}
+.stats{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
+.stat{background:#f5faf5;border-radius:14px;padding:15px}
+.stat span{font-size:12px;color:var(--muted)}
+.stat strong{display:block;font-size:23px;margin-top:7px}
+.barwrap{height:9px;background:#e7eee7;border-radius:20px;overflow:hidden;margin:9px 0}
+.bar{height:100%;width:0;background:var(--green);transition:width .4s}
+.table{width:100%;border-collapse:collapse;font-size:14px}
+.table th,.table td{padding:12px 8px;text-align:left;border-bottom:1px solid var(--line)}
+.table th{font-size:12px;color:var(--muted)}
+.calc-note{font-size:12px;color:var(--muted);line-height:1.6}
+.reward-head{display:flex;justify-content:space-between;align-items:center;gap:12px}
+.points{font-size:30px;font-weight:850;color:var(--green)}
+.badges{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}
+.badge{
+  background:#f8f5e9;border:1px solid #eee1b7;border-radius:11px;
+  padding:9px 11px;font-size:12px;font-weight:700;
+}
+.info-list{padding-left:20px;color:var(--muted);line-height:1.9;font-size:14px}
+footer{
+  background:#103f2c;color:#e2f2e6;padding:30px 22px;text-align:center;
+  line-height:1.8;font-size:13px;
+}
+footer strong{font-size:20px}
+.toast{
+  position:fixed;bottom:20px;left:50%;transform:translateX(-50%);
+  background:#163e2c;color:white;padding:13px 19px;border-radius:12px;
+  box-shadow:0 8px 30px #0002;z-index:30;display:none;max-width:90%;text-align:center;
+}
+@media(max-width:800px){
+  .hero{grid-template-columns:1fr;padding:26px}
+  .hero-art{display:none}
+  .grid{grid-template-columns:1fr 1fr}
+  .nav{padding:12px 15px}
+  main{padding:20px 15px 45px}
+}
+@media(max-width:540px){
+  .grid,.formgrid,.stats{grid-template-columns:1fr}
+  .brand{font-size:19px}
+  .pill,.btn{padding:10px}
+  .offer{grid-template-columns:1fr}
+  .amount{text-align:left}
+  .section-head{align-items:start;flex-direction:column}
+}
+</style>
+</head>
+<body>
+<header>
+  <div class="nav">
+    <div class="brand"><div class="logo">🌾</div>FarmBridge</div>
+    <div class="navright">
+      <span class="pill" id="modeLabel">DEMO</span>
+      <button class="btn" id="langBtn" onclick="toggleLang()">தமிழ்</button>
+    </div>
+  </div>
+</header>
+
+<main>
+  <section class="hero">
+    <div>
+      <div class="eyebrow" data-en="SMART AGRICULTURAL MARKETPLACE" data-ta="ஸ்மார்ட் விவசாய சந்தை">SMART AGRICULTURAL MARKETPLACE</div>
+      <h1 data-en="Know what reaches your hand." data-ta="உங்கள் கைக்கு வரும் தொகையை அறியுங்கள்.">Know what reaches your hand.</h1>
+      <p data-en="Compare buyer offers, estimate transport costs and choose with confidence. Built for Tamil Nadu farmers." data-ta="வாங்குபவர்களின் விலைகளை ஒப்பிட்டு, போக்குவரத்துச் செலவைக் கணக்கிட்டு, நம்பிக்கையுடன் முடிவு செய்யுங்கள். தமிழ்நாட்டு விவசாயிகளுக்காக.">Compare buyer offers, estimate transport costs and choose with confidence. Built for Tamil Nadu farmers.</p>
+      <div class="hero-bottom">
+        <button class="btn gold" onclick="goTo('market')" data-en="Compare offers ↓" data-ta="விலைகளை ஒப்பிடு ↓">Compare offers ↓</button>
+        <button class="btn" onclick="goTo('listCrop')" data-en="List your crop +" data-ta="பயிரைப் பதிவு செய் +">List your crop +</button>
+      </div>
+    </div>
+    <div class="hero-art" aria-hidden="true">🌱🌾</div>
+  </section>
+
+  <div class="notice">
+    <strong data-en="Demo notice:" data-ta="டெமோ குறிப்பு:">Demo notice:</strong>
+    <span data-en="All buyers, prices, distances and rewards on this page are sample data. No real buyer is contacted, and no payment is processed. Market figures are not live government rates." data-ta="இங்குள்ள வாங்குபவர்கள், விலைகள், தூரங்கள் மற்றும் வெகுமதிகள் அனைத்தும் மாதிரி தரவுகள். உண்மையான வாங்குபவரைத் தொடர்புகொள்ளவோ பணம் செலுத்தவோ முடியாது. இவை நேரடி அரசு சந்தை விலைகள் அல்ல.">All buyers, prices, distances and rewards on this page are sample data. No real buyer is contacted, and no payment is processed. Market figures are not live government rates.</span>
+  </div>
+
+  <div class="section-head">
+    <div>
+      <h2 data-en="Your crop, your choice" data-ta="உங்கள் பயிர், உங்கள் தேர்வு">Your crop, your choice</h2>
+      <p data-en="Speak or enter your crop details to compare estimated net returns." data-ta="உங்கள் பயிர் விவரங்களைப் பேசுங்கள் அல்லது உள்ளிடுங்கள். கிடைக்கும் நிகரத் தொகையை ஒப்பிடுங்கள்.">Speak or enter your crop details to compare estimated net returns.</p>
+    </div>
+  </div>
+
+  <section class="card" id="listCrop">
+    <div class="voicebox">
+      <div class="voice-row">
+        <button class="mic" id="micBtn" onclick="startVoice()" aria-label="Start voice input">🎙️</button>
+        <div>
+          <strong data-en="Speak in Tamil or English" data-ta="தமிழ் அல்லது ஆங்கிலத்தில் பேசுங்கள்">Speak in Tamil or English</strong>
+          <p data-en="Example: Paddy 2000 kg in Chengalpattu" data-ta="உதாரணம்: நெல் 2000 கிலோ செங்கல்பட்டு">Example: Paddy 2000 kg in Chengalpattu</p>
+        </div>
+      </div>
+      <p id="voiceStatus" class="transcript" aria-live="polite">Voice input works in supported browsers. You can always type below.</p>
+    </div>
+
+    <div class="formgrid">
+      <div class="field">
+        <label class="label" for="crop" data-en="CROP" data-ta="பயிர்">CROP</label>
+        <select id="crop" onchange="updateOffers()">
+          <option value="Paddy">Paddy / நெல்</option>
+          <option value="Sugarcane">Sugarcane / கரும்பு</option>
+          <option value="Tomato">Tomato / தக்காளி</option>
+          <option value="Banana">Banana / வாழை</option>
+          <option value="Onion">Onion / வெங்காயம்</option>
+        </select>
+      </div>
+      <div class="field">
+        <label class="label" for="quantity" data-en="QUANTITY (KG)" data-ta="அளவு (கிலோ)">QUANTITY (KG)</label>
+        <input id="quantity" type="number" min="1" max="1000000" value="2000" onchange="updateOffers()">
+      </div>
+      <div class="field">
+        <label class="label" for="village" data-en="VILLAGE / DISTRICT" data-ta="கிராமம் / மாவட்டம்">VILLAGE / DISTRICT</label>
+        <input id="village" value="Chengalpattu" placeholder="e.g. Chengalpattu">
+      </div>
+      <div class="field">
+        <label class="label" for="commission" data-en="OTHER COSTS (₹)" data-ta="மற்ற செலவுகள் (₹)">OTHER COSTS (₹)</label>
+        <input id="commission" type="number" min="0" value="100" onchange="updateOffers()">
+      </div>
+    </div>
+    <button class="btn primary full" onclick="updateOffers()" data-en="Compare my net returns" data-ta="எனது நிகரத் தொகையை ஒப்பிடு">Compare my net returns</button>
+  </section>
+
+  <section id="market">
+    <div class="section-head">
+      <div>
+        <h2 data-en="Buyer offer comparison" data-ta="வாங்குபவர் விலை ஒப்பீடு">Buyer offer comparison</h2>
+        <p data-en="Ranked by estimated money in hand, after sample transport and other costs." data-ta="மாதிரி போக்குவரத்து மற்றும் பிற செலவுகளைக் கழித்த பின் கிடைக்கும் தொகையின் அடிப்படையில் வரிசைப்படுத்தப்பட்டுள்ளது.">Ranked by estimated money in hand, after sample transport and other costs.</p>
+      </div>
+    </div>
+    <div class="offer-list" id="offerList"></div>
+    <p class="calc-note">Net in hand = (quantity × buyer price per kg) − estimated transport − other costs. Rates are illustrative demo values, not live offers.</p>
+  </section>
+
+  <section>
+    <div class="section-head">
+      <div>
+        <h2 data-en="Shared transport simulator" data-ta="பகிரப்பட்ட போக்குவரத்துக் கணிப்பான்">Shared transport simulator</h2>
+        <p data-en="Explore how the modelled transport cost per farmer changes when farmers opt in together." data-ta="விவசாயிகள் ஒன்றாகச் செல்லும்போது ஒருவருக்கான மாதிரி போக்குவரத்துச் செலவு எவ்வாறு மாறுகிறது என்பதைப் பாருங்கள்.">Explore how the modelled transport cost per farmer changes when farmers opt in together.</p>
+      </div>
+    </div>
+    <div class="card">
+      <div class="formgrid">
+        <div class="field">
+          <label class="label" for="distance" data-en="DISTANCE (KM)" data-ta="தூரம் (கி.மீ.)">DISTANCE (KM)</label>
+          <input type="number" id="distance" min="1" max="1000" value="60" onchange="updatePooling()">
+        </div>
+        <div class="field">
+          <label class="label" for="farmers" data-en="NUMBER OF FARMERS" data-ta="விவசாயிகளின் எண்ணிக்கை">NUMBER OF FARMERS</label>
+          <select id="farmers" onchange="updatePooling()">
+            <option value="1">1 farmer</option>
+            <option value="2">2 farmers</option>
+            <option value="3">3 farmers</option>
+            <option value="4">4 farmers</option>
+          </select>
+        </div>
+      </div>
+      <div class="stats" style="margin-top:18px">
+        <div class="stat"><span data-en="Solo model cost / farmer" data-ta="தனிப் பயணச் செலவு / விவசாயி">Solo model cost / farmer</span><strong id="soloCost">₹2,240</strong></div>
+        <div class="stat"><span data-en="Shared model / farmer" data-ta="பகிர்ந்த பயணச் செலவு / விவசாயி">Shared model / farmer</span><strong id="sharedCost">₹2,240</strong></div>
+        <div class="stat"><span data-en="Modelled difference" data-ta="மாதிரி சேமிப்பு">Modelled difference</span><strong id="saving">₹0</strong></div>
+      </div>
+      <div class="barwrap"><div class="bar" id="poolBar"></div></div>
+      <p class="calc-note" id="poolNote">Model assumes equal loads and equal sharing. Real savings depend on vehicle capacity, route, availability and transporter quotes. Pooling is opt-in, not a confirmed service.</p>
+    </div>
+  </section>
+
+  <section>
+    <div class="section-head">
+      <div>
+        <h2 data-en="Market reference & crop support" data-ta="சந்தை குறிப்பு மற்றும் பயிர் ஆதரவு">Market reference & crop support</h2>
+        <p data-en="Use verified sources before making a real sale or farming decision." data-ta="உண்மையான விற்பனை அல்லது விவசாய முடிவுக்கு முன் சரிபார்க்கப்பட்ட ஆதாரங்களைப் பயன்படுத்துங்கள்.">Use verified sources before making a real sale or farming decision.</p>
+      </div>
+    </div>
+    <div class="grid">
+      <article class="card">
+        <div class="iconbox">📊</div>
+        <h3 data-en="Market price reference" data-ta="சந்தை விலை குறிப்பு">Market price reference</h3>
+        <p data-en="Check official market references. Prices vary by date, grade, market and location." data-ta="அதிகாரப்பூர்வ சந்தை விலைகளைச் சரிபார்க்கவும். தேதி, தரம், சந்தை மற்றும் இடத்துக்கு ஏற்ப விலை மாறும்.">Check official market references. Prices vary by date, grade, market and location.</p>
+        <a href="https://agmarknet.gov.in/" target="_blank" rel="noopener">Agmarknet ↗</a><br><br>
+        <a href="https://enam.gov.in/" target="_blank" rel="noopener">e-NAM ↗</a>
+      </article>
+      <article class="card">
+        <div class="iconbox">🌿</div>
+        <h3 data-en="Crop health information" data-ta="பயிர் நலத் தகவல்">Crop health information</h3>
+        <p data-en="For disease identification or pesticide advice, consult an agricultural officer or local KVK. Do not treat this demo as a diagnosis." data-ta="நோயைக் கண்டறிய அல்லது பூச்சிக்கொல்லி ஆலோசனை பெற வேளாண் அலுவலர் அல்லது உள்ளூர் KVK-ஐ அணுகுங்கள். இந்த டெமோவை நோயறிதலாகக் கருத வேண்டாம்.">For disease identification or pesticide advice, consult an agricultural officer or local KVK. Do not treat this demo as a diagnosis.</p>
+        <a href="https://tnau.ac.in/" target="_blank" rel="noopener">Tamil Nadu Agricultural University ↗</a>
+      </article>
+      <article class="card">
+        <div class="iconbox">🚚</div>
+        <h3 data-en="Transport planning" data-ta="போக்குவரத்துத் திட்டம்">Transport planning</h3>
+        <p data-en="Compare estimated travel costs, ask for a transporter quote, and confirm vehicle capacity before loading." data-ta="மதிப்பிடப்பட்ட போக்குவரத்துச் செலவை ஒப்பிட்டு, வாகனக் கட்டணத்தையும் கொள்ளளவையும் உறுதி செய்த பிறகே சரக்கை ஏற்றுங்கள்.">Compare estimated travel costs, ask for a transporter quote, and confirm vehicle capacity before loading.</p>
+      </article>
+    </div>
+  </section>
+
+  <section>
+    <div class="section-head">
+      <div>
+        <h2 data-en="FarmBridge rewards" data-ta="FarmBridge வெகுமதிகள்">FarmBridge rewards</h2>
+        <p data-en="Demo points and badges for both farmers and buyers. Points are stored only in this page session." data-ta="விவசாயிகளுக்கும் வாங்குபவர்களுக்கும் மாதிரி புள்ளிகள் மற்றும் பேட்ஜ்கள். இந்தப் பக்க அமர்வில் மட்டுமே புள்ளிகள் இருக்கும்.">Demo points and badges for both farmers and buyers. Points are stored only in this page session.</p>
+      </div>
+    </div>
+    <div class="grid">
+      <div class="card">
+        <div class="reward-head"><h3 data-en="Farmer profile" data-ta="விவசாயி சுயவிவரம்">Farmer profile</h3><span>🌾</span></div>
+        <div class="points" id="farmerPoints">120 pts</div>
+        <div class="badges"><span class="badge">🌱 Starter Farmer</span><span class="badge">🧾 Clear Listing</span></div>
+        <button class="btn full" onclick="earn('farmer')" data-en="Demo: add listing +10" data-ta="டெமோ: பதிவு செய் +10">Demo: add listing +10</button>
+      </div>
+      <div class="card">
+        <div class="reward-head"><h3 data-en="Buyer profile" data-ta="வாங்குபவர் சுயவிவரம்">Buyer profile</h3><span>🤝</span></div>
+        <div class="points" id="buyerPoints">90 pts</div>
+        <div class="badges"><span class="badge">🔎 Crop Explorer</span><span class="badge">⭐ Fair Offer</span></div>
+        <button class="btn full" onclick="earn('buyer')" data-en="Demo: review offer +10" data-ta="டெமோ: சலுகையைப் பார் +10">Demo: review offer +10</button>
+      </div>
+      <div class="card">
+        <div class="iconbox">🏆</div>
+        <h3 data-en="How points work" data-ta="புள்ளிகள் எப்படிக் கிடைக்கும்?">How points work</h3>
+        <ul class="info-list">
+          <li data-en="Complete a profile" data-ta="சுயவிவரத்தை முடிக்கவும்">Complete a profile</li>
+          <li data-en="Submit complete crop or buyer details" data-ta="முழுமையான பயிர் அல்லது வாங்குபவர் விவரங்களைச் சமர்ப்பிக்கவும்">Submit complete crop or buyer details</li>
+          <li data-en="Confirm a genuine transaction in a future verified version" data-ta="எதிர்கால சரிபார்க்கப்பட்ட பதிப்பில் உண்மையான பரிவர்த்தனையை உறுதிப்படுத்தவும்">Confirm a genuine transaction in a future verified version</li>
+        </ul>
+        <p class="calc-note">Demo buttons only. Points reset when the page reloads. A real system needs login, server-side validation and anti-fraud checks.</p>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="section-head">
+      <div>
+        <h2 data-en="How FarmBridge works" data-ta="FarmBridge எப்படி வேலை செய்கிறது?">How FarmBridge works</h2>
+      </div>
+    </div>
+    <div class="grid">
+      <div class="card"><div class="iconbox">🎙️</div><h3>01 · <span data-en="Tell us your crop" data-ta="பயிர் விவரத்தைச் சொல்லுங்கள்">Tell us your crop</span></h3><p data-en="Use voice or enter crop, quantity and village." data-ta="குரல் அல்லது தட்டச்சு மூலம் பயிர், அளவு, கிராமத்தை உள்ளிடுங்கள்.">Use voice or enter crop, quantity and village.</p></div>
+      <div class="card"><div class="iconbox">⚖️</div><h3>02 · <span data-en="Compare net returns" data-ta="நிகரத் தொகையை ஒப்பிடுங்கள்">Compare net returns</span></h3><p data-en="See buyer price minus estimated transport and other costs." data-ta="வாங்குபவர் விலையிலிருந்து மதிப்பிடப்பட்ட போக்குவரத்து மற்றும் பிற செலவுகளைக் கழித்த தொகையைப் பாருங்கள்.">See buyer price minus estimated transport and other costs.</p></div>
+      <div class="card"><div class="iconbox">🤝</div><h3>03 · <span data-en="Choose and confirm" data-ta="தேர்ந்தெடுத்து உறுதி செய்யுங்கள்">Choose and confirm</span></h3><p data-en="In the real service, confirm terms directly with verified buyers and transporters." data-ta="உண்மையான சேவையில் சரிபார்க்கப்பட்ட வாங்குபவர் மற்றும் போக்குவரத்தாளருடன் நிபந்தனைகளை உறுதிப்படுத்துங்கள்.">In the real service, confirm terms directly with verified buyers and transporters.</p></div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <strong>🌾 FarmBridge</strong><br>
+  <span data-en="Better market choices for Tamil Nadu farmers." data-ta="தமிழ்நாட்டு விவசாயிகளுக்குச் சிறந்த சந்தைத் தேர்வுகள்.">Better market choices for Tamil Nadu farmers.</span><br>
+  <span>DEXATHON 2026 · Idea Nova · Team ID DEX26041</span><br>
+  <span>Student prototype · Sample data only · No live transactions</span>
+</footer>
+<div class="toast" id="toast" role="status"></div>
+
+<script>
+let tamil = false;
+let farmerPoints = 120;
+let buyerPoints = 90;
+let lastToast;
+
+const baseOffers = [
+  {name:"B · Procurement Centre", distance:20, prices:{Paddy:23.50,Sugarcane:3.15,Tomato:18,Banana:28,Onion:22}, kind:"procurement"},
+  {name:"C · Local Trader", distance:35, prices:{Paddy:23.362,Sugarcane:3.05,Tomato:19,Banana:27,Onion:23}, kind:"trader"},
+  {name:"A · Rice Mill", distance:60, prices:{Paddy:23.70,Sugarcane:3.00,Tomato:17,Banana:30,Onion:21}, kind:"mill"}
+];
+
+function money(n){
+  return "₹"+Math.round(n).toLocaleString("en-IN");
+}
+function transport(q,d){
+  // Illustrative formula from the FarmBridge presentation.
+  return 200 + d * (10 + 0.012*q);
+}
+function goTo(id){
+  document.getElementById(id).scrollIntoView({behavior:"smooth",block:"start"});
+}
+function toggleLang(){
+  tamil = !tamil;
+  document.documentElement.lang = tamil ? "ta" : "en";
+  document.getElementById("langBtn").textContent = tamil ? "English" : "தமிழ்";
+  document.querySelectorAll("[data-en][data-ta]").forEach(el=>{
+    el.textContent = tamil ? el.dataset.ta : el.dataset.en;
+  });
+  document.getElementById("voiceStatus").textContent = tamil
+    ? "ஆதரவு உள்ள உலாவியில் குரல் உள்ளீடு வேலை செய்யும். கீழே தட்டச்சும் செய்யலாம்."
+    : "Voice input works in supported browsers. You can always type below.";
+}
+function toast(msg){
+  const el=document.getElementById("toast");
+  el.textContent=msg;el.style.display="block";
+  clearTimeout(lastToast);
+  lastToast=setTimeout(()=>el.style.display="none",2600);
+}
+function updateOffers(){
+  const q=Number(document.getElementById("quantity").value);
+  const crop=document.getElementById("crop").value;
+  const other=Number(document.getElementById("commission").value)||0;
+  const list=document.getElementById("offerList");
+  if(!Number.isFinite(q)||q<=0||q>1000000){
+    list.innerHTML='<div class="card">Enter a valid quantity between 1 and 1,000,000 kg.</div>';
+    return;
+  }
+  const offers=baseOffers.map(o=>{
+    const rate=o.prices[crop]||10;
+    const t=transport(q,o.distance);
+    return {...o,rate,transport:t,net:q*rate-t-other};
+  }).sort((a,b)=>b.net-a.net);
+  list.innerHTML="";
+  offers.forEach((o,i)=>{
+    const card=document.createElement("article");
+    card.className="offer"+(i===0?" best":"");
+    const heading=document.createElement("div");
+    heading.innerHTML=(i===0?'<span class="tag">★ BEST ESTIMATED NET</span>':'')+
+      '<h3></h3><div class="meta"></div>';
+    heading.querySelector("h3").textContent=o.name;
+    heading.querySelector(".meta").textContent=
+      `${o.distance} km estimated distance · ${money(o.rate)}/kg sample rate · Transport ${money(o.transport)} · Other costs ${money(other)}`;
+    const amount=document.createElement("div");
+    amount.className="amount";
+    const strong=document.createElement("strong");
+    strong.textContent=money(o.net);
+    const small=document.createElement("small");
+    small.textContent="Estimated net in hand";
+    const btn=document.createElement("button");
+    btn.className="btn";
+    btn.textContent=tamil?"தேர்வு செய்":"Select offer";
+    btn.onclick=()=>toast(tamil?"இது மாதிரி சலுகை மட்டுமே. உண்மையான வாங்குபவர் இணைக்கப்படவில்லை.":"Demo offer selected. No real buyer is connected.");
+    amount.append(strong,small,btn);
+    card.append(heading,amount);
+    list.appendChild(card);
+  });
+  updatePooling();
+}
+function updatePooling(){
+  const d=Number(document.getElementById("distance").value)||60;
+  const n=Number(document.getElementById("farmers").value)||1;
+  const q=2000; // illustrative equal load per farmer
+  const solo=transport(q,d);
+  const total=transport(q*n,d);
+  const shared=total/n;
+  const saved=Math.max(0,solo-shared);
+  document.getElementById("soloCost").textContent=money(solo);
+  document.getElementById("sharedCost").textContent=money(shared);
+  document.getElementById("saving").textContent=money(saved);
+  document.getElementById("poolBar").style.width=(solo?Math.min(100,saved/solo*100):0)+"%";
+  document.getElementById("poolNote").textContent=
+    `${n} farmer(s) · ${money(saved)} modelled difference per farmer. Assumes each farmer has ${q.toLocaleString("en-IN")} kg and the combined load is accepted by the vehicle. Illustrative only.`;
+}
+function earn(who){
+  if(who==="farmer"){
+    farmerPoints+=10;
+    document.getElementById("farmerPoints").textContent=farmerPoints+" pts";
+  }else{
+    buyerPoints+=10;
+    document.getElementById("buyerPoints").textContent=buyerPoints+" pts";
+  }
+  toast(tamil?"டெமோ புள்ளிகள் சேர்க்கப்பட்டன.":"10 demo points added!");
+}
+function startVoice(){
+  const SpeechRecognition=window.SpeechRecognition||window.webkitSpeechRecognition;
+  if(!SpeechRecognition){
+    toast(tamil?"இந்த உலாவியில் குரல் வசதி இல்லை. விவரங்களைத் தட்டச்சு செய்யுங்கள்.":"Voice recognition isn't supported here. Please type your details.");
+    document.getElementById("voiceStatus").textContent="Try a supported browser or type the details manually.";
+    return;
+  }
+  const rec=new SpeechRecognition();
+  rec.lang=tamil?"ta-IN":"en-IN";
+  rec.interimResults=false;
+  rec.maxAlternatives=1;
+  const btn=document.getElementById("micBtn");
+  btn.classList.add("listening");
+  document.getElementById("voiceStatus").textContent=tamil?"கேட்கிறது... இப்போது பேசுங்கள்.":"Listening... speak now.";
+  rec.onresult=e=>{
+    const words=e.results[0][0].transcript;
+    document.getElementById("voiceStatus").textContent=(tamil?"நீங்கள் சொன்னது: ":"You said: ")+words;
+    parseVoice(words);
+  };
+  rec.onerror=e=>{
+    document.getElementById("voiceStatus").textContent="Voice input unavailable ("+e.error+"). Please type instead.";
+  };
+  rec.onend=()=>btn.classList.remove("listening");
+  try{rec.start()}catch(e){
+    btn.classList.remove("listening");
+    toast("Could not start voice input. Please try again.");
+  }
+}
+function parseVoice(text){
+  const s=text.toLowerCase();
+  const cropMap=[
+    {keys:["paddy","rice","நெல்","அரிசி"],value:"Paddy"},
+    {keys:["sugarcane","கரும்பு"],value:"Sugarcane"},
+    {keys:["tomato","தக்காளி"],value:"Tomato"},
+    {keys:["banana","வாழை"],value:"Banana"},
+    {keys:["onion","வெங்காயம்"],value:"Onion"}
+  ];
+  for(const c of cropMap){
+    if(c.keys.some(k=>s.includes(k.toLowerCase()))){
+      document.getElementById("crop").value=c.value;break;
+    }
+  }
+  const numberMatch=s.match(/\d[\d,]*(?:\.\d+)?/);
+  if(numberMatch){
+    let qty=Number(numberMatch[0].replace(/,/g,""));
+    if(/\b(ton|tons|tonne|tonnes)\b/.test(s))qty*=1000;
+    if(qty>0&&qty<=1000000)document.getElementById("quantity").value=qty;
+  }
+  const places=["chengalpattu","tiruvallur","thanjavur","madurai","tiruchirappalli","ranipet","kallakurichi","villupuram","திருவள்ளூர்","தஞ்சாவூர்","மதுரை","செங்கல்பட்டு"];
+  const place=places.find(p=>s.includes(p));
+  if(place)document.getElementById("village").value=place.replace(/\b\w/g,c=>c.toUpperCase());
+  updateOffers();
+}
+updateOffers();
+</script>
+</body>
+</html>
