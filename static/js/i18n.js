@@ -151,7 +151,46 @@ const I18N = {
     tag_simulated_deal: "மாதிரி ஒப்பந்தம் (Demo Deal)",
 
     // TTS speech format
-    tts_speech: "சிறந்த சலுகை: {buyer}. போக்குவரத்து கழித்து உங்கள் நிகர வருமானம் {net}."
+    tts_speech: "சிறந்த சலுகை: {buyer}. போக்குவரத்து கழித்து உங்கள் நிகர வருமானம் {net}.",
+
+    // Login Portal Localization
+    login_portal_title: "ஃபார்ம்பிரிட்ஜ் நேரடி சந்தை உள்நுழைவு",
+    login_portal_subtitle: "தமிழ்நாடு விவசாயிகள் மற்றும் வாங்குபவர்களை இணைக்கும் டிஜிட்டல் நேரடி சந்தை",
+    login_tab_otp: "📱 மொபைல் & OTP",
+    login_tab_credentials: "🔑 பயனர் பெயர் & கடவுச்சொல்",
+    login_role_farmer: "🌾 உழவர் (Farmer)",
+    login_role_buyer: "🏢 வாங்குபவர் (Buyer)",
+    login_role_transport: "🚚 போக்குவரத்து (Logistics)",
+    login_name_label: "உங்கள் பெயர் (விருப்பத்திற்குரியது):",
+    login_name_placeholder: "எ.கா: உழவர் முருகன் / Farmer Murugan",
+    login_phone_label: "கைபேசி எண் (Mobile Number):",
+    login_phone_placeholder: "98412 00001",
+    login_phone_hint: "டெமோ பயன்பாட்டிற்கு ஏதேனும் 10 இலக்க எண்ணை உள்ளிடலாம்",
+    login_btn_send_otp: "OTP குறியீட்டைப் பெறவும்",
+    login_demo_hint: "அடுத்த திரையில் மாதிரி OTP கேட்கப்படும் போது 1234 என உள்ளிடவும் (Use OTP: 1234).",
+    login_callout_title: "மாதிரி OTP சரிபார்ப்புக் குறியீடு:",
+    login_callout_sub: "டெமோ நோக்கத்திற்காக '1234' என்ற குறியீட்டை உள்ளிடவும்",
+    login_autofill_btn: "1234 ஐ நிரப்பு",
+    login_enter_otp_label: "4 இலக்க OTP-ஐ உள்ளிடவும் (Enter 4-Digit OTP):",
+    login_btn_verify: "சரிபார்த்து பிரதான பக்கத்திற்குச் செல்",
+    login_otp_resend: "மீண்டும் அனுப்பவும் (Resend)",
+    login_resend_wait: "மறுஅனுப்ப கால அவகாசம்:",
+    login_cred_user_label: "பயனர் பெயர் / மின்னஞ்சல் / மொபைல்:",
+    login_cred_pass_label: "கடவுச்சொல் / கடவு எண் (Password / PIN):",
+    login_cred_hint: "மாதிரிக்கு ஏதேனும் கடவுச்சொல் அல்லது PIN: 1234 ஐப் பயன்படுத்தலாம்",
+    login_btn_cred_submit: "உள்நுழைந்து பிரதான பக்கத்திற்குச் செல்",
+    login_quick_demo_title: "⚡ விரைவு மாதிரி உள்நுழைவு (Quick 1-Click Demo):",
+    login_demo_farmer_name: "உழவர் முருகன்",
+    login_demo_farmer_role: "விவசாயி • 98412 00001",
+    login_demo_buyer_name: "காவேரி அக்ரோ",
+    login_demo_buyer_role: "வாங்குபவர் • 98412 00002",
+    login_guest_btn: "உள்நுழையாமல் மாதிரி தளத்தைப் பார்க்க (Explore as Guest)",
+    login_err_phone: "தயவுசெய்து சரியான 10 இலக்க மொபைல் எண்ணை உள்ளிடவும்.",
+    login_err_otp_invalid: "❌ தவறான OTP! மாதிரி செயல்முறைக்கு '1234' ஐப் பயன்படுத்தவும்.",
+    login_err_cred_invalid: "தயவுசெய்து பயனர் பெயர் மற்றும் கடவுச்சொல்லை உள்ளிடவும்.",
+    login_success_toast: "வெற்றிகரமாக உள்நுழைந்துள்ளீர்கள்! நல்வரவு!",
+    logout_btn: "வெளியேறு",
+    logout_toast: "வெற்றிகரமாக வெளியேறிவிட்டீர்கள்."
   },
 
   en: {
@@ -302,7 +341,46 @@ const I18N = {
     tag_simulated_deal: "Simulated Demo Deal",
 
     // TTS speech format
-    tts_speech: "Best offer: {buyer}. Net payout after transport is {net}."
+    tts_speech: "Best offer: {buyer}. Net payout after transport is {net}.",
+
+    // Login Portal Localization
+    login_portal_title: "FarmBridge Direct Marketplace Login",
+    login_portal_subtitle: "Tamil Nadu Direct Farmer-Buyer Digital Trade Portal",
+    login_tab_otp: "📱 Mobile & OTP",
+    login_tab_credentials: "🔑 Username & Password",
+    login_role_farmer: "🌾 Farmer",
+    login_role_buyer: "🏢 Buyer / Trader",
+    login_role_transport: "🚚 Logistics",
+    login_name_label: "Your Name (Optional):",
+    login_name_placeholder: "e.g. Farmer Murugan",
+    login_phone_label: "Mobile Number:",
+    login_phone_placeholder: "98412 00001",
+    login_phone_hint: "Enter any 10-digit mobile number for demo",
+    login_btn_send_otp: "Request OTP Code",
+    login_demo_hint: "When prompted on next screen, enter demo OTP code 1234.",
+    login_callout_title: "Demo Verification OTP:",
+    login_callout_sub: "For demo purpose, enter code '1234'",
+    login_autofill_btn: "Auto-Fill 1234",
+    login_enter_otp_label: "Enter 4-Digit OTP Code:",
+    login_btn_verify: "Verify OTP & Enter Main Page",
+    login_otp_resend: "Resend Code",
+    login_resend_wait: "Resend available in:",
+    login_cred_user_label: "Username / Email / Mobile:",
+    login_cred_pass_label: "Password / PIN:",
+    login_cred_hint: "Use any password or demo PIN: 1234",
+    login_btn_cred_submit: "Login & Enter Main Page",
+    login_quick_demo_title: "⚡ Quick 1-Click Demo Profiles:",
+    login_demo_farmer_name: "Farmer Murugan",
+    login_demo_farmer_role: "Farmer • 98412 00001",
+    login_demo_buyer_name: "Kaveri Agro Traders",
+    login_demo_buyer_role: "Buyer • 98412 00002",
+    login_guest_btn: "Explore Demo Marketplace as Guest",
+    login_err_phone: "Please enter a valid 10-digit mobile number.",
+    login_err_otp_invalid: "❌ Invalid OTP! For demo purpose, please use '1234'.",
+    login_err_cred_invalid: "Please enter username and password.",
+    login_success_toast: "Logged in successfully! Welcome to FarmBridge!",
+    logout_btn: "Logout",
+    logout_toast: "You have been logged out."
   }
 };
 

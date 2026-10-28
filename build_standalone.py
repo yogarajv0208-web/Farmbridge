@@ -71,12 +71,18 @@ def build():
             html = html.replace(f'<script src="{script_name}"></script>', '')
         html = html.replace('</body>', f'{js_bundle}\n</body>')
 
-    # Output standalone FarmBridge.html in the root
+    # Output standalone FarmBridge.html and index.html in the root
     output_path = os.path.join(ROOT_DIR, "FarmBridge.html")
     with open(output_path, "w", encoding="utf-8") as f:
         f.write(html)
 
+    root_index_path = os.path.join(ROOT_DIR, "index.html")
+    with open(root_index_path, "w", encoding="utf-8") as f:
+        f.write(html)
+
     print(f"Standalone single-file created: {output_path} ({os.path.getsize(output_path)} bytes)")
+    print(f"Root index.html synced: {root_index_path} ({os.path.getsize(root_index_path)} bytes)")
 
 if __name__ == "__main__":
     build()
+

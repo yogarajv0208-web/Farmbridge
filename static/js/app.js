@@ -33,7 +33,15 @@
     buyerUrgentOnly: false,
     savedListings: [],
     incomingListings: [],
-    deals: []
+    deals: [],
+
+    // User Authentication & Login State
+    currentUser: JSON.parse(localStorage.getItem("farmbridge_user") || "null"),
+    loginRole: "farmer",
+    loginMethod: "otp",
+    lastEnteredPhone: "9841200001",
+    otpCountdownTimer: null,
+    otpCountdownSeconds: 30
   };
 
   // DOM Elements Registry
@@ -171,7 +179,88 @@
     toastMessage: document.getElementById("toastMessage"),
     footerNoticeText: document.getElementById("footerNoticeText"),
     supportedCropsLabel: document.getElementById("supportedCropsLabel"),
-    regionsLabel: document.getElementById("regionsLabel")
+    regionsLabel: document.getElementById("regionsLabel"),
+
+    // Login Portal & Authentication Elements
+    loginPortalScreen: document.getElementById("loginPortalScreen"),
+    loginPortalTitle: document.getElementById("loginPortalTitle"),
+    loginPortalSubtitle: document.getElementById("loginPortalSubtitle"),
+    mainAppWrapper: document.getElementById("mainAppWrapper"),
+    userHeaderChip: document.getElementById("userHeaderChip"),
+    userHeaderAvatar: document.getElementById("userHeaderAvatar"),
+    userHeaderName: document.getElementById("userHeaderName"),
+    userHeaderRole: document.getElementById("userHeaderRole"),
+    logoutBtn: document.getElementById("logoutBtn"),
+    logoutBtnText: document.getElementById("logoutBtnText"),
+
+    loginRoleLabel: document.getElementById("loginRoleLabel"),
+    roleChipFarmer: document.getElementById("roleChipFarmer"),
+    roleChipBuyer: document.getElementById("roleChipBuyer"),
+    roleChipDeals: document.getElementById("roleChipDeals"),
+    roleChipFarmerText: document.getElementById("roleChipFarmerText"),
+    roleChipBuyerText: document.getElementById("roleChipBuyerText"),
+    roleChipDealsText: document.getElementById("roleChipDealsText"),
+
+    loginTabOtpBtn: document.getElementById("loginTabOtpBtn"),
+    loginTabCredBtn: document.getElementById("loginTabCredBtn"),
+    tabOtpTitle: document.getElementById("tabOtpTitle"),
+    tabCredTitle: document.getElementById("tabCredTitle"),
+    loginOtpPanel: document.getElementById("loginOtpPanel"),
+    loginCredPanel: document.getElementById("loginCredPanel"),
+
+    otpStepPhone: document.getElementById("otpStepPhone"),
+    phoneLoginForm: document.getElementById("phoneLoginForm"),
+    loginNameLabel: document.getElementById("loginNameLabel"),
+    loginNameInput: document.getElementById("loginNameInput"),
+    loginPhoneLabel: document.getElementById("loginPhoneLabel"),
+    loginPhoneInput: document.getElementById("loginPhoneInput"),
+    loginPhoneHint: document.getElementById("loginPhoneHint"),
+    demoOtpAlertText: document.getElementById("demoOtpAlertText"),
+    sendOtpBtn: document.getElementById("sendOtpBtn"),
+    sendOtpBtnText: document.getElementById("sendOtpBtnText"),
+
+    otpStepVerify: document.getElementById("otpStepVerify"),
+    otpSentPrefix: document.getElementById("otpSentPrefix"),
+    displayOtpPhone: document.getElementById("displayOtpPhone"),
+    changePhoneBtn: document.getElementById("changePhoneBtn"),
+    calloutOtpTitle: document.getElementById("calloutOtpTitle"),
+    calloutOtpSub: document.getElementById("calloutOtpSub"),
+    autofillOtpBtn: document.getElementById("autofillOtpBtn"),
+    autofillBtnText: document.getElementById("autofillBtnText"),
+    verifyOtpForm: document.getElementById("verifyOtpForm"),
+    enterOtpLabel: document.getElementById("enterOtpLabel"),
+    otpBoxesContainer: document.getElementById("otpBoxesContainer"),
+    otpDigit1: document.getElementById("otpDigit1"),
+    otpDigit2: document.getElementById("otpDigit2"),
+    otpDigit3: document.getElementById("otpDigit3"),
+    otpDigit4: document.getElementById("otpDigit4"),
+    otpErrorMsg: document.getElementById("otpErrorMsg"),
+    otpTimerText: document.getElementById("otpTimerText"),
+    otpCountdown: document.getElementById("otpCountdown"),
+    resendOtpBtn: document.getElementById("resendOtpBtn"),
+    verifyOtpBtn: document.getElementById("verifyOtpBtn"),
+    verifyOtpBtnText: document.getElementById("verifyOtpBtnText"),
+
+    credLoginForm: document.getElementById("credLoginForm"),
+    credUsernameLabel: document.getElementById("credUsernameLabel"),
+    loginUsernameInput: document.getElementById("loginUsernameInput"),
+    credPasswordLabel: document.getElementById("credPasswordLabel"),
+    loginPasswordInput: document.getElementById("loginPasswordInput"),
+    togglePasswordBtn: document.getElementById("togglePasswordBtn"),
+    credHintText: document.getElementById("credHintText"),
+    credErrorMsg: document.getElementById("credErrorMsg"),
+    credSubmitBtn: document.getElementById("credSubmitBtn"),
+    credSubmitBtnText: document.getElementById("credSubmitBtnText"),
+
+    quickDemoTitle: document.getElementById("quickDemoTitle"),
+    quickLoginFarmer: document.getElementById("quickLoginFarmer"),
+    quickLoginBuyer: document.getElementById("quickLoginBuyer"),
+    demoFarmerName: document.getElementById("demoFarmerName"),
+    demoFarmerRole: document.getElementById("demoFarmerRole"),
+    demoBuyerName: document.getElementById("demoBuyerName"),
+    demoBuyerRole: document.getElementById("demoBuyerRole"),
+    skipLoginGuestBtn: document.getElementById("skipLoginGuestBtn"),
+    guestBtnText: document.getElementById("guestBtnText")
   };
 
   /**
@@ -182,7 +271,9 @@
     applyVoiceRepliesState(state.voiceReplies);
     populateDropdowns();
     setupEventListeners();
+    setupLoginHandlers();
     updateUITranslations();
+    applyAuthState();
 
     // Check backend connectivity
     await checkServerHealth();
@@ -448,6 +539,46 @@
     DOM.printReceiptBtnText.textContent = t.btn_print_receipt;
     DOM.closeReceiptBtn.textContent = t.btn_close;
 
+    // Login Portal Localization
+    if (DOM.loginPortalTitle) {
+      DOM.loginPortalTitle.textContent = t.login_portal_title;
+      DOM.loginPortalSubtitle.textContent = t.login_portal_subtitle;
+      DOM.tabOtpTitle.textContent = t.login_tab_otp;
+      DOM.tabCredTitle.textContent = t.login_tab_credentials;
+      DOM.roleChipFarmerText.textContent = t.login_role_farmer;
+      DOM.roleChipBuyerText.textContent = t.login_role_buyer;
+      DOM.roleChipDealsText.textContent = t.login_role_transport;
+      DOM.loginNameLabel.textContent = t.login_name_label;
+      DOM.loginNameInput.placeholder = t.login_name_placeholder;
+      DOM.loginPhoneLabel.innerHTML = `<span class="label-req">*</span> ${t.login_phone_label}`;
+      DOM.loginPhoneHint.textContent = t.login_phone_hint;
+      DOM.demoOtpAlertText.innerHTML = isTa
+        ? "அடுத்த திரையில் மாதிரி OTP கேட்கப்படும் போது <strong>1234</strong> என உள்ளிடவும் (Use OTP: 1234)."
+        : "When prompted on next screen, enter demo OTP code <strong>1234</strong>.";
+      DOM.sendOtpBtnText.textContent = t.login_btn_send_otp;
+      DOM.calloutOtpTitle.innerHTML = `${t.login_callout_title} <span class="highlight-code">1234</span>`;
+      DOM.calloutOtpSub.textContent = t.login_callout_sub;
+      DOM.autofillBtnText.textContent = t.login_autofill_btn;
+      DOM.enterOtpLabel.textContent = t.login_enter_otp_label;
+      DOM.verifyOtpBtnText.textContent = t.login_btn_verify;
+      DOM.resendOtpBtn.textContent = t.login_otp_resend;
+      DOM.credUsernameLabel.textContent = t.login_cred_user_label;
+      DOM.credPasswordLabel.textContent = t.login_cred_pass_label;
+      DOM.credHintText.textContent = t.login_cred_hint;
+      DOM.credSubmitBtnText.textContent = t.login_btn_cred_submit;
+      DOM.quickDemoTitle.textContent = t.login_quick_demo_title;
+      DOM.demoFarmerName.textContent = t.login_demo_farmer_name;
+      DOM.demoFarmerRole.textContent = t.login_demo_farmer_role;
+      DOM.demoBuyerName.textContent = t.login_demo_buyer_name;
+      DOM.demoBuyerRole.textContent = t.login_demo_buyer_role;
+      DOM.guestBtnText.textContent = t.login_guest_btn;
+      DOM.logoutBtnText.textContent = t.logout_btn;
+
+      if (state.currentUser) {
+        applyAuthState();
+      }
+    }
+
     populateDropdowns();
 
     // Re-render active view
@@ -624,6 +755,424 @@
         closeReceiptModal();
       }
     });
+  }
+
+  /**
+   * Applies authentication display state.
+   */
+  function applyAuthState() {
+    const isTa = state.lang === "ta";
+    if (state.currentUser) {
+      if (DOM.loginPortalScreen) DOM.loginPortalScreen.classList.add("hidden");
+      if (DOM.mainAppWrapper) DOM.mainAppWrapper.classList.remove("hidden");
+      if (DOM.userHeaderChip) DOM.userHeaderChip.classList.remove("hidden");
+
+      if (DOM.userHeaderName) DOM.userHeaderName.textContent = state.currentUser.name || (isTa ? "உழவர் முருகன்" : "Farmer Murugan");
+
+      const roleIcons = { farmer: "🌾", buyer: "🏢", deals: "🚚" };
+      const roleText = {
+        farmer: isTa ? "விவசாயி" : "Farmer",
+        buyer: isTa ? "வாங்குபவர்" : "Buyer",
+        deals: isTa ? "போக்குவரத்து" : "Logistics"
+      };
+
+      if (DOM.userHeaderAvatar) {
+        DOM.userHeaderAvatar.textContent = roleIcons[state.currentUser.role] || "🌾";
+      }
+      if (DOM.userHeaderRole) {
+        const phoneFormatted = state.currentUser.phone ? `+91 ${state.currentUser.phone.slice(-10)}` : "";
+        DOM.userHeaderRole.textContent = `${roleText[state.currentUser.role] || state.currentUser.role} (${phoneFormatted})`;
+      }
+    } else {
+      if (DOM.loginPortalScreen) DOM.loginPortalScreen.classList.remove("hidden");
+      if (DOM.mainAppWrapper) DOM.mainAppWrapper.classList.add("hidden");
+      if (DOM.userHeaderChip) DOM.userHeaderChip.classList.add("hidden");
+    }
+  }
+
+  /**
+   * Completes login and reveals the main application page.
+   */
+  function completeLogin(user, showToastMsg = true) {
+    const isTa = state.lang === "ta";
+    state.currentUser = user;
+    localStorage.setItem("farmbridge_user", JSON.stringify(user));
+    applyAuthState();
+
+    // Switch view to user role
+    if (user.role === "buyer") {
+      switchRole("buyer", true);
+    } else if (user.role === "deals") {
+      switchRole("deals", true);
+    } else {
+      switchRole("farmer", true);
+    }
+
+    window.scrollTo({ top: 0, behavior: "smooth" });
+
+    if (showToastMsg) {
+      const welcomeMsg = isTa
+        ? `வணக்கம் ${user.name}! ஃபார்ம்பிரிட்ஜ் நேரடி சந்தைக்கு நல்வரவு!`
+        : `Welcome ${user.name} to FarmBridge Direct Marketplace!`;
+      showToast(welcomeMsg);
+    }
+  }
+
+  /**
+   * Resets OTP verification state and returns to phone input step.
+   */
+  function resetOtpStep() {
+    if (state.otpCountdownTimer) {
+      clearInterval(state.otpCountdownTimer);
+      state.otpCountdownTimer = null;
+    }
+    const digits = [DOM.otpDigit1, DOM.otpDigit2, DOM.otpDigit3, DOM.otpDigit4];
+    digits.forEach(d => {
+      if (d) {
+        d.value = "";
+        d.classList.remove("error");
+      }
+    });
+    if (DOM.otpErrorMsg) DOM.otpErrorMsg.classList.add("hidden");
+    if (DOM.otpStepVerify) DOM.otpStepVerify.classList.add("hidden");
+    if (DOM.otpStepPhone) DOM.otpStepPhone.classList.remove("hidden");
+  }
+
+  /**
+   * Starts a 30-second countdown for OTP resending.
+   */
+  function startOtpCountdown() {
+    if (state.otpCountdownTimer) {
+      clearInterval(state.otpCountdownTimer);
+    }
+    state.otpCountdownSeconds = 30;
+    if (DOM.otpCountdown) DOM.otpCountdown.textContent = `${state.otpCountdownSeconds}s`;
+    if (DOM.resendOtpBtn) DOM.resendOtpBtn.disabled = true;
+
+    state.otpCountdownTimer = setInterval(() => {
+      state.otpCountdownSeconds--;
+      if (DOM.otpCountdown) DOM.otpCountdown.textContent = `${state.otpCountdownSeconds}s`;
+
+      if (state.otpCountdownSeconds <= 0) {
+        clearInterval(state.otpCountdownTimer);
+        state.otpCountdownTimer = null;
+        if (DOM.resendOtpBtn) DOM.resendOtpBtn.disabled = false;
+        if (DOM.otpCountdown) DOM.otpCountdown.textContent = "தயார் (Ready)";
+      }
+    }, 1000);
+  }
+
+  /**
+   * Handles user logout.
+   */
+  function handleLogout() {
+    const isTa = state.lang === "ta";
+    state.currentUser = null;
+    localStorage.removeItem("farmbridge_user");
+    resetOtpStep();
+    applyAuthState();
+    window.scrollTo({ top: 0, behavior: "smooth" });
+    showToast(isTa ? I18N.ta.logout_toast : I18N.en.logout_toast);
+  }
+
+  /**
+   * Sets up interactive event handlers for the Login Portal.
+   */
+  function setupLoginHandlers() {
+    if (!DOM.loginPortalScreen) return;
+
+    // Role selection chips (Farmer / Buyer / Logistics)
+    const roleChips = [DOM.roleChipFarmer, DOM.roleChipBuyer, DOM.roleChipDeals];
+    roleChips.forEach(chip => {
+      if (!chip) return;
+      chip.addEventListener("click", () => {
+        roleChips.forEach(c => {
+          if (c) {
+            c.classList.remove("active");
+            c.setAttribute("aria-checked", "false");
+          }
+        });
+        chip.classList.add("active");
+        chip.setAttribute("aria-checked", "true");
+        state.loginRole = chip.dataset.role || "farmer";
+      });
+    });
+
+    // Method Switch Tabs: Phone & OTP vs Credentials
+    if (DOM.loginTabOtpBtn && DOM.loginTabCredBtn) {
+      DOM.loginTabOtpBtn.addEventListener("click", () => {
+        DOM.loginTabOtpBtn.classList.add("active");
+        DOM.loginTabOtpBtn.setAttribute("aria-selected", "true");
+        DOM.loginTabCredBtn.classList.remove("active");
+        DOM.loginTabCredBtn.setAttribute("aria-selected", "false");
+        DOM.loginOtpPanel.classList.remove("hidden");
+        DOM.loginCredPanel.classList.add("hidden");
+        state.loginMethod = "otp";
+      });
+
+      DOM.loginTabCredBtn.addEventListener("click", () => {
+        DOM.loginTabCredBtn.classList.add("active");
+        DOM.loginTabCredBtn.setAttribute("aria-selected", "true");
+        DOM.loginTabOtpBtn.classList.remove("active");
+        DOM.loginTabOtpBtn.setAttribute("aria-selected", "false");
+        DOM.loginCredPanel.classList.remove("hidden");
+        DOM.loginOtpPanel.classList.add("hidden");
+        state.loginMethod = "credentials";
+      });
+    }
+
+    // Phone Login form submission (Step 1 -> Step 2)
+    if (DOM.phoneLoginForm) {
+      DOM.phoneLoginForm.addEventListener("submit", (e) => {
+        e.preventDefault();
+        const isTa = state.lang === "ta";
+        const rawPhone = DOM.loginPhoneInput ? DOM.loginPhoneInput.value : "";
+        const cleanPhone = (rawPhone || "").replace(/[^0-9]/g, "");
+
+        if (cleanPhone.length < 10) {
+          showToast(isTa ? I18N.ta.login_err_phone : I18N.en.login_err_phone);
+          if (DOM.loginPhoneInput) DOM.loginPhoneInput.focus();
+          return;
+        }
+
+        state.lastEnteredPhone = cleanPhone;
+        if (DOM.displayOtpPhone) {
+          DOM.displayOtpPhone.textContent = `+91 ${cleanPhone}`;
+        }
+        if (DOM.otpStepPhone) DOM.otpStepPhone.classList.add("hidden");
+        if (DOM.otpStepVerify) DOM.otpStepVerify.classList.remove("hidden");
+
+        // Clear previous OTP inputs
+        const digits = [DOM.otpDigit1, DOM.otpDigit2, DOM.otpDigit3, DOM.otpDigit4];
+        digits.forEach(d => {
+          if (d) {
+            d.value = "";
+            d.classList.remove("error");
+          }
+        });
+        if (DOM.otpErrorMsg) DOM.otpErrorMsg.classList.add("hidden");
+
+        startOtpCountdown();
+        setTimeout(() => {
+          if (DOM.otpDigit1) DOM.otpDigit1.focus();
+        }, 150);
+      });
+    }
+
+    // OTP 4-Digit Inputs navigation & auto-advance
+    const digits = [DOM.otpDigit1, DOM.otpDigit2, DOM.otpDigit3, DOM.otpDigit4];
+    digits.forEach((digit, index) => {
+      if (!digit) return;
+
+      digit.addEventListener("input", () => {
+        const val = digit.value.replace(/[^0-9]/g, "");
+        digit.value = val ? val[val.length - 1] : "";
+        digit.classList.remove("error");
+        if (DOM.otpErrorMsg) DOM.otpErrorMsg.classList.add("hidden");
+
+        if (digit.value && index < digits.length - 1) {
+          digits[index + 1].focus();
+        }
+      });
+
+      digit.addEventListener("keydown", (e) => {
+        if (e.key === "Backspace" && !digit.value && index > 0) {
+          digits[index - 1].focus();
+        } else if (e.key === "ArrowLeft" && index > 0) {
+          digits[index - 1].focus();
+        } else if (e.key === "ArrowRight" && index < digits.length - 1) {
+          digits[index + 1].focus();
+        }
+      });
+
+      digit.addEventListener("paste", (e) => {
+        e.preventDefault();
+        const pasteData = (e.clipboardData || window.clipboardData).getData("text");
+        const cleanDigits = (pasteData || "").replace(/[^0-9]/g, "");
+        if (cleanDigits.length >= 4) {
+          for (let i = 0; i < 4; i++) {
+            if (digits[i]) {
+              digits[i].value = cleanDigits[i];
+              digits[i].classList.remove("error");
+            }
+          }
+          if (DOM.otpErrorMsg) DOM.otpErrorMsg.classList.add("hidden");
+          if (DOM.verifyOtpBtn) DOM.verifyOtpBtn.focus();
+        }
+      });
+    });
+
+    // 1-Click Auto-Fill Demo OTP 1234
+    if (DOM.autofillOtpBtn) {
+      DOM.autofillOtpBtn.addEventListener("click", () => {
+        if (DOM.otpDigit1) DOM.otpDigit1.value = "1";
+        if (DOM.otpDigit2) DOM.otpDigit2.value = "2";
+        if (DOM.otpDigit3) DOM.otpDigit3.value = "3";
+        if (DOM.otpDigit4) DOM.otpDigit4.value = "4";
+        digits.forEach(d => {
+          if (d) d.classList.remove("error");
+        });
+        if (DOM.otpErrorMsg) DOM.otpErrorMsg.classList.add("hidden");
+        if (DOM.verifyOtpBtn) DOM.verifyOtpBtn.focus();
+        showToast(state.lang === "ta" ? "மாதிரி OTP 1234 நிரப்பப்பட்டது!" : "Demo OTP 1234 filled!");
+      });
+    }
+
+    // Change Phone Button in Step 2
+    if (DOM.changePhoneBtn) {
+      DOM.changePhoneBtn.addEventListener("click", () => {
+        resetOtpStep();
+        if (DOM.loginPhoneInput) {
+          DOM.loginPhoneInput.focus();
+          DOM.loginPhoneInput.select();
+        }
+      });
+    }
+
+    // Resend OTP Button
+    if (DOM.resendOtpBtn) {
+      DOM.resendOtpBtn.addEventListener("click", () => {
+        startOtpCountdown();
+        const isTa = state.lang === "ta";
+        showToast(isTa ? "புதிய மாதிரி OTP குறியீடு அனுப்பப்பட்டது: 1234" : "Demo OTP code resent: 1234");
+      });
+    }
+
+    // OTP Verification Form Submission (Validates OTP == 1234)
+    if (DOM.verifyOtpForm) {
+      DOM.verifyOtpForm.addEventListener("submit", (e) => {
+        e.preventDefault();
+        const isTa = state.lang === "ta";
+        const enteredCode = [
+          DOM.otpDigit1 ? DOM.otpDigit1.value : "",
+          DOM.otpDigit2 ? DOM.otpDigit2.value : "",
+          DOM.otpDigit3 ? DOM.otpDigit3.value : "",
+          DOM.otpDigit4 ? DOM.otpDigit4.value : ""
+        ].join("");
+
+        if (enteredCode === "1234") {
+          // Success! Demo OTP 1234 matched
+          if (DOM.otpErrorMsg) DOM.otpErrorMsg.classList.add("hidden");
+          digits.forEach(d => {
+            if (d) d.classList.remove("error");
+          });
+
+          const nameVal = DOM.loginNameInput ? DOM.loginNameInput.value.trim() : "";
+          const defaultName = state.loginRole === "farmer"
+            ? (isTa ? "உழவர் முருகன்" : "Farmer Murugan")
+            : (state.loginRole === "buyer" ? (isTa ? "காவேரி அக்ரோ" : "Kaveri Agro") : (isTa ? "செல்வம் டிரான்ஸ்போர்ட்" : "Selvam Transport"));
+
+          const user = {
+            name: nameVal || defaultName,
+            phone: state.lastEnteredPhone || "9841200001",
+            role: state.loginRole,
+            method: "otp",
+            loggedInAt: new Date().toISOString()
+          };
+
+          completeLogin(user, true);
+        } else {
+          // Failure: Wrong OTP entered
+          if (DOM.otpErrorMsg) {
+            DOM.otpErrorMsg.textContent = isTa ? I18N.ta.login_err_otp_invalid : I18N.en.login_err_otp_invalid;
+            DOM.otpErrorMsg.classList.remove("hidden");
+          }
+          digits.forEach(d => {
+            if (d) d.classList.add("error");
+          });
+          if (DOM.otpDigit1) {
+            DOM.otpDigit1.focus();
+            DOM.otpDigit1.select();
+          }
+        }
+      });
+    }
+
+    // Credentials Login Form Submission
+    if (DOM.credLoginForm) {
+      DOM.credLoginForm.addEventListener("submit", (e) => {
+        e.preventDefault();
+        const isTa = state.lang === "ta";
+        const userVal = DOM.loginUsernameInput ? DOM.loginUsernameInput.value.trim() : "";
+        const passVal = DOM.loginPasswordInput ? DOM.loginPasswordInput.value.trim() : "";
+
+        if (!userVal || !passVal) {
+          if (DOM.credErrorMsg) {
+            DOM.credErrorMsg.textContent = isTa ? I18N.ta.login_err_cred_invalid : I18N.en.login_err_cred_invalid;
+            DOM.credErrorMsg.classList.remove("hidden");
+          }
+          return;
+        }
+
+        if (DOM.credErrorMsg) DOM.credErrorMsg.classList.add("hidden");
+
+        const user = {
+          name: userVal,
+          phone: userVal.match(/^\d{10}$/) ? userVal : "9841200001",
+          role: state.loginRole,
+          method: "credentials",
+          loggedInAt: new Date().toISOString()
+        };
+
+        completeLogin(user, true);
+      });
+    }
+
+    // Password Visibility Toggle
+    if (DOM.togglePasswordBtn && DOM.loginPasswordInput) {
+      DOM.togglePasswordBtn.addEventListener("click", () => {
+        const isPass = DOM.loginPasswordInput.type === "password";
+        DOM.loginPasswordInput.type = isPass ? "text" : "password";
+        DOM.togglePasswordBtn.textContent = isPass ? "🙈" : "👁️";
+      });
+    }
+
+    // Quick 1-Click Demo Profile 1: Farmer Murugan
+    if (DOM.quickLoginFarmer) {
+      DOM.quickLoginFarmer.addEventListener("click", () => {
+        const isTa = state.lang === "ta";
+        completeLogin({
+          name: isTa ? "உழவர் முருகன்" : "Farmer Murugan",
+          phone: "9841200001",
+          role: "farmer",
+          method: "quick_demo",
+          loggedInAt: new Date().toISOString()
+        }, true);
+      });
+    }
+
+    // Quick 1-Click Demo Profile 2: Kaveri Agro Buyer
+    if (DOM.quickLoginBuyer) {
+      DOM.quickLoginBuyer.addEventListener("click", () => {
+        const isTa = state.lang === "ta";
+        completeLogin({
+          name: isTa ? "காவேரி அக்ரோ" : "Kaveri Agro Traders",
+          phone: "9841200002",
+          role: "buyer",
+          method: "quick_demo",
+          loggedInAt: new Date().toISOString()
+        }, true);
+      });
+    }
+
+    // Explore as Guest
+    if (DOM.skipLoginGuestBtn) {
+      DOM.skipLoginGuestBtn.addEventListener("click", () => {
+        const isTa = state.lang === "ta";
+        completeLogin({
+          name: isTa ? "மாதிரி பார்வையாளர் (Guest)" : "Guest Farmer",
+          phone: "9841200000",
+          role: "farmer",
+          method: "guest",
+          loggedInAt: new Date().toISOString()
+        }, true);
+      });
+    }
+
+    // Header Logout Button
+    if (DOM.logoutBtn) {
+      DOM.logoutBtn.addEventListener("click", handleLogout);
+    }
   }
 
   /**

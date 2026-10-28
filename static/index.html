@@ -49,9 +49,234 @@
           <span class="icon" aria-hidden="true">📋</span>
           <span id="savedCountBadge" class="badge">1</span>
         </button>
+
+        <!-- User Profile Chip (Shown in header when logged in) -->
+        <div id="userHeaderChip" class="user-header-chip hidden">
+          <span class="user-avatar" id="userHeaderAvatar" aria-hidden="true">🌾</span>
+          <div class="user-meta">
+            <span class="user-name" id="userHeaderName">உழவர் முருகன்</span>
+            <span class="user-role" id="userHeaderRole">விவசாயி (+91 98412 00001)</span>
+          </div>
+          <button type="button" id="logoutBtn" class="pill-btn logout-pill" aria-label="Logout" title="Logout from FarmBridge">
+            <span class="icon" aria-hidden="true">🚪</span>
+            <span id="logoutBtnText">வெளியேறு</span>
+          </button>
+        </div>
       </div>
     </div>
   </header>
+
+  <!-- =========================================================================
+       LOGIN PORTAL SCREEN (Displayed at start of website before main page)
+       ========================================================================= -->
+  <section id="loginPortalScreen" class="login-portal-screen" aria-labelledby="loginPortalTitle">
+    <div class="login-portal-backdrop" aria-hidden="true"></div>
+
+    <div class="login-container">
+      <div class="login-card">
+        <!-- Top Branding & Demo Status Badge -->
+        <div class="login-card-header">
+          <div class="login-badge-row">
+            <span class="login-badge">🌾 தமிழ்நாடு வேளாண் நேரடி சந்தை</span>
+            <span class="login-badge demo-badge">டெமோ OTP: 1234 (Demo Mode)</span>
+          </div>
+          <div class="login-brand">
+            <div class="login-logo" aria-hidden="true">🌱</div>
+            <div>
+              <h2 id="loginPortalTitle" class="login-title">ஃபார்ம்பிரிட்ஜ் உள்நுழைவு</h2>
+              <p id="loginPortalSubtitle" class="login-subtitle">தமிழ்நாடு விவசாயிகள் மற்றும் வாங்குபவர்களை இணைக்கும் டிஜிட்டல் நேரடி சந்தை</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Role Selection Segmented Chips -->
+        <div class="login-role-section">
+          <label class="login-section-label" id="loginRoleLabel">உங்கள் பங்கைத் தேர்ந்தெடுக்கவும் (Select Role):</label>
+          <div class="login-role-chips" role="radiogroup" aria-label="Select your role">
+            <button type="button" class="login-role-chip active" data-role="farmer" id="roleChipFarmer" aria-checked="true" role="radio">
+              <span class="chip-icon" aria-hidden="true">🌾</span>
+              <span class="chip-text" id="roleChipFarmerText">உழவர் (Farmer)</span>
+            </button>
+            <button type="button" class="login-role-chip" data-role="buyer" id="roleChipBuyer" aria-checked="false" role="radio">
+              <span class="chip-icon" aria-hidden="true">🏢</span>
+              <span class="chip-text" id="roleChipBuyerText">வாங்குபவர் (Buyer)</span>
+            </button>
+            <button type="button" class="login-role-chip" data-role="deals" id="roleChipDeals" aria-checked="false" role="radio">
+              <span class="chip-icon" aria-hidden="true">🚚</span>
+              <span class="chip-text" id="roleChipDealsText">போக்குவரத்து (Logistics)</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Login Tabs: Phone & OTP (Primary) vs Credentials -->
+        <div class="login-tabs-bar" role="tablist">
+          <button type="button" class="login-tab-btn active" id="loginTabOtpBtn" role="tab" aria-selected="true" data-tab="otp">
+            <span aria-hidden="true">📱</span>
+            <span id="tabOtpTitle">மொபைல் எண் & OTP</span>
+          </button>
+          <button type="button" class="login-tab-btn" id="loginTabCredBtn" role="tab" aria-selected="false" data-tab="credentials">
+            <span aria-hidden="true">🔑</span>
+            <span id="tabCredTitle">பயனர் பெயர் & கடவுச்சொல்</span>
+          </button>
+        </div>
+
+        <!-- TAB 1: Mobile Number & OTP Flow -->
+        <div id="loginOtpPanel" class="login-tab-panel" role="tabpanel" aria-labelledby="loginTabOtpBtn">
+          <!-- Step 1: Mobile Number Input -->
+          <div id="otpStepPhone" class="otp-flow-step">
+            <form id="phoneLoginForm" novalidate>
+              <div class="form-group">
+                <label for="loginNameInput" class="form-label" id="loginNameLabel">உங்கள் பெயர் (விருப்பத்திற்குரியது):</label>
+                <input type="text" id="loginNameInput" class="form-input" placeholder="எ.கா: உழவர் முருகன் / Farmer Murugan" value="உழவர் முருகன்">
+              </div>
+
+              <div class="form-group">
+                <label for="loginPhoneInput" class="form-label" id="loginPhoneLabel">
+                  <span class="label-req">*</span> கைபேசி எண் (Mobile Number):
+                </label>
+                <div class="phone-input-wrapper">
+                  <span class="country-prefix">🇮🇳 +91</span>
+                  <input type="tel" id="loginPhoneInput" class="form-input phone-field" placeholder="98412 00001" maxlength="10" value="9841200001" inputmode="numeric" required>
+                </div>
+                <small class="field-hint" id="loginPhoneHint">டெமோ பயன்பாட்டிற்கு ஏதேனும் 10 இலக்க எண்ணை உள்ளிடலாம்</small>
+              </div>
+
+              <!-- Demo Notice Alert -->
+              <div class="login-demo-alert">
+                <span class="alert-icon" aria-hidden="true">💡</span>
+                <span id="demoOtpAlertText">அடுத்த திரையில் மாதிரி OTP கேட்கப்படும் போது <strong>1234</strong> என உள்ளிடவும் (Use OTP: 1234).</span>
+              </div>
+
+              <button type="submit" id="sendOtpBtn" class="btn btn-primary btn-block btn-lg">
+                <span id="sendOtpBtnText">OTP குறியீட்டைப் பெறவும்</span>
+                <span aria-hidden="true">➔</span>
+              </button>
+            </form>
+          </div>
+
+          <!-- Step 2: OTP Verification Box -->
+          <div id="otpStepVerify" class="otp-flow-step hidden">
+            <div class="otp-sent-info">
+              <span id="otpSentPrefix">சரிபார்ப்பு குறியீடு அனுப்பப்பட்ட எண்:</span>
+              <strong id="displayOtpPhone">+91 98412 00001</strong>
+              <button type="button" id="changePhoneBtn" class="link-btn" aria-label="Change Phone Number">மாற்று (Edit)</button>
+            </div>
+
+            <!-- Prominent Demo OTP Banner with Auto-Fill button -->
+            <div class="otp-callout-box">
+              <div class="callout-content">
+                <span class="callout-icon" aria-hidden="true">🟢</span>
+                <div>
+                  <div class="callout-title" id="calloutOtpTitle">மாதிரி OTP சரிபார்ப்புக் குறியீடு: <span class="highlight-code">1234</span></div>
+                  <div class="callout-sub" id="calloutOtpSub">டெமோ நோக்கத்திற்காக '1234' என்ற குறியீட்டை உள்ளிடவும்</div>
+                </div>
+              </div>
+              <button type="button" id="autofillOtpBtn" class="pill-btn autofill-pill" title="Fill OTP 1234">
+                <span aria-hidden="true">⚡</span>
+                <span id="autofillBtnText">1234 ஐ நிரப்பு</span>
+              </button>
+            </div>
+
+            <form id="verifyOtpForm" novalidate>
+              <div class="form-group">
+                <label class="form-label" id="enterOtpLabel" for="otpDigit1">4 இலக்க OTP-ஐ உள்ளிடவும் (Enter 4-Digit OTP):</label>
+                <div class="otp-boxes-grid" id="otpBoxesContainer">
+                  <input type="text" id="otpDigit1" class="otp-digit" maxlength="1" inputmode="numeric" pattern="[0-9]*" autocomplete="off" autofocus aria-label="OTP digit 1">
+                  <input type="text" id="otpDigit2" class="otp-digit" maxlength="1" inputmode="numeric" pattern="[0-9]*" autocomplete="off" aria-label="OTP digit 2">
+                  <input type="text" id="otpDigit3" class="otp-digit" maxlength="1" inputmode="numeric" pattern="[0-9]*" autocomplete="off" aria-label="OTP digit 3">
+                  <input type="text" id="otpDigit4" class="otp-digit" maxlength="1" inputmode="numeric" pattern="[0-9]*" autocomplete="off" aria-label="OTP digit 4">
+                </div>
+                <div id="otpErrorMsg" class="otp-error-msg hidden" role="alert">
+                  ❌ தவறான OTP! மாதிரி குறியீடு '1234' ஐப் பயன்படுத்தவும்.
+                </div>
+              </div>
+
+              <div class="otp-resend-row">
+                <span id="otpTimerText" class="timer-text">மறுஅனுப்ப கால அவகாசம்: <strong id="otpCountdown">30s</strong></span>
+                <button type="button" id="resendOtpBtn" class="link-btn" disabled>மீண்டும் அனுப்பவும் (Resend)</button>
+              </div>
+
+              <button type="submit" id="verifyOtpBtn" class="btn btn-primary btn-block btn-lg">
+                <span id="verifyOtpBtnText">சரிபார்த்து பிரதான பக்கத்திற்குச் செல்</span>
+                <span aria-hidden="true">➔</span>
+              </button>
+            </form>
+          </div>
+        </div>
+
+        <!-- TAB 2: Credentials (Username & Password) Flow -->
+        <div id="loginCredPanel" class="login-tab-panel hidden" role="tabpanel" aria-labelledby="loginTabCredBtn">
+          <form id="credLoginForm" novalidate>
+            <div class="form-group">
+              <label for="loginUsernameInput" class="form-label" id="credUsernameLabel">பயனர் பெயர் / மின்னஞ்சல் / மொபைல்:</label>
+              <input type="text" id="loginUsernameInput" class="form-input" placeholder="murugan அல்லது 9841200001" value="farmer_murugan" required>
+            </div>
+
+            <div class="form-group">
+              <label for="loginPasswordInput" class="form-label" id="credPasswordLabel">கடவுச்சொல் / கடவு எண் (Password / PIN):</label>
+              <div class="password-input-wrapper">
+                <input type="password" id="loginPasswordInput" class="form-input" placeholder="மாதிரி கடவுச்சொல்: 1234" value="1234" required>
+                <button type="button" id="togglePasswordBtn" class="toggle-pwd-btn" aria-label="Show or hide password">👁️</button>
+              </div>
+              <small class="field-hint" id="credHintText">மாதிரிக்கு ஏதேனும் கடவுச்சொல் அல்லது PIN: 1234 ஐப் பயன்படுத்தலாம்</small>
+            </div>
+
+            <div id="credErrorMsg" class="otp-error-msg hidden" role="alert">
+              தயவுசெய்து பயனர் பெயர் மற்றும் கடவுச்சொல்லை உள்ளிடவும்.
+            </div>
+
+            <button type="submit" id="credSubmitBtn" class="btn btn-primary btn-block btn-lg">
+              <span id="credSubmitBtnText">உள்நுழைந்து பிரதான பக்கத்திற்குச் செல்</span>
+              <span aria-hidden="true">➔</span>
+            </button>
+          </form>
+        </div>
+
+        <!-- Quick 1-Click Demo Profiles -->
+        <div class="login-quick-demo">
+          <div class="quick-demo-title" id="quickDemoTitle">⚡ விரைவு மாதிரி உள்நுழைவு (Quick 1-Click Demo):</div>
+          <div class="quick-demo-cards">
+            <button type="button" class="quick-profile-card" id="quickLoginFarmer">
+              <span class="qp-icon" aria-hidden="true">🌾</span>
+              <div class="qp-info">
+                <strong id="demoFarmerName">உழவர் முருகன்</strong>
+                <small id="demoFarmerRole">விவசாயி • 98412 00001</small>
+              </div>
+              <span class="qp-arrow" aria-hidden="true">➔</span>
+            </button>
+            <button type="button" class="quick-profile-card" id="quickLoginBuyer">
+              <span class="qp-icon" aria-hidden="true">🏢</span>
+              <div class="qp-info">
+                <strong id="demoBuyerName">காவேரி அக்ரோ</strong>
+                <small id="demoBuyerRole">வாங்குபவர் • 98412 00002</small>
+              </div>
+              <span class="qp-arrow" aria-hidden="true">➔</span>
+            </button>
+          </div>
+          <!-- Guest explore option -->
+          <div class="guest-explore-row">
+            <button type="button" id="skipLoginGuestBtn" class="guest-link-btn">
+              <span id="guestBtnText">உள்நுழையாமல் மாதிரி தளத்தைப் பார்க்க (Explore as Guest)</span> ➔
+            </button>
+          </div>
+        </div>
+
+        <!-- Trust & Security Footer -->
+        <div class="login-card-footer">
+          <span class="trust-item">🔒 SSL பாதுகாப்பானது</span>
+          <span class="trust-item">•</span>
+          <span class="trust-item">⚡ மாதிரி OTP: 1234</span>
+          <span class="trust-item">•</span>
+          <span class="trust-item">🌾 தமிழ்நாடு உழவர் சந்தை</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- =========================================================================
+       MAIN APPLICATION WRAPPER (Displayed once logged in)
+       ========================================================================= -->
+  <div id="mainAppWrapper" class="main-app-wrapper hidden">
 
   <!-- ROLE NAVIGATION TABS (Farmer / Buyer / Deals Tracker) -->
   <nav class="role-nav-bar" role="navigation" aria-label="Role and Views Switcher">
@@ -443,6 +668,8 @@
       </div>
     </div>
   </footer>
+
+  </div> <!-- END MAIN APPLICATION WRAPPER -->
 
   <!-- SCRIPTS -->
   <script src="js/i18n.js"></script>
