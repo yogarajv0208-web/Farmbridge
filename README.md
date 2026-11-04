@@ -52,6 +52,15 @@
    - Shows **Gross Crop Value**, **Transport Cost**, **Net Payout**, **Effective Rate / kg**, and **Advantage over lowest offer** (e.g. `"₹3,450 more than lowest offer!"`).
    - Includes **"Save My Listing"** button to store the lot in the SQLite database.
 
+### 🛰️ Live GPS Location & Dispatched Vehicle Tracking
+- **Farmer Live GPS Detection**: One-tap GPS detection matches the farmer's browser coordinates to the nearest Tamil Nadu agricultural hub (Tirupporur, Chengalpattu, Kanchipuram, Tindivanam).
+- **Farmer ↔ Buyer Coordinate Telemetry**: Interactive live GPS tracker displays both the **Farmer's Farm Location** and **Buyer's Facility / Mill Location** with Google Maps route links.
+- **Dispatched Vehicle Route Tracker**: Live highway route progress bar, interpolated GPS coordinates, vehicle registration (`🚚 TN-21-AX-xxxx`), remaining distance, and dynamic ETA simulation across deal milestones (`Confirmed → Truck Dispatched → Quality Inspected → Payment Completed`).
+
+### 🏆 Trust & Credit Points + Verified Phone Entry
+- **Farmer & Buyer Credit Points**: Dynamic trust point badges (`⭐` / `🏆`) awarded for verified buyer ratings and timely payment completion feedback.
+- **Strict Indian Phone Formatting**: Clean `🇮🇳 +91` prefix with automatic 10-digit sanitization across login, header profile chip, and listing save forms.
+
 ---
 
 ## 📐 Formulas & Sample Data Specifications
@@ -100,10 +109,10 @@ $$\text{Cost} = 200 + 30 \times (10 + 2000 \times 0.012) = 200 + 30 \times (10 +
 
 ### Method 1: Instant Standalone File (No Server, No Localhost Needed!)
 Simply double-click:
-- `FarmBridge.html`
+- `index.html` or `FarmBridge.html`
 - Or double-click `open_farmbridge.bat`
 
-This opens FarmBridge immediately in your browser via `file:///` with full offline calculations, voice inputs, sample sentences, and language switching. Zero setup required!
+This opens FarmBridge immediately in your browser via `file:///` with full offline calculations, voice inputs, live GPS & vehicle tracking, sample sentences, and language switching. Zero setup required!
 
 ---
 
@@ -138,7 +147,7 @@ The test suite validates the transport formula, decimal tons, comma quantities, 
 python -m unittest tests/test_farmbridge.py
 ```
 
-All 25 tests will execute and verify end-to-end functionality.
+All 30 unit and integration tests validate end-to-end functionality.
 
 ---
 
@@ -155,6 +164,7 @@ All 25 tests will execute and verify end-to-end functionality.
 | `POST` | `/api/listings` | Saves a new farmer listing to SQLite |
 | `GET` | `/api/deals` | Retrieves confirmed buyer deals |
 | `POST` | `/api/deals` | Creates a confirmed buyer deal in SQLite |
+| `POST` | `/api/deals/status` | Updates deal tracking milestone (`truck_dispatched`, `quality_inspected`, `payment_completed`) |
 
 ---
 
