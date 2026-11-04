@@ -3,8 +3,13 @@
  * Mirror of parser.py for ultra-fast, offline-capable sentence comprehension.
  */
 
-const Parser = (function() {
+const Parser = (function () {
   const CROP_PATTERNS = [
+    { code: "groundnut", name: "Groundnut", keywords: ["நிலக்கடலை", "வேர்க்கடலை", "மணிலாப்பயிர்", "மணிலா", "கடலை", "groundnut", "ground nut", "peanuts", "peanut", "verkadalai", "nilakadalai"] },
+    { code: "coconut", name: "Coconut", keywords: ["தேங்காய்கள்", "தேங்காய்", "கொப்பரை", "coconut", "coconuts", "thengai", "kopparai"] },
+    { code: "turmeric", name: "Turmeric", keywords: ["விரலி மஞ்சள்", "மஞ்சள்", "turmeric", "manjal"] },
+    { code: "mango", name: "Mango", keywords: ["மாம்பழம்", "மாங்காய்", "mangoes", "mango", "mambazham", "maangai"] },
+    { code: "cotton", name: "Cotton", keywords: ["பருத்தி", "cotton", "paruthi"] },
     { code: "chilli", name: "Chilli", keywords: ["பச்சை மிளகாய்", "மிளகாய்", "green chilli", "green chili", "chillies", "chilli", "chili", "milagai"] },
     { code: "sugarcane", name: "Sugarcane", keywords: ["கரும்புகள்", "கரும்பு", "sugarcane", "sugar cane", "karumbu", "cane"] },
     { code: "potato", name: "Potato", keywords: ["உருளைக்கிழங்கு", "உருளை", "potatoes", "potato", "urulaikizhangu", "urulai", "aloo"] },
@@ -24,26 +29,40 @@ const Parser = (function() {
 
   const TAMIL_NUM_WORDS = {
     "இருபதாயிரம்": 20000,
+    "பத்தாயிரத்து": 10000,
     "பத்தாயிரம்": 10000,
     "ஒன்பதாயிரம்": 9000,
     "எட்டாயிரம்": 8000,
     "ஏழாயிரம்": 7000,
     "ஆறாயிரம்": 6000,
+    "ஐந்தாயிரத்து": 5000,
     "ஐந்தாயிரம்": 5000,
+    "அஞ்சாயிரத்து": 5000,
     "அஞ்சாயிரம்": 5000,
-    "நாலாயிரம்": 4000,
+    "நான்காயிரத்து": 4000,
     "நான்காயிரம்": 4000,
+    "நாலாயிரத்து": 4000,
+    "நாலாயிரம்": 4000,
+    "மூவாயிரத்து": 3000,
     "மூவாயிரம்": 3000,
+    "இரண்டாயிரத்து": 2000,
     "இரண்டாயிரம்": 2000,
+    "ரெண்டாயிரத்து": 2000,
     "ரெண்டாயிரம்": 2000,
+    "ஆயிரத்து": 1000,
     "ஆயிரம்": 1000,
     "தொள்ளாயிரம்": 900,
     "எண்ணூறு": 800,
+    "எட்டுநூறு": 800,
     "எழுநூறு": 700,
+    "ஏழுநூறு": 700,
     "அறுநூறு": 600,
+    "ஆறுநூறு": 600,
     "ஐந்நூறு": 500,
+    "ஐநூறு": 500,
     "நானூறு": 400,
     "முந்நூறு": 300,
+    "முநூறு": 300,
     "இருநூறு": 200,
     "நூறு": 100,
     "தொண்ணூறு": 90,
@@ -164,11 +183,22 @@ const Parser = (function() {
       }
     }
 
-    // 2. Tamil Number words
-    for (const [word, val] of Object.entries(TAMIL_NUM_WORDS)) {
-      if (lowered.includes(word)) {
-        return val * unitMult;
+    // 2. Tamil Number words (sorted longest-first to prevent sub-string collision)
+    let tamilRemaining = lowered;
+    let tamilTotal = 0;
+    let foundTamil = false;
+
+    const sortedTamilWords = Object.entries(TAMIL_NUM_WORDS).sort((a, b) => b[0].length - a[0].length);
+    for (const [word, val] of sortedTamilWords) {
+      if (tamilRemaining.includes(word)) {
+        tamilTotal += val;
+        foundTamil = true;
+        tamilRemaining = tamilRemaining.replace(word, " ");
       }
+    }
+
+    if (foundTamil && tamilTotal > 0) {
+      return tamilTotal * unitMult;
     }
 
     // 3. English Number words

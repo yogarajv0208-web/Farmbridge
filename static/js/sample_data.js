@@ -22,7 +22,7 @@ const SAMPLE_DATA = {
       payment_en: "Within 24 Hours (Bank/UPI)",
       payment_ta: "24 மணி நேரத்திற்குள் (வங்கி/UPI)",
       phone: "+91 94431 23456",
-      crops: { paddy: 23.70 }
+      crops: { paddy: 23.70, groundnut: 80.00 }
     },
     {
       code: "tn_civil_supplies_dpc",
@@ -52,7 +52,7 @@ const SAMPLE_DATA = {
       payment_en: "Same Day Spot Cash",
       payment_ta: "அன்றே உடனடி ரொக்கம்",
       phone: "+91 98412 87654",
-      crops: { paddy: 22.90 }
+      crops: { paddy: 22.90, groundnut: 78.50, cotton: 70.00 }
     },
     {
       code: "tindivanam_lakshmi_mill",
@@ -67,7 +67,7 @@ const SAMPLE_DATA = {
       payment_en: "Within 48 Hours",
       payment_ta: "48 மணி நேரத்திற்குள்",
       phone: "+91 94438 55432",
-      crops: { paddy: 23.40 }
+      crops: { paddy: 23.40, groundnut: 81.00, cotton: 74.00 }
     },
     {
       code: "maduranthakam_delta_traders",
@@ -82,7 +82,7 @@ const SAMPLE_DATA = {
       payment_en: "Instant UPI Transfer",
       payment_ta: "உடனடி UPI பரிமாற்றம்",
       phone: "+91 94444 33211",
-      crops: { paddy: 23.10 }
+      crops: { paddy: 23.10, groundnut: 79.50, cotton: 72.50 }
     },
 
     // Sugarcane
@@ -176,7 +176,7 @@ const SAMPLE_DATA = {
       payment_en: "Instant UPI / Spot Cash",
       payment_ta: "உடனடி UPI / ரொக்கம்",
       phone: "+91 94440 66778",
-      crops: { tomato: 34.50, onion: 42.00, potato: 28.00, banana: 45.00, chilli: 62.00, brinjal: 31.00 }
+      crops: { tomato: 34.50, onion: 42.00, potato: 28.00, banana: 45.00, chilli: 62.00, brinjal: 31.00, coconut: 36.00, turmeric: 125.00, mango: 64.00 }
     },
     {
       code: "koyambedu_kanchi_hub",
@@ -191,7 +191,7 @@ const SAMPLE_DATA = {
       payment_en: "Same Day Cash",
       payment_ta: "அன்றே நேரடி ரொக்கம்",
       phone: "+91 98402 33445",
-      crops: { tomato: 36.00, onion: 44.50, potato: 29.50, banana: 47.00, chilli: 64.50, brinjal: 33.00 }
+      crops: { tomato: 36.00, onion: 44.50, potato: 29.50, banana: 47.00, chilli: 64.50, brinjal: 33.00, coconut: 38.50, turmeric: 132.00, mango: 68.00 }
     },
     {
       code: "tirupporur_green_mandi",
@@ -206,7 +206,7 @@ const SAMPLE_DATA = {
       payment_en: "Instant UPI / Bank",
       payment_ta: "உடனடி UPI / வங்கி",
       phone: "+91 98840 99881",
-      crops: { tomato: 33.00, onion: 39.50, potato: 27.00, banana: 42.50, chilli: 59.00, brinjal: 29.50 }
+      crops: { tomato: 33.00, onion: 39.50, potato: 27.00, banana: 42.50, chilli: 59.00, brinjal: 29.50, coconut: 35.00, turmeric: 122.00, mango: 62.00 }
     },
     {
       code: "tindivanam_highway_mandi",
@@ -221,7 +221,7 @@ const SAMPLE_DATA = {
       payment_en: "Within 24 Hours",
       payment_ta: "24 மணி நேரத்திற்குள்",
       phone: "+91 94435 77665",
-      crops: { tomato: 35.00, onion: 41.50, potato: 28.50, banana: 44.00, chilli: 61.00, brinjal: 30.50 }
+      crops: { tomato: 35.00, onion: 41.50, potato: 28.50, banana: 44.00, chilli: 61.00, brinjal: 30.50, coconut: 37.00, turmeric: 128.00, mango: 65.00 }
     }
   ],
 
@@ -502,8 +502,8 @@ SAMPLE_DATA.initial_listings = [
     crop_code: "tomato",
     quantity_kg: 800,
     location: "chengalpattu",
-    best_buyer_code: "chengalpattu_veg_mandi",
-    best_buyer_name: "Chengalpattu Uzhavar Sandhai Aggregators",
+    best_buyer_code: "chengalpattu_uzhavar_aggregator",
+    best_buyer_name: "Chengalpattu Uzhavar Sandhai Aggregator",
     gross_amount: 25200.0,
     transport_cost: 592.0,
     net_amount: 24608.0,

@@ -392,7 +392,12 @@ const CROPS_META = [
   { code: "potato", name_en: "Potato", name_ta: "உருளைக்கிழங்கு", icon: "🥔", category: "veg", desc_en: "Cold storage & mandis", desc_ta: "குளிர்சாதன சேமிப்பு கிடங்கு & மண்டிகள்" },
   { code: "banana", name_en: "Banana", name_ta: "வாழைப்பழம்", icon: "🍌", category: "fruit", desc_en: "Fruit market aggregators", desc_ta: "பழ மொத்த சந்தை" },
   { code: "chilli", name_en: "Chilli", name_ta: "மிளகாய்", icon: "🌶️", category: "spice", desc_en: "Spices & masala traders", desc_ta: "மசாலா & கார மண்டி" },
-  { code: "brinjal", name_en: "Brinjal", name_ta: "கத்தரிக்காய்", icon: "🍆", category: "veg", desc_en: "Daily vegetable bazaar", desc_ta: "தினசரி உழவர் சந்தை" }
+  { code: "brinjal", name_en: "Brinjal", name_ta: "கத்தரிக்காய்", icon: "🍆", category: "veg", desc_en: "Daily vegetable bazaar", desc_ta: "தினசரி உழவர் சந்தை" },
+  { code: "groundnut", name_en: "Groundnut", name_ta: "நிலக்கடலை", icon: "🥜", category: "oilseed", desc_en: "Oil mills & groundnut merchants", desc_ta: "எண்ணெய் ஆலைகள் & கடலை மண்டிகள்" },
+  { code: "coconut", name_en: "Coconut", name_ta: "தேங்காய்", icon: "🥥", category: "plantation", desc_en: "Copra units & coconut mandis", desc_ta: "கொப்பரை ஆலைகள் & தேங்காய் மண்டிகள்" },
+  { code: "turmeric", name_en: "Turmeric", name_ta: "மஞ்சள்", icon: "🟡", category: "spice", desc_en: "Erode spice traders & aggregators", desc_ta: "மஞ்சள் சந்தை & மொத்த வியாபாரிகள்" },
+  { code: "mango", name_en: "Mango", name_ta: "மாம்பழம்", icon: "🥭", category: "fruit", desc_en: "Mandi aggregators & pulp units", desc_ta: "பழ மண்டிகள் & கூழ் தயாரிப்பு ஆலைகள்" },
+  { code: "cotton", name_en: "Cotton", name_ta: "பருத்தி", icon: "☁️", category: "cash_crop", desc_en: "Spinning mills & cotton ginning", desc_ta: "நூற்பாலைகள் & பருத்தி ஜின்னிங்" }
 ];
 
 const LOCATIONS_META = [

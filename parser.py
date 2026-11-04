@@ -8,6 +8,11 @@ from typing import Dict, Any, Optional
 
 CROP_PATTERNS = [
     # code, canonical_name, list of regex/substring matches (sorted longest first)
+    ("groundnut", "Groundnut", ["நிலக்கடலை", "வேர்க்கடலை", "மணிலாப்பயிர்", "மணிலா", "கடலை", "groundnut", "ground nut", "peanuts", "peanut", "verkadalai", "nilakadalai"]),
+    ("coconut", "Coconut", ["தேங்காய்கள்", "தேங்காய்", "கொப்பரை", "coconut", "coconuts", "thengai", "kopparai"]),
+    ("turmeric", "Turmeric", ["விரலி மஞ்சள்", "மஞ்சள்", "turmeric", "manjal"]),
+    ("mango", "Mango", ["மாம்பழம்", "மாங்காய்", "mangoes", "mango", "mambazham", "maangai"]),
+    ("cotton", "Cotton", ["பருத்தி", "cotton", "paruthi"]),
     ("chilli", "Chilli", ["பச்சை மிளகாய்", "மிளகாய்", "green chilli", "green chili", "chillies", "chilli", "chili", "milagai"]),
     ("sugarcane", "Sugarcane", ["கரும்புகள்", "கரும்பு", "sugarcane", "sugar cane", "karumbu", "cane"]),
     ("potato", "Potato", ["உருளைக்கிழங்கு", "உருளை", "potatoes", "potato", "urulaikizhangu", "urulai", "aloo"]),
@@ -26,30 +31,44 @@ LOCATION_PATTERNS = [
 ]
 
 TAMIL_NUM_WORDS = {
-    # Compounds & thousands
+    # Compounds & thousands (including inflected forms like ஆயிரத்து)
     "இருபதாயிரம்": 20000,
+    "பத்தாயிரத்து": 10000,
     "பத்தாயிரம்": 10000,
     "ஒன்பதாயிரம்": 9000,
     "எட்டாயிரம்": 8000,
     "ஏழாயிரம்": 7000,
     "ஆறாயிரம்": 6000,
+    "ஐந்தாயிரத்து": 5000,
     "ஐந்தாயிரம்": 5000,
+    "அஞ்சாயிரத்து": 5000,
     "அஞ்சாயிரம்": 5000,
-    "நாலாயிரம்": 4000,
+    "நான்காயிரத்து": 4000,
     "நான்காயிரம்": 4000,
+    "நாலாயிரத்து": 4000,
+    "நாலாயிரம்": 4000,
+    "மூவாயிரத்து": 3000,
     "மூவாயிரம்": 3000,
+    "இரண்டாயிரத்து": 2000,
     "இரண்டாயிரம்": 2000,
+    "ரெண்டாயிரத்து": 2000,
     "ரெண்டாயிரம்": 2000,
+    "ஆயிரத்து": 1000,
     "ஆயிரம்": 1000,
 
     # Hundreds
     "தொள்ளாயிரம்": 900,
     "எண்ணூறு": 800,
+    "எட்டுநூறு": 800,
     "எழுநூறு": 700,
+    "ஏழுநூறு": 700,
     "அறுநூறு": 600,
+    "ஆறுநூறு": 600,
     "ஐந்நூறு": 500,
+    "ஐநூறு": 500,
     "நானூறு": 400,
     "முந்நூறு": 300,
+    "முநூறு": 300,
     "இருநூறு": 200,
     "நூறு": 100,
 
@@ -190,14 +209,21 @@ def extract_quantity_kg(text: str) -> Optional[float]:
             unit_mult = mult
             break
 
-    # Look for known Tamil compound words (e.g. "இரண்டாயிரம்", "ஐந்நூறு", "பத்தாயிரம்")
-    for word, val in TAMIL_NUM_WORDS.items():
-        if word in lowered:
-            # Check for multiple word combination like "பத்து டன்"
-            # If word is a small number (e.g. பத்து = 10) and followed by டன், mult is already 1000
-            # If word itself is "இரண்டாயிரம்" (2000) and unit is kg or none, value is 2000
-            # Special case: "இரண்டு டன்" -> val=2, unit_mult=1000 -> 2000
-            return float(val * unit_mult)
+    # Look for known Tamil compound words sorted longest-first to prevent sub-string collisions
+    # (e.g. "ஐந்நூறு" shouldn't re-match "நூறு", "பத்தாயிரம்" shouldn't re-match "பத்து")
+    tamil_remaining = lowered
+    tamil_total = 0.0
+    found_tamil_number = False
+
+    sorted_tamil_words = sorted(TAMIL_NUM_WORDS.items(), key=lambda x: len(x[0]), reverse=True)
+    for word, val in sorted_tamil_words:
+        if word in tamil_remaining:
+            tamil_total += val
+            found_tamil_number = True
+            tamil_remaining = tamil_remaining.replace(word, " ", 1)
+
+    if found_tamil_number and tamil_total > 0:
+        return float(tamil_total * unit_mult)
 
     # 3. Check for English number words
     words = lowered.split()
@@ -221,7 +247,13 @@ def extract_quantity_kg(text: str) -> Optional[float]:
     if found_en_number:
         parsed_en = total_en + current_en
         if parsed_en > 0:
-            return float(parsed_en * unit_mult)
+            result = float(parsed_en * unit_mult)
+            # Guard: if result is less than 1 kg and no explicit unit was found,
+            # it's likely a fragment like "half" alone — skip it
+            if result < 1.0 and unit_mult == 1.0:
+                pass  # fall through to standalone digit check
+            else:
+                return result
 
     # 4. Standalone digits (e.g., "5000 paddy Tindivanam")
     m = re.search(r"\b(\d+(?:\.\d+)?)\b", lowered)

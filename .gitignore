@@ -42,3 +42,9 @@ venv.bak/
 .DS_Store
 Thumbs.db
 cloudflared.exe
+
+# Build artifacts, archives & scratch
+*.zip
+scratch/
+farmbridgeshare2/
+FarmBridge_Shareable/

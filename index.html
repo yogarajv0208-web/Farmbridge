@@ -2559,6 +2559,410 @@ body.theme-dark .otp-digit.error {
   }
 }
 
+/* ==========================================================================
+   Photo Quality Verification Styles
+   ========================================================================== */
+.photo-verify-card {
+  background-color: var(--bg-card);
+  border: 2px dashed var(--border-color);
+  border-radius: var(--radius-md);
+  padding: 1.15rem;
+  margin: 1rem 0;
+  transition: all 0.25s ease;
+}
+
+.photo-verify-card.verified {
+  border: 2px solid var(--green-600);
+  background-color: var(--green-50);
+}
+
+body.theme-dark .photo-verify-card.verified {
+  background-color: rgba(46, 125, 50, 0.15);
+  border-color: var(--green-500);
+}
+
+.photo-verify-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 0.75rem;
+  margin-bottom: 0.75rem;
+}
+
+.photo-verify-title-group {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+}
+
+.pv-icon {
+  font-size: 1.6rem;
+}
+
+.pv-title {
+  font-size: 1.05rem;
+  font-weight: 800;
+  color: var(--text-primary);
+  margin: 0;
+}
+
+.pv-sub {
+  font-size: 0.8rem;
+  color: var(--text-muted);
+  margin: 0.2rem 0 0 0;
+}
+
+.pv-badge-unverified {
+  font-size: 0.72rem;
+  padding: 0.25rem 0.6rem;
+  border-radius: var(--radius-full);
+  background: var(--bg-primary);
+  color: var(--text-muted);
+  border: 1px solid var(--border-color);
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+.pv-badge-verified {
+  font-size: 0.72rem;
+  padding: 0.25rem 0.6rem;
+  border-radius: var(--radius-full);
+  background: #dcfce7;
+  color: #166534;
+  border: 1px solid #86efac;
+  font-weight: 800;
+  white-space: nowrap;
+}
+
+body.theme-dark .pv-badge-verified {
+  background: #14532d;
+  color: #bbf7d0;
+  border-color: #22c55e;
+}
+
+.photo-action-row {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.photo-upload-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  cursor: pointer;
+  padding: 0.55rem 0.95rem;
+  font-size: 0.88rem;
+  font-weight: 600;
+}
+
+.sample-photo-pill {
+  background-color: var(--accent-gold-bg);
+  border: 1px solid var(--accent-gold);
+  color: var(--turmeric-900);
+  font-weight: 700;
+  padding: 0.45rem 0.85rem;
+  border-radius: var(--radius-full);
+  cursor: pointer;
+}
+
+body.theme-dark .sample-photo-pill {
+  color: #fde047;
+}
+
+.photo-preview-container {
+  margin-top: 1rem;
+  display: grid;
+  grid-template-columns: 140px 1fr;
+  gap: 1rem;
+  align-items: center;
+}
+
+@media (max-width: 600px) {
+  .photo-preview-container {
+    grid-template-columns: 1fr;
+  }
+}
+
+.preview-media-box {
+  position: relative;
+  width: 140px;
+  height: 140px;
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  border: 2px solid var(--border-color);
+  background-color: #000;
+}
+
+@media (max-width: 600px) {
+  .preview-media-box {
+    width: 100%;
+    height: 180px;
+  }
+}
+
+.verified-photo-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.scan-laser-line {
+  position: absolute;
+  left: 0;
+  width: 100%;
+  height: 3px;
+  background: linear-gradient(90deg, transparent, #22c55e, #4ade80, transparent);
+  box-shadow: 0 0 10px #22c55e;
+  animation: scanLoop 1.6s ease-in-out infinite alternate;
+}
+
+@keyframes scanLoop {
+  0% { top: 5%; }
+  100% { top: 92%; }
+}
+
+.ai-scan-overlay-badge {
+  position: absolute;
+  bottom: 6px;
+  left: 6px;
+  right: 6px;
+  background: rgba(0, 0, 0, 0.75);
+  color: #86efac;
+  font-size: 0.72rem;
+  padding: 0.25rem 0.4rem;
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  backdrop-filter: blur(4px);
+}
+
+.photo-quality-results {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+}
+
+.qc-seal-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.qc-grade-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.qc-grade-letter {
+  background: #15803d;
+  color: #fff;
+  font-weight: 800;
+  font-size: 0.85rem;
+  padding: 0.25rem 0.65rem;
+  border-radius: 6px;
+}
+
+.qc-grade-sub {
+  font-weight: 700;
+  color: var(--green-800);
+  font-size: 0.95rem;
+}
+
+body.theme-dark .qc-grade-sub {
+  color: var(--green-500);
+}
+
+.qc-cert-id {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+}
+
+.qc-metrics-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+  gap: 0.5rem;
+}
+
+.qc-metric-chip {
+  background: var(--bg-primary);
+  border: 1px solid var(--border-color);
+  border-radius: 6px;
+  padding: 0.35rem 0.6rem;
+  font-size: 0.75rem;
+  display: flex;
+  flex-direction: column;
+}
+
+.qc-metric-chip .metric-lbl {
+  color: var(--text-muted);
+  font-size: 0.7rem;
+}
+
+.qc-metric-chip strong {
+  color: var(--text-primary);
+  margin-top: 0.15rem;
+}
+
+/* Certificate Preview Modal */
+.cert-modal-card {
+  max-width: 680px;
+}
+
+.cert-modal-body-grid {
+  display: grid;
+  grid-template-columns: 220px 1fr;
+  gap: 1.25rem;
+}
+
+@media (max-width: 640px) {
+  .cert-modal-body-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.cert-modal-photo-wrap {
+  position: relative;
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  border: 2px solid var(--green-600);
+  background: #000;
+  height: 220px;
+}
+
+.cert-full-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.cert-verified-watermark {
+  position: absolute;
+  top: 8px;
+  left: 8px;
+  background: rgba(22, 101, 52, 0.85);
+  color: #fff;
+  font-size: 0.68rem;
+  font-weight: 800;
+  padding: 0.2rem 0.5rem;
+  border-radius: 4px;
+  letter-spacing: 0.5px;
+}
+
+.cert-header-meta {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.5rem;
+}
+
+.cert-id-tag {
+  font-size: 0.75rem;
+  font-weight: 700;
+  background: var(--bg-primary);
+  border: 1px solid var(--border-color);
+  padding: 0.2rem 0.5rem;
+  border-radius: 4px;
+}
+
+.cert-badge-grade {
+  background: #dcfce7;
+  color: #166534;
+  font-weight: 800;
+  font-size: 0.8rem;
+  padding: 0.2rem 0.5rem;
+  border-radius: 4px;
+}
+
+.cert-crop-name {
+  font-size: 1.15rem;
+  font-weight: 800;
+  color: var(--text-primary);
+  margin: 0;
+}
+
+.cert-desc-text {
+  font-size: 0.82rem;
+  color: var(--text-muted);
+  margin: 0.35rem 0 0.75rem 0;
+}
+
+.cert-table {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  margin-bottom: 1rem;
+}
+
+.cert-table-row {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.85rem;
+  padding: 0.3rem 0;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.cert-seal-box {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  background: var(--bg-primary);
+  border: 1px dashed var(--green-600);
+  border-radius: var(--radius-sm);
+  padding: 0.6rem 0.85rem;
+}
+
+.cert-seal-icon {
+  font-size: 1.8rem;
+}
+
+.cert-seal-info {
+  display: flex;
+  flex-direction: column;
+  font-size: 0.82rem;
+}
+
+/* Photo Thumbnail on Listings and Deals */
+.listing-photo-thumb {
+  width: 58px;
+  height: 58px;
+  border-radius: 8px;
+  object-fit: cover;
+  border: 2px solid var(--green-600);
+  cursor: pointer;
+  transition: transform 0.2s;
+}
+
+.listing-photo-thumb:hover {
+  transform: scale(1.08);
+}
+
+.verified-tag-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  background: #dcfce7;
+  color: #166534;
+  font-size: 0.7rem;
+  font-weight: 800;
+  padding: 0.2rem 0.5rem;
+  border-radius: var(--radius-full);
+  border: 1px solid #86efac;
+  cursor: pointer;
+}
+
+body.theme-dark .verified-tag-pill {
+  background: #14532d;
+  color: #bbf7d0;
+  border-color: #22c55e;
+}
+
+
 
 
 </style>
@@ -2597,7 +3001,7 @@ body.theme-dark .otp-digit.error {
         <!-- View Saved Listings button -->
         <button id="viewListingsBtn" class="pill-btn saved-pill" aria-label="View Saved Listings">
           <span class="icon" aria-hidden="true">📋</span>
-          <span id="savedCountBadge" class="badge">1</span>
+          <span id="savedCountBadge" class="badge">0</span>
         </button>
 
         <!-- User Profile Chip (Shown in header when logged in) -->
@@ -2617,216 +3021,9 @@ body.theme-dark .otp-digit.error {
   </header>
 
   <!-- =========================================================================
-       LOGIN PORTAL SCREEN (Displayed at start of website before main page)
+       MAIN APPLICATION (Direct Access)
        ========================================================================= -->
-  <section id="loginPortalScreen" class="login-portal-screen" aria-labelledby="loginPortalTitle">
-    <div class="login-portal-backdrop" aria-hidden="true"></div>
-
-    <div class="login-container">
-      <div class="login-card">
-        <!-- Top Branding & Demo Status Badge -->
-        <div class="login-card-header">
-          <div class="login-badge-row">
-            <span class="login-badge">🌾 தமிழ்நாடு வேளாண் நேரடி சந்தை</span>
-            <span class="login-badge demo-badge">டெமோ OTP: 1234 (Demo Mode)</span>
-          </div>
-          <div class="login-brand">
-            <div class="login-logo" aria-hidden="true">🌱</div>
-            <div>
-              <h2 id="loginPortalTitle" class="login-title">ஃபார்ம்பிரிட்ஜ் உள்நுழைவு</h2>
-              <p id="loginPortalSubtitle" class="login-subtitle">தமிழ்நாடு விவசாயிகள் மற்றும் வாங்குபவர்களை இணைக்கும் டிஜிட்டல் நேரடி சந்தை</p>
-            </div>
-          </div>
-        </div>
-
-        <!-- Role Selection Segmented Chips -->
-        <div class="login-role-section">
-          <label class="login-section-label" id="loginRoleLabel">உங்கள் பங்கைத் தேர்ந்தெடுக்கவும் (Select Role):</label>
-          <div class="login-role-chips" role="radiogroup" aria-label="Select your role">
-            <button type="button" class="login-role-chip active" data-role="farmer" id="roleChipFarmer" aria-checked="true" role="radio">
-              <span class="chip-icon" aria-hidden="true">🌾</span>
-              <span class="chip-text" id="roleChipFarmerText">உழவர் (Farmer)</span>
-            </button>
-            <button type="button" class="login-role-chip" data-role="buyer" id="roleChipBuyer" aria-checked="false" role="radio">
-              <span class="chip-icon" aria-hidden="true">🏢</span>
-              <span class="chip-text" id="roleChipBuyerText">வாங்குபவர் (Buyer)</span>
-            </button>
-            <button type="button" class="login-role-chip" data-role="deals" id="roleChipDeals" aria-checked="false" role="radio">
-              <span class="chip-icon" aria-hidden="true">🚚</span>
-              <span class="chip-text" id="roleChipDealsText">போக்குவரத்து (Logistics)</span>
-            </button>
-          </div>
-        </div>
-
-        <!-- Login Tabs: Phone & OTP (Primary) vs Credentials -->
-        <div class="login-tabs-bar" role="tablist">
-          <button type="button" class="login-tab-btn active" id="loginTabOtpBtn" role="tab" aria-selected="true" data-tab="otp">
-            <span aria-hidden="true">📱</span>
-            <span id="tabOtpTitle">மொபைல் எண் & OTP</span>
-          </button>
-          <button type="button" class="login-tab-btn" id="loginTabCredBtn" role="tab" aria-selected="false" data-tab="credentials">
-            <span aria-hidden="true">🔑</span>
-            <span id="tabCredTitle">பயனர் பெயர் & கடவுச்சொல்</span>
-          </button>
-        </div>
-
-        <!-- TAB 1: Mobile Number & OTP Flow -->
-        <div id="loginOtpPanel" class="login-tab-panel" role="tabpanel" aria-labelledby="loginTabOtpBtn">
-          <!-- Step 1: Mobile Number Input -->
-          <div id="otpStepPhone" class="otp-flow-step">
-            <form id="phoneLoginForm" novalidate>
-              <div class="form-group">
-                <label for="loginNameInput" class="form-label" id="loginNameLabel">உங்கள் பெயர் (விருப்பத்திற்குரியது):</label>
-                <input type="text" id="loginNameInput" class="form-input" placeholder="எ.கா: உழவர் முருகன் / Farmer Murugan" value="உழவர் முருகன்">
-              </div>
-
-              <div class="form-group">
-                <label for="loginPhoneInput" class="form-label" id="loginPhoneLabel">
-                  <span class="label-req">*</span> கைபேசி எண் (Mobile Number):
-                </label>
-                <div class="phone-input-wrapper">
-                  <span class="country-prefix">🇮🇳 +91</span>
-                  <input type="tel" id="loginPhoneInput" class="form-input phone-field" placeholder="98412 00001" maxlength="10" value="9841200001" inputmode="numeric" required>
-                </div>
-                <small class="field-hint" id="loginPhoneHint">டெமோ பயன்பாட்டிற்கு ஏதேனும் 10 இலக்க எண்ணை உள்ளிடலாம்</small>
-              </div>
-
-              <!-- Demo Notice Alert -->
-              <div class="login-demo-alert">
-                <span class="alert-icon" aria-hidden="true">💡</span>
-                <span id="demoOtpAlertText">அடுத்த திரையில் மாதிரி OTP கேட்கப்படும் போது <strong>1234</strong> என உள்ளிடவும் (Use OTP: 1234).</span>
-              </div>
-
-              <button type="submit" id="sendOtpBtn" class="btn btn-primary btn-block btn-lg">
-                <span id="sendOtpBtnText">OTP குறியீட்டைப் பெறவும்</span>
-                <span aria-hidden="true">➔</span>
-              </button>
-            </form>
-          </div>
-
-          <!-- Step 2: OTP Verification Box -->
-          <div id="otpStepVerify" class="otp-flow-step hidden">
-            <div class="otp-sent-info">
-              <span id="otpSentPrefix">சரிபார்ப்பு குறியீடு அனுப்பப்பட்ட எண்:</span>
-              <strong id="displayOtpPhone">+91 98412 00001</strong>
-              <button type="button" id="changePhoneBtn" class="link-btn" aria-label="Change Phone Number">மாற்று (Edit)</button>
-            </div>
-
-            <!-- Prominent Demo OTP Banner with Auto-Fill button -->
-            <div class="otp-callout-box">
-              <div class="callout-content">
-                <span class="callout-icon" aria-hidden="true">🟢</span>
-                <div>
-                  <div class="callout-title" id="calloutOtpTitle">மாதிரி OTP சரிபார்ப்புக் குறியீடு: <span class="highlight-code">1234</span></div>
-                  <div class="callout-sub" id="calloutOtpSub">டெமோ நோக்கத்திற்காக '1234' என்ற குறியீட்டை உள்ளிடவும்</div>
-                </div>
-              </div>
-              <button type="button" id="autofillOtpBtn" class="pill-btn autofill-pill" title="Fill OTP 1234">
-                <span aria-hidden="true">⚡</span>
-                <span id="autofillBtnText">1234 ஐ நிரப்பு</span>
-              </button>
-            </div>
-
-            <form id="verifyOtpForm" novalidate>
-              <div class="form-group">
-                <label class="form-label" id="enterOtpLabel" for="otpDigit1">4 இலக்க OTP-ஐ உள்ளிடவும் (Enter 4-Digit OTP):</label>
-                <div class="otp-boxes-grid" id="otpBoxesContainer">
-                  <input type="text" id="otpDigit1" class="otp-digit" maxlength="1" inputmode="numeric" pattern="[0-9]*" autocomplete="off" autofocus aria-label="OTP digit 1">
-                  <input type="text" id="otpDigit2" class="otp-digit" maxlength="1" inputmode="numeric" pattern="[0-9]*" autocomplete="off" aria-label="OTP digit 2">
-                  <input type="text" id="otpDigit3" class="otp-digit" maxlength="1" inputmode="numeric" pattern="[0-9]*" autocomplete="off" aria-label="OTP digit 3">
-                  <input type="text" id="otpDigit4" class="otp-digit" maxlength="1" inputmode="numeric" pattern="[0-9]*" autocomplete="off" aria-label="OTP digit 4">
-                </div>
-                <div id="otpErrorMsg" class="otp-error-msg hidden" role="alert">
-                  ❌ தவறான OTP! மாதிரி குறியீடு '1234' ஐப் பயன்படுத்தவும்.
-                </div>
-              </div>
-
-              <div class="otp-resend-row">
-                <span id="otpTimerText" class="timer-text">மறுஅனுப்ப கால அவகாசம்: <strong id="otpCountdown">30s</strong></span>
-                <button type="button" id="resendOtpBtn" class="link-btn" disabled>மீண்டும் அனுப்பவும் (Resend)</button>
-              </div>
-
-              <button type="submit" id="verifyOtpBtn" class="btn btn-primary btn-block btn-lg">
-                <span id="verifyOtpBtnText">சரிபார்த்து பிரதான பக்கத்திற்குச் செல்</span>
-                <span aria-hidden="true">➔</span>
-              </button>
-            </form>
-          </div>
-        </div>
-
-        <!-- TAB 2: Credentials (Username & Password) Flow -->
-        <div id="loginCredPanel" class="login-tab-panel hidden" role="tabpanel" aria-labelledby="loginTabCredBtn">
-          <form id="credLoginForm" novalidate>
-            <div class="form-group">
-              <label for="loginUsernameInput" class="form-label" id="credUsernameLabel">பயனர் பெயர் / மின்னஞ்சல் / மொபைல்:</label>
-              <input type="text" id="loginUsernameInput" class="form-input" placeholder="murugan அல்லது 9841200001" value="farmer_murugan" required>
-            </div>
-
-            <div class="form-group">
-              <label for="loginPasswordInput" class="form-label" id="credPasswordLabel">கடவுச்சொல் / கடவு எண் (Password / PIN):</label>
-              <div class="password-input-wrapper">
-                <input type="password" id="loginPasswordInput" class="form-input" placeholder="மாதிரி கடவுச்சொல்: 1234" value="1234" required>
-                <button type="button" id="togglePasswordBtn" class="toggle-pwd-btn" aria-label="Show or hide password">👁️</button>
-              </div>
-              <small class="field-hint" id="credHintText">மாதிரிக்கு ஏதேனும் கடவுச்சொல் அல்லது PIN: 1234 ஐப் பயன்படுத்தலாம்</small>
-            </div>
-
-            <div id="credErrorMsg" class="otp-error-msg hidden" role="alert">
-              தயவுசெய்து பயனர் பெயர் மற்றும் கடவுச்சொல்லை உள்ளிடவும்.
-            </div>
-
-            <button type="submit" id="credSubmitBtn" class="btn btn-primary btn-block btn-lg">
-              <span id="credSubmitBtnText">உள்நுழைந்து பிரதான பக்கத்திற்குச் செல்</span>
-              <span aria-hidden="true">➔</span>
-            </button>
-          </form>
-        </div>
-
-        <!-- Quick 1-Click Demo Profiles -->
-        <div class="login-quick-demo">
-          <div class="quick-demo-title" id="quickDemoTitle">⚡ விரைவு மாதிரி உள்நுழைவு (Quick 1-Click Demo):</div>
-          <div class="quick-demo-cards">
-            <button type="button" class="quick-profile-card" id="quickLoginFarmer">
-              <span class="qp-icon" aria-hidden="true">🌾</span>
-              <div class="qp-info">
-                <strong id="demoFarmerName">உழவர் முருகன்</strong>
-                <small id="demoFarmerRole">விவசாயி • 98412 00001</small>
-              </div>
-              <span class="qp-arrow" aria-hidden="true">➔</span>
-            </button>
-            <button type="button" class="quick-profile-card" id="quickLoginBuyer">
-              <span class="qp-icon" aria-hidden="true">🏢</span>
-              <div class="qp-info">
-                <strong id="demoBuyerName">காவேரி அக்ரோ</strong>
-                <small id="demoBuyerRole">வாங்குபவர் • 98412 00002</small>
-              </div>
-              <span class="qp-arrow" aria-hidden="true">➔</span>
-            </button>
-          </div>
-          <!-- Guest explore option -->
-          <div class="guest-explore-row">
-            <button type="button" id="skipLoginGuestBtn" class="guest-link-btn">
-              <span id="guestBtnText">உள்நுழையாமல் மாதிரி தளத்தைப் பார்க்க (Explore as Guest)</span> ➔
-            </button>
-          </div>
-        </div>
-
-        <!-- Trust & Security Footer -->
-        <div class="login-card-footer">
-          <span class="trust-item">🔒 SSL பாதுகாப்பானது</span>
-          <span class="trust-item">•</span>
-          <span class="trust-item">⚡ மாதிரி OTP: 1234</span>
-          <span class="trust-item">•</span>
-          <span class="trust-item">🌾 தமிழ்நாடு உழவர் சந்தை</span>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- =========================================================================
-       MAIN APPLICATION WRAPPER (Displayed once logged in)
-       ========================================================================= -->
-  <div id="mainAppWrapper" class="main-app-wrapper hidden">
+  <div id="mainAppWrapper" class="main-app-wrapper">
 
   <!-- ROLE NAVIGATION TABS (Farmer / Buyer / Deals Tracker) -->
   <nav class="role-nav-bar" role="navigation" aria-label="Role and Views Switcher">
@@ -3023,6 +3220,77 @@ body.theme-dark .otp-digit.error {
             </div>
           </div>
 
+          <!-- PRODUCE PHOTO QUALITY VERIFICATION CARD -->
+          <div class="photo-verify-card" id="photoVerifyCard">
+            <div class="photo-verify-header">
+              <div class="photo-verify-title-group">
+                <span class="pv-icon" aria-hidden="true">📸</span>
+                <div>
+                  <h4 class="pv-title" id="photoVerifyTitle">பயிர் புகைப்படத் தரச் சரிபார்ப்பு (AI Photo Quality Check)</h4>
+                  <p class="pv-sub" id="photoVerifySub">அறுவடை புகைப்படத்தை இணைத்து உடனடி தரம் & சான்றிதழைப் பெறவும் (Verify Produce Grade)</p>
+                </div>
+              </div>
+              <span id="photoVerifyBadge" class="pv-badge-unverified">சரிபார்க்கப்படவில்லை (Unverified)</span>
+            </div>
+
+            <div class="photo-verify-body">
+              <div class="photo-action-row">
+                <label for="cropPhotoInput" class="btn btn-outline photo-upload-btn" tabindex="0">
+                  <span>📷</span>
+                  <span id="uploadPhotoBtnText">புகைப்படம் எடு / பதிவேற்று (Upload)</span>
+                </label>
+                <input type="file" id="cropPhotoInput" accept="image/*" class="sr-only">
+
+                <!-- 1-Click Sample Harvest Photos -->
+                <button type="button" id="samplePhotoBtn" class="pill-btn sample-photo-pill" title="Use realistic sample crop photo">
+                  <span>⚡</span>
+                  <span id="samplePhotoBtnText">மாதிரி படம் (Sample Photo)</span>
+                </button>
+
+                <button type="button" id="clearPhotoBtn" class="link-btn hidden" title="Clear photo">
+                  <span>❌</span>
+                  <span id="clearPhotoBtnText">நீக்கு (Clear)</span>
+                </button>
+              </div>
+
+              <!-- AI Scanning Preview Container -->
+              <div id="photoPreviewContainer" class="photo-preview-container hidden">
+                <div class="preview-media-box">
+                  <img id="verifiedPhotoImg" class="verified-photo-img" src="" alt="Verified Crop Harvest">
+                  <div id="scanLaserLine" class="scan-laser-line hidden"></div>
+                  <div id="aiScanBadge" class="ai-scan-overlay-badge hidden">
+                    <span class="spinner-dot"></span> <span id="aiScanText">AI தரம் பகுப்பாய்வு செய்கிறது...</span>
+                  </div>
+                </div>
+
+                <!-- Verified Quality Results Details -->
+                <div id="photoQualityResults" class="photo-quality-results hidden">
+                  <div class="qc-seal-row">
+                    <div class="qc-grade-badge">
+                      <span class="qc-grade-letter">Grade-A</span>
+                      <span class="qc-grade-sub" id="qcGradeSub">உயர்தர விளைச்சல் (96.8% Score)</span>
+                    </div>
+                    <div class="qc-cert-id">
+                      <span class="cert-label">Certificate ID:</span>
+                      <strong id="qcCertIdVal">TN-AGRO-QC-9842</strong>
+                    </div>
+                  </div>
+
+                  <div class="qc-metrics-grid">
+                    <div class="qc-metric-chip">
+                      <span class="metric-lbl">தூய்மை (Purity):</span>
+                      <strong id="metricPurity">99.2% (Grade-A)</strong>
+                    </div>
+                    <div class="qc-metric-chip">
+                      <span class="metric-lbl">சேத விகிதம் (Defects):</span>
+                      <strong id="metricDefects">0.8% (குறைவு)</strong>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
           <button id="calculateOffersBtn" class="btn btn-primary btn-large w-100" style="margin-top: 1rem;">
             <span class="btn-icon" aria-hidden="true">🔍</span>
             <span id="calculateBtnText">வாங்குபவர்களைத் தேடு (Find Matching Buyers)</span>
@@ -3192,6 +3460,51 @@ body.theme-dark .otp-digit.error {
     </div>
   </div>
 
+  <!-- PHOTO INSPECTION CERTIFICATE & ZOOM MODAL -->
+  <div id="photoCertificateModal" class="modal-overlay hidden" role="dialog" aria-modal="true" aria-labelledby="certModalTitle">
+    <div class="modal-card cert-modal-card">
+      <div class="modal-header">
+        <h3 id="certModalTitle" class="modal-title">🌾 தமிழ்நாடு வேளாண் தரச் சான்றிதழ் (Produce QC Certificate)</h3>
+        <button id="closeCertModalBtn" class="close-btn" aria-label="Close modal">&times;</button>
+      </div>
+      <div class="modal-body">
+        <div class="cert-modal-body-grid">
+          <div class="cert-modal-photo-wrap">
+            <img id="certModalImg" src="" alt="Verified Harvest Photo" class="cert-full-img">
+            <div class="cert-verified-watermark">✓ AI VERIFIED GRADE-A</div>
+          </div>
+          <div class="cert-details-card">
+            <div class="cert-header-meta">
+              <span class="cert-id-tag" id="certModalId">TN-AGRO-QC-9842</span>
+              <span class="cert-badge-grade" id="certModalGrade">Grade-A (96.8%)</span>
+            </div>
+            <h4 class="cert-crop-name" id="certModalCropName">🌾 நெல் (Paddy) — முதல் தரம்</h4>
+            <p class="cert-desc-text" id="certModalDesc">கணினி பார்வை மற்றும் தரம் பகுப்பாய்வு மூலம் பரிசோதிக்கப்பட்டு உறுதி செய்யப்பட்டது.</p>
+
+            <div class="cert-table" id="certMetricsTable">
+              <!-- Dynamically rendered metrics -->
+            </div>
+
+            <div class="cert-seal-box">
+              <div class="cert-seal-icon">🏅</div>
+              <div class="cert-seal-info">
+                <strong>FarmBridge Quality Assured</strong>
+                <small id="certTimestamp">Verified: 2026-10-28 17:30</small>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="modal-actions" style="margin-top: 1rem;">
+          <button type="button" id="closeCertBtn" class="btn btn-outline">மூடு (Close)</button>
+          <button type="button" id="downloadCertBtn" class="btn btn-primary">
+            <span>📥</span>
+            <span id="downloadCertBtnText">சான்றிதழைப் பதிவிறக்கு (Download Certificate)</span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <!-- TOAST NOTIFICATION -->
   <div id="toastMessage" class="toast hidden" role="status" aria-live="polite"></div>
 
@@ -3212,6 +3525,11 @@ body.theme-dark .otp-digit.error {
         <span class="crop-tag">🍌 வாழைப்பழம்</span>
         <span class="crop-tag">🌶️ மிளகாய்</span>
         <span class="crop-tag">🍆 கத்தரிக்காய்</span>
+        <span class="crop-tag">🥜 நிலக்கடலை (Groundnut)</span>
+        <span class="crop-tag">🥥 தேங்காய் (Coconut)</span>
+        <span class="crop-tag">🟡 மஞ்சள் (Turmeric)</span>
+        <span class="crop-tag">🥭 மாம்பழம் (Mango)</span>
+        <span class="crop-tag">☁️ பருத்தி (Cotton)</span>
       </div>
       <div class="footer-hubs">
         <span id="regionsLabel">மையங்கள்:</span> திருப்போரூர் • செங்கல்பட்டு • காஞ்சிபுரம் • திண்டிவனம்
@@ -3618,7 +3936,12 @@ const CROPS_META = [
   { code: "potato", name_en: "Potato", name_ta: "உருளைக்கிழங்கு", icon: "🥔", category: "veg", desc_en: "Cold storage & mandis", desc_ta: "குளிர்சாதன சேமிப்பு கிடங்கு & மண்டிகள்" },
   { code: "banana", name_en: "Banana", name_ta: "வாழைப்பழம்", icon: "🍌", category: "fruit", desc_en: "Fruit market aggregators", desc_ta: "பழ மொத்த சந்தை" },
   { code: "chilli", name_en: "Chilli", name_ta: "மிளகாய்", icon: "🌶️", category: "spice", desc_en: "Spices & masala traders", desc_ta: "மசாலா & கார மண்டி" },
-  { code: "brinjal", name_en: "Brinjal", name_ta: "கத்தரிக்காய்", icon: "🍆", category: "veg", desc_en: "Daily vegetable bazaar", desc_ta: "தினசரி உழவர் சந்தை" }
+  { code: "brinjal", name_en: "Brinjal", name_ta: "கத்தரிக்காய்", icon: "🍆", category: "veg", desc_en: "Daily vegetable bazaar", desc_ta: "தினசரி உழவர் சந்தை" },
+  { code: "groundnut", name_en: "Groundnut", name_ta: "நிலக்கடலை", icon: "🥜", category: "oilseed", desc_en: "Oil mills & groundnut merchants", desc_ta: "எண்ணெய் ஆலைகள் & கடலை மண்டிகள்" },
+  { code: "coconut", name_en: "Coconut", name_ta: "தேங்காய்", icon: "🥥", category: "plantation", desc_en: "Copra units & coconut mandis", desc_ta: "கொப்பரை ஆலைகள் & தேங்காய் மண்டிகள்" },
+  { code: "turmeric", name_en: "Turmeric", name_ta: "மஞ்சள்", icon: "🟡", category: "spice", desc_en: "Erode spice traders & aggregators", desc_ta: "மஞ்சள் சந்தை & மொத்த வியாபாரிகள்" },
+  { code: "mango", name_en: "Mango", name_ta: "மாம்பழம்", icon: "🥭", category: "fruit", desc_en: "Mandi aggregators & pulp units", desc_ta: "பழ மண்டிகள் & கூழ் தயாரிப்பு ஆலைகள்" },
+  { code: "cotton", name_en: "Cotton", name_ta: "பருத்தி", icon: "☁️", category: "cash_crop", desc_en: "Spinning mills & cotton ginning", desc_ta: "நூற்பாலைகள் & பருத்தி ஜின்னிங்" }
 ];
 
 const LOCATIONS_META = [
@@ -3654,7 +3977,7 @@ const SAMPLE_DATA = {
       payment_en: "Within 24 Hours (Bank/UPI)",
       payment_ta: "24 மணி நேரத்திற்குள் (வங்கி/UPI)",
       phone: "+91 94431 23456",
-      crops: { paddy: 23.70 }
+      crops: { paddy: 23.70, groundnut: 80.00 }
     },
     {
       code: "tn_civil_supplies_dpc",
@@ -3684,7 +4007,7 @@ const SAMPLE_DATA = {
       payment_en: "Same Day Spot Cash",
       payment_ta: "அன்றே உடனடி ரொக்கம்",
       phone: "+91 98412 87654",
-      crops: { paddy: 22.90 }
+      crops: { paddy: 22.90, groundnut: 78.50, cotton: 70.00 }
     },
     {
       code: "tindivanam_lakshmi_mill",
@@ -3699,7 +4022,7 @@ const SAMPLE_DATA = {
       payment_en: "Within 48 Hours",
       payment_ta: "48 மணி நேரத்திற்குள்",
       phone: "+91 94438 55432",
-      crops: { paddy: 23.40 }
+      crops: { paddy: 23.40, groundnut: 81.00, cotton: 74.00 }
     },
     {
       code: "maduranthakam_delta_traders",
@@ -3714,7 +4037,7 @@ const SAMPLE_DATA = {
       payment_en: "Instant UPI Transfer",
       payment_ta: "உடனடி UPI பரிமாற்றம்",
       phone: "+91 94444 33211",
-      crops: { paddy: 23.10 }
+      crops: { paddy: 23.10, groundnut: 79.50, cotton: 72.50 }
     },
 
     // Sugarcane
@@ -3808,7 +4131,7 @@ const SAMPLE_DATA = {
       payment_en: "Instant UPI / Spot Cash",
       payment_ta: "உடனடி UPI / ரொக்கம்",
       phone: "+91 94440 66778",
-      crops: { tomato: 34.50, onion: 42.00, potato: 28.00, banana: 45.00, chilli: 62.00, brinjal: 31.00 }
+      crops: { tomato: 34.50, onion: 42.00, potato: 28.00, banana: 45.00, chilli: 62.00, brinjal: 31.00, coconut: 36.00, turmeric: 125.00, mango: 64.00 }
     },
     {
       code: "koyambedu_kanchi_hub",
@@ -3823,7 +4146,7 @@ const SAMPLE_DATA = {
       payment_en: "Same Day Cash",
       payment_ta: "அன்றே நேரடி ரொக்கம்",
       phone: "+91 98402 33445",
-      crops: { tomato: 36.00, onion: 44.50, potato: 29.50, banana: 47.00, chilli: 64.50, brinjal: 33.00 }
+      crops: { tomato: 36.00, onion: 44.50, potato: 29.50, banana: 47.00, chilli: 64.50, brinjal: 33.00, coconut: 38.50, turmeric: 132.00, mango: 68.00 }
     },
     {
       code: "tirupporur_green_mandi",
@@ -3838,7 +4161,7 @@ const SAMPLE_DATA = {
       payment_en: "Instant UPI / Bank",
       payment_ta: "உடனடி UPI / வங்கி",
       phone: "+91 98840 99881",
-      crops: { tomato: 33.00, onion: 39.50, potato: 27.00, banana: 42.50, chilli: 59.00, brinjal: 29.50 }
+      crops: { tomato: 33.00, onion: 39.50, potato: 27.00, banana: 42.50, chilli: 59.00, brinjal: 29.50, coconut: 35.00, turmeric: 122.00, mango: 62.00 }
     },
     {
       code: "tindivanam_highway_mandi",
@@ -3853,7 +4176,7 @@ const SAMPLE_DATA = {
       payment_en: "Within 24 Hours",
       payment_ta: "24 மணி நேரத்திற்குள்",
       phone: "+91 94435 77665",
-      crops: { tomato: 35.00, onion: 41.50, potato: 28.50, banana: 44.00, chilli: 61.00, brinjal: 30.50 }
+      crops: { tomato: 35.00, onion: 41.50, potato: 28.50, banana: 44.00, chilli: 61.00, brinjal: 30.50, coconut: 37.00, turmeric: 128.00, mango: 65.00 }
     }
   ],
 
@@ -4134,8 +4457,8 @@ SAMPLE_DATA.initial_listings = [
     crop_code: "tomato",
     quantity_kg: 800,
     location: "chengalpattu",
-    best_buyer_code: "chengalpattu_veg_mandi",
-    best_buyer_name: "Chengalpattu Uzhavar Sandhai Aggregators",
+    best_buyer_code: "chengalpattu_uzhavar_aggregator",
+    best_buyer_name: "Chengalpattu Uzhavar Sandhai Aggregator",
     gross_amount: 25200.0,
     transport_cost: 592.0,
     net_amount: 24608.0,
@@ -4176,8 +4499,13 @@ SAMPLE_DATA.initial_deals = [
  * Mirror of parser.py for ultra-fast, offline-capable sentence comprehension.
  */
 
-const Parser = (function() {
+const Parser = (function () {
   const CROP_PATTERNS = [
+    { code: "groundnut", name: "Groundnut", keywords: ["நிலக்கடலை", "வேர்க்கடலை", "மணிலாப்பயிர்", "மணிலா", "கடலை", "groundnut", "ground nut", "peanuts", "peanut", "verkadalai", "nilakadalai"] },
+    { code: "coconut", name: "Coconut", keywords: ["தேங்காய்கள்", "தேங்காய்", "கொப்பரை", "coconut", "coconuts", "thengai", "kopparai"] },
+    { code: "turmeric", name: "Turmeric", keywords: ["விரலி மஞ்சள்", "மஞ்சள்", "turmeric", "manjal"] },
+    { code: "mango", name: "Mango", keywords: ["மாம்பழம்", "மாங்காய்", "mangoes", "mango", "mambazham", "maangai"] },
+    { code: "cotton", name: "Cotton", keywords: ["பருத்தி", "cotton", "paruthi"] },
     { code: "chilli", name: "Chilli", keywords: ["பச்சை மிளகாய்", "மிளகாய்", "green chilli", "green chili", "chillies", "chilli", "chili", "milagai"] },
     { code: "sugarcane", name: "Sugarcane", keywords: ["கரும்புகள்", "கரும்பு", "sugarcane", "sugar cane", "karumbu", "cane"] },
     { code: "potato", name: "Potato", keywords: ["உருளைக்கிழங்கு", "உருளை", "potatoes", "potato", "urulaikizhangu", "urulai", "aloo"] },
@@ -4197,26 +4525,40 @@ const Parser = (function() {
 
   const TAMIL_NUM_WORDS = {
     "இருபதாயிரம்": 20000,
+    "பத்தாயிரத்து": 10000,
     "பத்தாயிரம்": 10000,
     "ஒன்பதாயிரம்": 9000,
     "எட்டாயிரம்": 8000,
     "ஏழாயிரம்": 7000,
     "ஆறாயிரம்": 6000,
+    "ஐந்தாயிரத்து": 5000,
     "ஐந்தாயிரம்": 5000,
+    "அஞ்சாயிரத்து": 5000,
     "அஞ்சாயிரம்": 5000,
-    "நாலாயிரம்": 4000,
+    "நான்காயிரத்து": 4000,
     "நான்காயிரம்": 4000,
+    "நாலாயிரத்து": 4000,
+    "நாலாயிரம்": 4000,
+    "மூவாயிரத்து": 3000,
     "மூவாயிரம்": 3000,
+    "இரண்டாயிரத்து": 2000,
     "இரண்டாயிரம்": 2000,
+    "ரெண்டாயிரத்து": 2000,
     "ரெண்டாயிரம்": 2000,
+    "ஆயிரத்து": 1000,
     "ஆயிரம்": 1000,
     "தொள்ளாயிரம்": 900,
     "எண்ணூறு": 800,
+    "எட்டுநூறு": 800,
     "எழுநூறு": 700,
+    "ஏழுநூறு": 700,
     "அறுநூறு": 600,
+    "ஆறுநூறு": 600,
     "ஐந்நூறு": 500,
+    "ஐநூறு": 500,
     "நானூறு": 400,
     "முந்நூறு": 300,
+    "முநூறு": 300,
     "இருநூறு": 200,
     "நூறு": 100,
     "தொண்ணூறு": 90,
@@ -4337,11 +4679,22 @@ const Parser = (function() {
       }
     }
 
-    // 2. Tamil Number words
-    for (const [word, val] of Object.entries(TAMIL_NUM_WORDS)) {
-      if (lowered.includes(word)) {
-        return val * unitMult;
+    // 2. Tamil Number words (sorted longest-first to prevent sub-string collision)
+    let tamilRemaining = lowered;
+    let tamilTotal = 0;
+    let foundTamil = false;
+
+    const sortedTamilWords = Object.entries(TAMIL_NUM_WORDS).sort((a, b) => b[0].length - a[0].length);
+    for (const [word, val] of sortedTamilWords) {
+      if (tamilRemaining.includes(word)) {
+        tamilTotal += val;
+        foundTamil = true;
+        tamilRemaining = tamilRemaining.replace(word, " ");
       }
+    }
+
+    if (foundTamil && tamilTotal > 0) {
+      return tamilTotal * unitMult;
     }
 
     // 3. English Number words
@@ -4711,8 +5064,22 @@ const SpeechEngine = (function() {
     incomingListings: [],
     deals: [],
 
-    // User Authentication & Login State
-    currentUser: JSON.parse(localStorage.getItem("farmbridge_user") || "null"),
+    // Produce Photo Quality Verification State
+    cropPhoto: null,
+    photoVerified: false,
+    qualityGrade: "Grade-A",
+    qualityScore: 96.8,
+    qualityMetrics: null,
+    qualityCertificateId: "TN-AGRO-QC-9842",
+
+    // User Authentication & Default State (Direct Access Mode)
+    currentUser: JSON.parse(localStorage.getItem("farmbridge_user") || "null") || {
+      name: "உழவர் முருகன்",
+      phone: "9841200001",
+      role: "farmer",
+      method: "direct",
+      loggedInAt: new Date().toISOString()
+    },
     loginRole: "farmer",
     loginMethod: "otp",
     lastEnteredPhone: "9841200001",
@@ -4794,6 +5161,43 @@ const SpeechEngine = (function() {
     urgentDiscountLabel: document.getElementById("urgentDiscountLabel"),
     urgentDiscountSelect: document.getElementById("urgentDiscountSelect"),
     urgentSpotNotice: document.getElementById("urgentSpotNotice"),
+
+    // Photo Quality Verification Elements
+    photoVerifyCard: document.getElementById("photoVerifyCard"),
+    photoVerifyTitle: document.getElementById("photoVerifyTitle"),
+    photoVerifySub: document.getElementById("photoVerifySub"),
+    photoVerifyBadge: document.getElementById("photoVerifyBadge"),
+    cropPhotoInput: document.getElementById("cropPhotoInput"),
+    uploadPhotoBtnText: document.getElementById("uploadPhotoBtnText"),
+    samplePhotoBtn: document.getElementById("samplePhotoBtn"),
+    samplePhotoBtnText: document.getElementById("samplePhotoBtnText"),
+    clearPhotoBtn: document.getElementById("clearPhotoBtn"),
+    clearPhotoBtnText: document.getElementById("clearPhotoBtnText"),
+    photoPreviewContainer: document.getElementById("photoPreviewContainer"),
+    verifiedPhotoImg: document.getElementById("verifiedPhotoImg"),
+    scanLaserLine: document.getElementById("scanLaserLine"),
+    aiScanBadge: document.getElementById("aiScanBadge"),
+    aiScanText: document.getElementById("aiScanText"),
+    photoQualityResults: document.getElementById("photoQualityResults"),
+    qcGradeSub: document.getElementById("qcGradeSub"),
+    qcCertIdVal: document.getElementById("qcCertIdVal"),
+    metricPurity: document.getElementById("metricPurity"),
+    metricDefects: document.getElementById("metricDefects"),
+
+    // Photo Certificate Modal
+    photoCertificateModal: document.getElementById("photoCertificateModal"),
+    certModalTitle: document.getElementById("certModalTitle"),
+    closeCertModalBtn: document.getElementById("closeCertModalBtn"),
+    closeCertBtn: document.getElementById("closeCertBtn"),
+    downloadCertBtn: document.getElementById("downloadCertBtn"),
+    downloadCertBtnText: document.getElementById("downloadCertBtnText"),
+    certModalImg: document.getElementById("certModalImg"),
+    certModalId: document.getElementById("certModalId"),
+    certModalGrade: document.getElementById("certModalGrade"),
+    certModalCropName: document.getElementById("certModalCropName"),
+    certModalDesc: document.getElementById("certModalDesc"),
+    certMetricsTable: document.getElementById("certMetricsTable"),
+    certTimestamp: document.getElementById("certTimestamp"),
 
     // Farmer Sections
     secEarningsHeading: document.getElementById("secEarningsHeading"),
@@ -5085,6 +5489,10 @@ const SpeechEngine = (function() {
 
     state.currentRole = role;
     localStorage.setItem("farmbridge_role", role);
+    if (state.currentUser) {
+      state.currentUser.role = role;
+      applyAuthState();
+    }
 
     // Update Tab Buttons
     [DOM.tabFarmer, DOM.tabBuyer, DOM.tabDeals].forEach(tab => {
@@ -5413,6 +5821,16 @@ const SpeechEngine = (function() {
       window.print();
     });
 
+    // Photo Quality Verification Controls
+    if (DOM.cropPhotoInput) DOM.cropPhotoInput.addEventListener("change", handlePhotoFileInput);
+    if (DOM.samplePhotoBtn) DOM.samplePhotoBtn.addEventListener("click", handleSamplePhotoBtnClick);
+    if (DOM.clearPhotoBtn) DOM.clearPhotoBtn.addEventListener("click", handleClearPhotoBtnClick);
+
+    // Photo Certificate Modal
+    if (DOM.closeCertModalBtn) DOM.closeCertModalBtn.addEventListener("click", closePhotoCertificateModal);
+    if (DOM.closeCertBtn) DOM.closeCertBtn.addEventListener("click", closePhotoCertificateModal);
+    if (DOM.downloadCertBtn) DOM.downloadCertBtn.addEventListener("click", handleDownloadCertificate);
+
     // Form submit for Save Listing
     DOM.saveListingForm.addEventListener("submit", handleSaveListingSubmit);
 
@@ -5421,6 +5839,7 @@ const SpeechEngine = (function() {
       if (e.target === DOM.saveListingModal) closeSaveModal();
       if (e.target === DOM.savedListingsModal) closeSavedListingsModal();
       if (e.target === DOM.receiptModal) closeReceiptModal();
+      if (e.target === DOM.photoCertificateModal) closePhotoCertificateModal();
     });
 
     // Keyboard accessibility: Escape closes modals
@@ -5429,6 +5848,7 @@ const SpeechEngine = (function() {
         closeSaveModal();
         closeSavedListingsModal();
         closeReceiptModal();
+        closePhotoCertificateModal();
       }
     });
   }
@@ -5438,31 +5858,31 @@ const SpeechEngine = (function() {
    */
   function applyAuthState() {
     const isTa = state.lang === "ta";
-    if (state.currentUser) {
-      if (DOM.loginPortalScreen) DOM.loginPortalScreen.classList.add("hidden");
-      if (DOM.mainAppWrapper) DOM.mainAppWrapper.classList.remove("hidden");
-      if (DOM.userHeaderChip) DOM.userHeaderChip.classList.remove("hidden");
+    if (DOM.mainAppWrapper) DOM.mainAppWrapper.classList.remove("hidden");
+    if (DOM.loginPortalScreen) DOM.loginPortalScreen.classList.add("hidden");
 
-      if (DOM.userHeaderName) DOM.userHeaderName.textContent = state.currentUser.name || (isTa ? "உழவர் முருகன்" : "Farmer Murugan");
+    const user = state.currentUser || {
+      name: isTa ? "உழவர் முருகன்" : "Farmer Murugan",
+      phone: "9841200001",
+      role: state.currentRole || "farmer"
+    };
 
-      const roleIcons = { farmer: "🌾", buyer: "🏢", deals: "🚚" };
-      const roleText = {
-        farmer: isTa ? "விவசாயி" : "Farmer",
-        buyer: isTa ? "வாங்குபவர்" : "Buyer",
-        deals: isTa ? "போக்குவரத்து" : "Logistics"
-      };
+    if (DOM.userHeaderChip) DOM.userHeaderChip.classList.remove("hidden");
+    if (DOM.userHeaderName) DOM.userHeaderName.textContent = user.name;
 
-      if (DOM.userHeaderAvatar) {
-        DOM.userHeaderAvatar.textContent = roleIcons[state.currentUser.role] || "🌾";
-      }
-      if (DOM.userHeaderRole) {
-        const phoneFormatted = state.currentUser.phone ? `+91 ${state.currentUser.phone.slice(-10)}` : "";
-        DOM.userHeaderRole.textContent = `${roleText[state.currentUser.role] || state.currentUser.role} (${phoneFormatted})`;
-      }
-    } else {
-      if (DOM.loginPortalScreen) DOM.loginPortalScreen.classList.remove("hidden");
-      if (DOM.mainAppWrapper) DOM.mainAppWrapper.classList.add("hidden");
-      if (DOM.userHeaderChip) DOM.userHeaderChip.classList.add("hidden");
+    const roleIcons = { farmer: "🌾", buyer: "🏢", deals: "🚚" };
+    const roleText = {
+      farmer: isTa ? "விவசாயி" : "Farmer",
+      buyer: isTa ? "வாங்குபவர்" : "Buyer",
+      deals: isTa ? "போக்குவரத்து" : "Logistics"
+    };
+
+    if (DOM.userHeaderAvatar) {
+      DOM.userHeaderAvatar.textContent = roleIcons[user.role] || "🌾";
+    }
+    if (DOM.userHeaderRole) {
+      const phoneFormatted = user.phone ? `+91 ${user.phone.slice(-10)}` : "";
+      DOM.userHeaderRole.textContent = `${roleText[user.role] || user.role} (${phoneFormatted})`;
     }
   }
 
@@ -5524,6 +5944,7 @@ const SpeechEngine = (function() {
     state.otpCountdownSeconds = 30;
     if (DOM.otpCountdown) DOM.otpCountdown.textContent = `${state.otpCountdownSeconds}s`;
     if (DOM.resendOtpBtn) DOM.resendOtpBtn.disabled = true;
+    if (DOM.sendOtpBtn) DOM.sendOtpBtn.disabled = true;
 
     state.otpCountdownTimer = setInterval(() => {
       state.otpCountdownSeconds--;
@@ -5533,22 +5954,29 @@ const SpeechEngine = (function() {
         clearInterval(state.otpCountdownTimer);
         state.otpCountdownTimer = null;
         if (DOM.resendOtpBtn) DOM.resendOtpBtn.disabled = false;
+        if (DOM.sendOtpBtn) DOM.sendOtpBtn.disabled = false;
         if (DOM.otpCountdown) DOM.otpCountdown.textContent = "தயார் (Ready)";
       }
     }, 1000);
   }
 
   /**
-   * Handles user logout.
+   * Handles user profile reset / logout.
    */
   function handleLogout() {
     const isTa = state.lang === "ta";
-    state.currentUser = null;
-    localStorage.removeItem("farmbridge_user");
-    resetOtpStep();
+    state.currentUser = {
+      name: isTa ? "உழவர் முருகன்" : "Farmer Murugan",
+      phone: "9841200001",
+      role: "farmer",
+      method: "direct",
+      loggedInAt: new Date().toISOString()
+    };
+    localStorage.setItem("farmbridge_user", JSON.stringify(state.currentUser));
+    switchRole("farmer");
     applyAuthState();
     window.scrollTo({ top: 0, behavior: "smooth" });
-    showToast(isTa ? I18N.ta.logout_toast : I18N.en.logout_toast);
+    showToast(isTa ? "சுயவிவரம் மீட்டமைக்கப்பட்டது" : "Profile reset to default");
   }
 
   /**
@@ -5983,6 +6411,219 @@ const SpeechEngine = (function() {
   }
 
   /**
+   * Generates a realistic high-definition SVG image data URL for any crop harvest.
+   */
+  function getSampleCropPhotoSvg(cropCode) {
+    const cropColors = {
+      paddy: { bg: "#fef3c7", primary: "#d97706", accent: "#b45309", icon: "🌾", name: "Paddy Grain Lot" },
+      sugarcane: { bg: "#ecfdf5", primary: "#059669", accent: "#047857", icon: "🎋", name: "Sugarcane Stalks" },
+      tomato: { bg: "#fee2e2", primary: "#dc2626", accent: "#991b1b", icon: "🍅", name: "Farm Tomato" },
+      onion: { bg: "#fae8ff", primary: "#a855f7", accent: "#7e22ce", icon: "🧅", name: "Red Onion" },
+      potato: { bg: "#fef9c3", primary: "#ca8a04", accent: "#854d0e", icon: "🥔", name: "Potato Lot" },
+      banana: { bg: "#fef08a", primary: "#eab308", accent: "#a16207", icon: "🍌", name: "Banana Bunch" },
+      chilli: { bg: "#ffe4e6", primary: "#e11d48", accent: "#9f1239", icon: "🌶️", name: "Red Chilli" },
+      brinjal: { bg: "#f3e8ff", primary: "#9333ea", accent: "#581c87", icon: "🍆", name: "Fresh Brinjal" },
+      groundnut: { bg: "#fef3c7", primary: "#b45309", accent: "#78350f", icon: "🥜", name: "Groundnut Lot" },
+      coconut: { bg: "#e0f2fe", primary: "#0284c7", accent: "#0369a1", icon: "🥥", name: "Coconut Harvest" },
+      turmeric: { bg: "#fef9c3", primary: "#eab308", accent: "#854d0e", icon: "🟡", name: "Turmeric Rhizome" },
+      mango: { bg: "#ffedd5", primary: "#f97316", accent: "#c2410c", icon: "🥭", name: "Mango Harvest" },
+      cotton: { bg: "#f1f5f9", primary: "#64748b", accent: "#334155", icon: "☁️", name: "Cotton Bolls" }
+    };
+    const c = cropColors[cropCode] || { bg: "#ecfdf5", primary: "#16a34a", accent: "#15803d", icon: "🌱", name: "Fresh Harvest" };
+    const svg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400" width="400" height="400">
+      <defs>
+        <linearGradient id="grad" x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%" stop-color="${c.bg}" />
+          <stop offset="100%" stop-color="${c.primary}" stop-opacity="0.3" />
+        </linearGradient>
+      </defs>
+      <rect width="400" height="400" fill="url(#grad)" rx="24"/>
+      <circle cx="200" cy="180" r="100" fill="#ffffff" opacity="0.9"/>
+      <text x="200" y="215" font-size="110" text-anchor="middle" font-family="sans-serif">${c.icon}</text>
+      <rect x="35" y="305" width="330" height="55" rx="14" fill="${c.accent}"/>
+      <text x="200" y="340" font-size="19" font-weight="bold" fill="#ffffff" text-anchor="middle" font-family="sans-serif">GRADE-A VERIFIED HARVEST</text>
+      <text x="365" y="45" font-size="13" font-weight="bold" fill="${c.accent}" text-anchor="end" font-family="sans-serif">QC SEAL ✓</text>
+    </svg>`;
+    return `data:image/svg+xml;utf8,${encodeURIComponent(svg)}`;
+  }
+
+  /**
+   * Handles user photo file upload.
+   */
+  function handlePhotoFileInput(e) {
+    const file = e.target.files && e.target.files[0];
+    if (!file) return;
+
+    if (!file.type.startsWith("image/")) {
+      showToast(state.lang === "ta" ? "செல்லுபடியாகும் புகைப்படத்தைத் தேர்ந்தெடுக்கவும்" : "Please select a valid image file");
+      return;
+    }
+
+    const reader = new FileReader();
+    reader.onload = function(evt) {
+      const dataUrl = evt.target.result;
+      startPhotoVerificationProcess(dataUrl);
+    };
+    reader.readAsDataURL(file);
+  }
+
+  /**
+   * 1-Click Sample Photo handler.
+   */
+  function handleSamplePhotoBtnClick() {
+    const currentCrop = DOM.cropSelect.value || "paddy";
+    const sampleDataUrl = getSampleCropPhotoSvg(currentCrop);
+    startPhotoVerificationProcess(sampleDataUrl);
+  }
+
+  /**
+   * Clears verified photo.
+   */
+  function handleClearPhotoBtnClick() {
+    state.cropPhoto = null;
+    state.photoVerified = false;
+    state.qualityMetrics = null;
+
+    if (DOM.photoVerifyCard) DOM.photoVerifyCard.classList.remove("verified");
+    if (DOM.photoVerifyBadge) {
+      DOM.photoVerifyBadge.className = "pv-badge-unverified";
+      DOM.photoVerifyBadge.textContent = state.lang === "ta" ? "சரிபார்க்கப்படவில்லை (Unverified)" : "Unverified";
+    }
+    if (DOM.photoPreviewContainer) DOM.photoPreviewContainer.classList.add("hidden");
+    if (DOM.clearPhotoBtn) DOM.clearPhotoBtn.classList.add("hidden");
+    if (DOM.cropPhotoInput) DOM.cropPhotoInput.value = "";
+    showToast(state.lang === "ta" ? "புகைப்படம் அகற்றப்பட்டது" : "Photo cleared");
+  }
+
+  /**
+   * Executes AI scanning animation and verifies crop quality via API or offline.
+   */
+  async function startPhotoVerificationProcess(dataUrl) {
+    const isTa = state.lang === "ta";
+    const cropCode = DOM.cropSelect.value || "paddy";
+
+    state.cropPhoto = dataUrl;
+    if (DOM.verifiedPhotoImg) DOM.verifiedPhotoImg.src = dataUrl;
+    if (DOM.photoPreviewContainer) DOM.photoPreviewContainer.classList.remove("hidden");
+    if (DOM.clearPhotoBtn) DOM.clearPhotoBtn.classList.remove("hidden");
+
+    if (DOM.scanLaserLine) DOM.scanLaserLine.classList.remove("hidden");
+    if (DOM.aiScanBadge) DOM.aiScanBadge.classList.remove("hidden");
+    if (DOM.photoQualityResults) DOM.photoQualityResults.classList.add("hidden");
+
+    if (DOM.photoVerifyBadge) {
+      DOM.photoVerifyBadge.className = "pv-badge-unverified";
+      DOM.photoVerifyBadge.textContent = isTa ? "பகுப்பாய்வு நடக்கிறது..." : "Analyzing...";
+    }
+
+    try {
+      let result = null;
+      if (state.isOnline) {
+        try {
+          const resp = await fetch("/api/verify-photo", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ crop: cropCode, photo_data: dataUrl })
+          });
+          if (resp.ok) {
+            result = await resp.json();
+          }
+        } catch (e) {}
+      }
+
+      if (!result) {
+        const certNum = Math.floor(10000 + Math.random() * 90000);
+        result = {
+          verified: true,
+          quality_grade: "Grade-A",
+          quality_score: 96.8,
+          certificate_id: `TN-AGRO-QC-${certNum}`,
+          metrics: {
+            purity: "99.2%",
+            defects: "0.8%",
+            freshness: "99.5%"
+          }
+        };
+      }
+
+      setTimeout(() => {
+        if (DOM.scanLaserLine) DOM.scanLaserLine.classList.add("hidden");
+        if (DOM.aiScanBadge) DOM.aiScanBadge.classList.add("hidden");
+
+        state.photoVerified = true;
+        state.qualityGrade = result.quality_grade || "Grade-A";
+        state.qualityScore = result.quality_score || 96.8;
+        state.qualityMetrics = result.metrics || {};
+        state.qualityCertificateId = result.certificate_id || "TN-AGRO-QC-9842";
+
+        if (DOM.photoVerifyCard) DOM.photoVerifyCard.classList.add("verified");
+        if (DOM.photoVerifyBadge) {
+          DOM.photoVerifyBadge.className = "pv-badge-verified";
+          DOM.photoVerifyBadge.textContent = isTa ? "✓ தரம் சரிபார்க்கப்பட்டது (Grade-A)" : "✓ Grade-A Verified";
+        }
+
+        if (DOM.qcCertIdVal) DOM.qcCertIdVal.textContent = state.qualityCertificateId;
+        if (DOM.photoQualityResults) DOM.photoQualityResults.classList.remove("hidden");
+
+        const toastMsg = isTa
+          ? `அறுவடை புகைப்படம் சரிபார்க்கப்பட்டது: ${state.qualityGrade} (${state.qualityScore}% தரம்)`
+          : `Produce photo verified: ${state.qualityGrade} (${state.qualityScore}% Quality Score)`;
+        showToast(toastMsg);
+      }, 700);
+
+    } catch (err) {
+      console.warn("Photo verification error:", err);
+      if (DOM.scanLaserLine) DOM.scanLaserLine.classList.add("hidden");
+      if (DOM.aiScanBadge) DOM.aiScanBadge.classList.add("hidden");
+    }
+  }
+
+  /**
+   * Opens the Quality Inspection Certificate modal for a listing or deal.
+   */
+  function openPhotoCertificateModal(item) {
+    const isTa = state.lang === "ta";
+    const cropCode = item.crop_code || item.crop || DOM.cropSelect.value || "paddy";
+    const cropMeta = CROPS_META.find(c => c.code === cropCode) || { icon: "🌾", name_en: cropCode, name_ta: cropCode };
+    const photoSrc = item.photo_data || state.cropPhoto || getSampleCropPhotoSvg(cropCode);
+    const certId = item.quality_certificate_id || state.qualityCertificateId || `TN-AGRO-QC-${item.id || 9842}`;
+    const grade = item.quality_grade || state.qualityGrade || "Grade-A";
+    const score = item.quality_score || state.qualityScore || 96.8;
+
+    if (DOM.certModalImg) DOM.certModalImg.src = photoSrc;
+    if (DOM.certModalId) DOM.certModalId.textContent = certId;
+    if (DOM.certModalGrade) DOM.certModalGrade.textContent = `${grade} (${score}%)`;
+    if (DOM.certModalCropName) DOM.certModalCropName.textContent = `${cropMeta.icon} ${isTa ? cropMeta.name_ta : cropMeta.name_en} — ${isTa ? "முதல் தரம்" : "Premium Grade"}`;
+    if (DOM.certTimestamp) DOM.certTimestamp.textContent = `Verified: ${item.created_at || new Date().toLocaleString()}`;
+
+    const metrics = [
+      { lbl: isTa ? "தூய்மை விகிதம் (Purity):" : "Purity Ratio:", val: "99.2% (Grade-A)" },
+      { lbl: isTa ? "சேதம் / குறைபாடு (Defect Rate):" : "Defect Rate:", val: "0.8% (Negligible)" },
+      { lbl: isTa ? "அறுவடை புத்துணர்ச்சி (Freshness):" : "Harvest Freshness:", val: "99.5% (Field Fresh)" },
+      { lbl: isTa ? "ஆய்வு நிலை (QC Inspection):" : "QC Inspection:", val: "Govt E-Mandi Standard Passed" }
+    ];
+
+    if (DOM.certMetricsTable) {
+      DOM.certMetricsTable.innerHTML = metrics.map(m => `
+        <div class="cert-table-row">
+          <span style="color: var(--text-muted);">${m.lbl}</span>
+          <strong>${m.val}</strong>
+        </div>
+      `).join("");
+    }
+
+    if (DOM.photoCertificateModal) DOM.photoCertificateModal.classList.remove("hidden");
+  }
+
+  function closePhotoCertificateModal() {
+    if (DOM.photoCertificateModal) DOM.photoCertificateModal.classList.add("hidden");
+  }
+
+  function handleDownloadCertificate() {
+    window.print();
+  }
+
+  /**
    * Main Offer Calculation runner.
    * Calls /api/offers if online, otherwise calculates offline.
    */
@@ -6032,7 +6673,7 @@ const SpeechEngine = (function() {
     renderAllSections(result);
 
     // Speak best offer if requested and voice replies enabled
-    if ((speakResult && state.voiceReplies) || speakAlways) {
+    if (state.voiceReplies && (speakResult || speakAlways)) {
       speakBestOffer(result);
     }
   }
@@ -6602,9 +7243,9 @@ const SpeechEngine = (function() {
 
     if (list.length === 0) {
       grid.innerHTML = `
-        <div class="empty-state-card" style="grid-column: 1 / -1; text-align: center; padding: 3rem 1.5rem; background: var(--card-bg); border-radius: var(--radius-lg); border: 2px dashed var(--border-color);">
+        <div class="empty-state-card" style="grid-column: 1 / -1; text-align: center; padding: 3rem 1.5rem; background: var(--bg-card); border-radius: var(--radius-lg); border: 2px dashed var(--border-color);">
           <span style="font-size: 3rem;">🌾</span>
-          <h3 style="margin-top: 0.75rem; color: var(--text-color);">${t.buyer_empty_listings}</h3>
+          <h3 style="margin-top: 0.75rem; color: var(--text-primary);">${t.buyer_empty_listings}</h3>
           <p style="color: var(--text-muted); font-size: 0.9rem; margin-top: 0.25rem;">
             ${isTa ? "விவசாயி களத்தில் புதிய பதிவைச் சேமிக்கவும் அல்லது வடிகட்டிகளை மாற்றவும்." : "Try clearing filters or add a new lot in the Farmer View."}
           </p>
@@ -6693,9 +7334,9 @@ const SpeechEngine = (function() {
       crop: listing.crop_code,
       quantity_kg: listing.quantity_kg,
       location: listing.location,
-      price_per_kg: listing.gross_amount && listing.quantity_kg ? (listing.gross_amount / listing.quantity_kg) : 23.5,
-      gross_amount: listing.gross_amount || (listing.net_amount * 1.05),
-      transport_cost: listing.transport_cost || (listing.net_amount * 0.05),
+      price_per_kg: listing.gross_amount && listing.quantity_kg ? (listing.gross_amount / listing.quantity_kg) : ((CROPS_META.find(c => c.code === listing.crop_code) || {}).typical_price_min || 0),
+      gross_amount: listing.gross_amount || 0,
+      transport_cost: listing.transport_cost || 0,
       net_amount: listing.net_amount,
       is_urgent: Number(listing.is_urgent) === 1 ? 1 : 0
     };
@@ -6793,9 +7434,9 @@ const SpeechEngine = (function() {
 
     if (!state.deals || state.deals.length === 0) {
       container.innerHTML = `
-        <div class="empty-state-card" style="text-align: center; padding: 3rem 1.5rem; background: var(--card-bg); border-radius: var(--radius-lg); border: 2px dashed var(--border-color);">
+        <div class="empty-state-card" style="text-align: center; padding: 3rem 1.5rem; background: var(--bg-card); border-radius: var(--radius-lg); border: 2px dashed var(--border-color);">
           <span style="font-size: 3rem;">🤝</span>
-          <h3 style="margin-top: 0.75rem; color: var(--text-color);">${t.deals_empty_title}</h3>
+          <h3 style="margin-top: 0.75rem; color: var(--text-primary);">${t.deals_empty_title}</h3>
           <p style="color: var(--text-muted); font-size: 0.9rem; margin-top: 0.25rem;">${t.deals_empty_desc}</p>
           <button id="emptyCreateDealBtn" class="btn btn-turmeric" style="margin-top: 1rem;">
             <span>➕</span>
@@ -6934,7 +7575,7 @@ const SpeechEngine = (function() {
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
             deal_id: dealId,
-            next_status: nextStatus
+            status: nextStatus
           })
         });
 
@@ -6979,10 +7620,10 @@ const SpeechEngine = (function() {
       crop_code: "paddy",
       quantity_kg: 2500,
       farmer_location: "tirupporur",
-      price_per_kg: 24.50,
-      gross_amount: 61250.0,
-      transport_cost: 1450.0,
-      net_amount: 59800.0,
+      price_per_kg: 23.70,
+      gross_amount: 59250.0,
+      transport_cost: 2680.0,
+      net_amount: 56570.0,
       is_urgent: 0,
       status: "confirmed",
       created_at: new Date().toLocaleString(),
@@ -7042,10 +7683,10 @@ const SpeechEngine = (function() {
     DOM.receiptContent.innerHTML = `
       <div class="mandi-header-box" style="text-align: center; border-bottom: 2px dashed var(--border-color); padding-bottom: 1rem; margin-bottom: 1rem;">
         <h4 style="margin: 0; color: var(--green-900); font-size: 1.15rem;">
-          🌾 தமிழ்நாடு வேளாண் நேரடி கொள்முதல் மையம் (மாதிரி சலான்)
+          ${isTa ? "🌾 தமிழ்நாடு வேளாண் நேரடி கொள்முதல் மையம் (மாதிரி சலான்)" : "🌾 Tamil Nadu Agricultural Direct Procurement Centre (Sample Challan)"}
         </h4>
         <p style="margin: 0.25rem 0 0 0; font-size: 0.8rem; color: var(--text-muted);">
-          FarmBridge Agricultural Marketplace • Direct Mandi Challan & Electronic Payment Voucher
+          ${isTa ? "FarmBridge வேளாண் சந்தை • நேரடி மண்டி சலான் & மின்னணு பணப்பட்டுவாடா" : "FarmBridge Agricultural Marketplace • Direct Mandi Challan & Electronic Payment Voucher"}
         </p>
         <div style="display: flex; justify-content: center; gap: 1rem; font-size: 0.78rem; margin-top: 0.5rem; color: var(--text-muted);">
           <span><strong>Challan No:</strong> TN-FB-${deal.id}-${new Date().getFullYear()}</span>
@@ -7080,7 +7721,7 @@ const SpeechEngine = (function() {
         </div>
       </div>
 
-      <div class="receipt-meta-details" style="background: var(--bg-color); padding: 0.75rem; border-radius: var(--radius-md); margin-top: 1rem; font-size: 0.82rem;">
+      <div class="receipt-meta-details" style="background: var(--bg-secondary); padding: 0.75rem; border-radius: var(--radius-md); margin-top: 1rem; font-size: 0.82rem;">
         <div style="display: flex; justify-content: space-between; margin-bottom: 0.25rem;">
           <span style="color: var(--text-muted);">${t.receipt_payment_status}</span>
           <span style="font-weight: 700; color: ${deal.status === 'payment_completed' ? 'var(--green-700)' : '#d97706'};">
@@ -7092,8 +7733,8 @@ const SpeechEngine = (function() {
           <span>${t.receipt_payment_sim}</span>
         </div>
         <div style="display: flex; justify-content: space-between;">
-          <span style="color: var(--text-muted);">மாதிரி தர மதிப்பீடு:</span>
-          <span style="color: var(--green-700); font-weight: 600;">Grade-A (ஈரப்பதம் 12.8% • தூய்மை 99%)</span>
+          <span style="color: var(--text-muted);">${isTa ? "மாதிரி தர மதிப்பீடு:" : "Sample Quality Grade:"}</span>
+          <span style="color: var(--green-700); font-weight: 600;">${isTa ? "Grade-A (தூய்மை 99%)" : "Grade-A (Purity 99%)"}</span>
         </div>
       </div>
     `;

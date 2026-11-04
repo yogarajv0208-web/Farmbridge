@@ -102,6 +102,10 @@ def init_db(db_path=None):
         is_urgent INTEGER DEFAULT 0,
         urgency_reason TEXT,
         urgency_discount REAL DEFAULT 0.0,
+        photo_data TEXT,
+        photo_verified INTEGER DEFAULT 0,
+        quality_grade TEXT,
+        quality_score REAL DEFAULT 0.0,
         notes TEXT,
         status TEXT DEFAULT 'active',
         created_at TEXT NOT NULL
@@ -122,6 +126,10 @@ def init_db(db_path=None):
         transport_cost REAL NOT NULL,
         net_amount REAL NOT NULL,
         is_urgent INTEGER DEFAULT 0,
+        photo_data TEXT,
+        photo_verified INTEGER DEFAULT 0,
+        quality_grade TEXT,
+        quality_score REAL DEFAULT 0.0,
         status TEXT DEFAULT 'confirmed',
         created_at TEXT NOT NULL,
         updated_at TEXT,
@@ -130,13 +138,28 @@ def init_db(db_path=None):
     """)
 
     # Safe migrations if existing db was created with earlier schema
-    for col, col_type in [("is_urgent", "INTEGER DEFAULT 0"), ("urgency_reason", "TEXT"), ("urgency_discount", "REAL DEFAULT 0.0")]:
+    for col, col_type in [
+        ("is_urgent", "INTEGER DEFAULT 0"),
+        ("urgency_reason", "TEXT"),
+        ("urgency_discount", "REAL DEFAULT 0.0"),
+        ("photo_data", "TEXT"),
+        ("photo_verified", "INTEGER DEFAULT 0"),
+        ("quality_grade", "TEXT"),
+        ("quality_score", "REAL DEFAULT 0.0")
+    ]:
         try:
             cur.execute(f"ALTER TABLE listings ADD COLUMN {col} {col_type}")
         except Exception:
             pass
 
-    for col, col_type in [("is_urgent", "INTEGER DEFAULT 0"), ("updated_at", "TEXT")]:
+    for col, col_type in [
+        ("is_urgent", "INTEGER DEFAULT 0"),
+        ("updated_at", "TEXT"),
+        ("photo_data", "TEXT"),
+        ("photo_verified", "INTEGER DEFAULT 0"),
+        ("quality_grade", "TEXT"),
+        ("quality_score", "REAL DEFAULT 0.0")
+    ]:
         try:
             cur.execute(f"ALTER TABLE deals ADD COLUMN {col} {col_type}")
         except Exception:
@@ -144,12 +167,84 @@ def init_db(db_path=None):
 
     conn.commit()
 
-    # Seed data if empty
+    # Seed data if empty, or sync new crops if existing
     cur.execute("SELECT COUNT(*) FROM crops")
     if cur.fetchone()[0] == 0:
         seed_data(conn)
+    else:
+        sync_missing_crops_and_buyers(conn)
 
     conn.close()
+
+def sync_missing_crops_and_buyers(conn):
+    """Ensures newly added crops and their buyer mappings exist in existing database."""
+    cur = conn.cursor()
+    new_crops = [
+        ("paddy", "Paddy", "நெல்", "grain", 22.8, 23.7, "kg", "🌾"),
+        ("sugarcane", "Sugarcane", "கரும்பு", "cane", 3.5, 3.9, "kg", "🎋"),
+        ("tomato", "Tomato", "தக்காளி", "vegetable", 28.0, 38.0, "kg", "🍅"),
+        ("onion", "Onion", "வெங்காயம்", "vegetable", 32.0, 45.0, "kg", "🧅"),
+        ("potato", "Potato", "உருளைக்கிழங்கு", "vegetable", 24.0, 32.0, "kg", "🥔"),
+        ("banana", "Banana", "வாழைப்பழம்", "fruit", 32.0, 48.0, "kg", "🍌"),
+        ("chilli", "Chilli", "மிளகாய்", "spice", 48.0, 65.0, "kg", "🌶️"),
+        ("brinjal", "Brinjal", "கத்தரிக்காய்", "vegetable", 22.0, 35.0, "kg", "🍆"),
+        ("groundnut", "Groundnut", "நிலக்கடலை", "oilseed", 68.0, 84.0, "kg", "🥜"),
+        ("coconut", "Coconut", "தேங்காய்", "plantation", 28.0, 42.0, "kg", "🥥"),
+        ("turmeric", "Turmeric", "மஞ்சள்", "spice", 95.0, 138.0, "kg", "🟡"),
+        ("mango", "Mango", "மாம்பழம்", "fruit", 45.0, 78.0, "kg", "🥭"),
+        ("cotton", "Cotton", "பருத்தி", "cash_crop", 62.0, 76.0, "kg", "☁️"),
+        ("groundnut", "Groundnut", "நிலக்கடலை", "oilseed", 68.0, 84.0, "kg", "🥜"),
+        ("coconut", "Coconut", "தேங்காய்", "plantation", 28.0, 42.0, "kg", "🥥"),
+        ("turmeric", "Turmeric", "மஞ்சள்", "spice", 95.0, 138.0, "kg", "🟡"),
+        ("mango", "Mango", "மாம்பழம்", "fruit", 45.0, 78.0, "kg", "🥭"),
+        ("cotton", "Cotton", "பருத்தி", "cash_crop", 62.0, 76.0, "kg", "☁️")
+    ]
+    cur.executemany("""
+    INSERT OR IGNORE INTO crops (code, name_en, name_ta, category, typical_price_min, typical_price_max, unit, icon)
+    VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+    """, new_crops)
+
+    # Get buyer IDs by code
+    cur.execute("SELECT id, code FROM buyers")
+    buyer_id_map = {row["code"]: row["id"] for row in cur.fetchall()}
+
+    extra_buyer_crops = [
+        # Groundnut buyers (Oilseeds & Grain Traders)
+        (buyer_id_map.get("tirupporur_grain_traders"), "groundnut", 78.50),
+        (buyer_id_map.get("tindivanam_lakshmi_mill"), "groundnut", 81.00),
+        (buyer_id_map.get("maduranthakam_delta_traders"), "groundnut", 79.50),
+        (buyer_id_map.get("kanchi_ponni_rice_mill"), "groundnut", 80.00),
+
+        # Coconut buyers (Mandis & Aggregators)
+        (buyer_id_map.get("chengalpattu_uzhavar_aggregator"), "coconut", 36.00),
+        (buyer_id_map.get("koyambedu_kanchi_hub"), "coconut", 38.50),
+        (buyer_id_map.get("tirupporur_green_mandi"), "coconut", 35.00),
+        (buyer_id_map.get("tindivanam_highway_mandi"), "coconut", 37.00),
+
+        # Turmeric buyers (Spices & Mandis)
+        (buyer_id_map.get("chengalpattu_uzhavar_aggregator"), "turmeric", 125.00),
+        (buyer_id_map.get("koyambedu_kanchi_hub"), "turmeric", 132.00),
+        (buyer_id_map.get("tirupporur_green_mandi"), "turmeric", 122.00),
+        (buyer_id_map.get("tindivanam_highway_mandi"), "turmeric", 128.00),
+
+        # Mango buyers (Fruit Wholesale)
+        (buyer_id_map.get("koyambedu_kanchi_hub"), "mango", 68.00),
+        (buyer_id_map.get("chengalpattu_uzhavar_aggregator"), "mango", 64.00),
+        (buyer_id_map.get("tirupporur_green_mandi"), "mango", 62.00),
+        (buyer_id_map.get("tindivanam_highway_mandi"), "mango", 65.00),
+
+        # Cotton buyers (Agro & Commodity Traders)
+        (buyer_id_map.get("tindivanam_lakshmi_mill"), "cotton", 74.00),
+        (buyer_id_map.get("maduranthakam_delta_traders"), "cotton", 72.50),
+        (buyer_id_map.get("tirupporur_grain_traders"), "cotton", 70.00)
+    ]
+    for b_id, c_code, price in extra_buyer_crops:
+        if b_id:
+            cur.execute("SELECT COUNT(*) FROM buyer_crops WHERE buyer_id = ? AND crop_code = ?", (b_id, c_code))
+            if cur.fetchone()[0] == 0:
+                cur.execute("INSERT INTO buyer_crops (buyer_id, crop_code, price_per_kg) VALUES (?, ?, ?)", (b_id, c_code, price))
+
+    conn.commit()
 
 def seed_data(conn):
     """Populates the database with realistic sample data for Tamil Nadu."""
@@ -163,7 +258,12 @@ def seed_data(conn):
         ("potato", "Potato", "உருளைக்கிழங்கு", "vegetable", 24.0, 32.0, "kg", "🥔"),
         ("banana", "Banana", "வாழைப்பழம்", "fruit", 32.0, 48.0, "kg", "🍌"),
         ("chilli", "Chilli", "மிளகாய்", "spice", 48.0, 65.0, "kg", "🌶️"),
-        ("brinjal", "Brinjal", "கத்தரிக்காய்", "vegetable", 22.0, 35.0, "kg", "🍆")
+        ("brinjal", "Brinjal", "கத்தரிக்காய்", "vegetable", 22.0, 35.0, "kg", "🍆"),
+        ("groundnut", "Groundnut", "நிலக்கடலை", "oilseed", 68.0, 84.0, "kg", "🥜"),
+        ("coconut", "Coconut", "தேங்காய்", "plantation", 28.0, 42.0, "kg", "🥥"),
+        ("turmeric", "Turmeric", "மஞ்சள்", "spice", 95.0, 138.0, "kg", "🟡"),
+        ("mango", "Mango", "மாம்பழம்", "fruit", 45.0, 78.0, "kg", "🥭"),
+        ("cotton", "Cotton", "பருத்தி", "cash_crop", 62.0, 76.0, "kg", "☁️")
     ]
     cur.executemany("INSERT INTO crops VALUES (?, ?, ?, ?, ?, ?, ?, ?)", crops)
 
@@ -461,7 +561,36 @@ def seed_data(conn):
         (buyer_id_map["tindivanam_highway_mandi"], "potato", 28.50),
         (buyer_id_map["tindivanam_highway_mandi"], "banana", 44.00),
         (buyer_id_map["tindivanam_highway_mandi"], "chilli", 61.00),
-        (buyer_id_map["tindivanam_highway_mandi"], "brinjal", 30.50)
+        (buyer_id_map["tindivanam_highway_mandi"], "brinjal", 30.50),
+
+        # Groundnut buyers (Oilseeds & Grain Traders)
+        (buyer_id_map["tirupporur_grain_traders"], "groundnut", 78.50),
+        (buyer_id_map["tindivanam_lakshmi_mill"], "groundnut", 81.00),
+        (buyer_id_map["maduranthakam_delta_traders"], "groundnut", 79.50),
+        (buyer_id_map["kanchi_ponni_rice_mill"], "groundnut", 80.00),
+
+        # Coconut buyers (Mandis & Aggregators)
+        (buyer_id_map["chengalpattu_uzhavar_aggregator"], "coconut", 36.00),
+        (buyer_id_map["koyambedu_kanchi_hub"], "coconut", 38.50),
+        (buyer_id_map["tirupporur_green_mandi"], "coconut", 35.00),
+        (buyer_id_map["tindivanam_highway_mandi"], "coconut", 37.00),
+
+        # Turmeric buyers (Spices & Mandis)
+        (buyer_id_map["chengalpattu_uzhavar_aggregator"], "turmeric", 125.00),
+        (buyer_id_map["koyambedu_kanchi_hub"], "turmeric", 132.00),
+        (buyer_id_map["tirupporur_green_mandi"], "turmeric", 122.00),
+        (buyer_id_map["tindivanam_highway_mandi"], "turmeric", 128.00),
+
+        # Mango buyers (Fruit Wholesale)
+        (buyer_id_map["koyambedu_kanchi_hub"], "mango", 68.00),
+        (buyer_id_map["chengalpattu_uzhavar_aggregator"], "mango", 64.00),
+        (buyer_id_map["tirupporur_green_mandi"], "mango", 62.00),
+        (buyer_id_map["tindivanam_highway_mandi"], "mango", 65.00),
+
+        # Cotton buyers (Agro & Commodity Traders)
+        (buyer_id_map["tindivanam_lakshmi_mill"], "cotton", 74.00),
+        (buyer_id_map["maduranthakam_delta_traders"], "cotton", 72.50),
+        (buyer_id_map["tirupporur_grain_traders"], "cotton", 70.00)
     ]
     cur.executemany("INSERT INTO buyer_crops (buyer_id, crop_code, price_per_kg) VALUES (?, ?, ?)", buyer_crops)
 
@@ -583,8 +712,8 @@ def seed_data(conn):
             "tomato",
             800.0,
             "chengalpattu",
-            "chengalpattu_veg_mandi",
-            "Chengalpattu Uzhavar Sandhai Aggregators",
+            "chengalpattu_uzhavar_aggregator",
+            "Chengalpattu Uzhavar Sandhai Aggregator",
             25200.0,
             592.0,
             24608.0,
