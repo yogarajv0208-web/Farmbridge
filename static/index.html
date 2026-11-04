@@ -56,6 +56,9 @@
           <div class="user-meta">
             <span class="user-name" id="userHeaderName">உழவர் முருகன்</span>
             <span class="user-role" id="userHeaderRole">விவசாயி (+91 98412 00001)</span>
+            <span class="user-points-badge" id="userCreditBadge" style="display:inline-flex; align-items:center; gap:0.25rem; background:#fef3c7; color:#92400e; border:1px solid #fcd34d; padding:0.15rem 0.5rem; border-radius:12px; font-size:0.75rem; font-weight:700; margin-top:2px;">
+              ⭐ <span id="userPointsVal">120</span> <span id="userPointsLabel">நம்பகப் புள்ளிகள் (Trust Points)</span>
+            </span>
           </div>
           <button type="button" id="logoutBtn" class="pill-btn logout-pill" aria-label="Logout" title="Logout from FarmBridge">
             <span class="icon" aria-hidden="true">🚪</span>
@@ -223,9 +226,14 @@
             <div class="form-group">
               <label for="locationSelect" class="form-label" id="locLabel">உங்கள் ஊர் (Location):</label>
               <div class="select-wrapper">
-                <select id="locationSelect" class="form-select" aria-required="true">
-                  <!-- Dynamically populated -->
-                </select>
+                <div style="display: flex; gap: 0.5rem; align-items: center; flex-wrap: wrap;">
+                  <select id="locationSelect" class="form-select" aria-required="true" style="flex: 1; min-width: 180px;">
+                    <!-- Dynamically populated -->
+                  </select>
+                  <button type="button" id="liveLocationBtn" class="pill-btn" style="white-space: nowrap; padding: 0.6rem 0.9rem; font-weight: 700; background: var(--green-100); color: var(--green-800); border: 1.5px solid var(--green-600); cursor: pointer;" title="Detect Live GPS Location">
+                    <span>📍</span> <span id="liveLocBtnText">நேரடி இருப்பிடம் (Live GPS)</span>
+                  </button>
+                </div>
               </div>
             </div>
           </div>
@@ -491,8 +499,12 @@
             <input type="text" id="farmerNameInput" class="form-input" placeholder="உழவர் முருகன் / Farmer Murugan" required>
           </div>
           <div class="form-group">
-            <label for="farmerPhoneInput" class="form-label" id="modalFarmerPhoneLabel">தொலைபேசி எண்:</label>
-            <input type="tel" id="farmerPhoneInput" class="form-input" placeholder="+91 98412 00000" required>
+            <label for="farmerPhoneInput" class="form-label" id="modalFarmerPhoneLabel">தொலைபேசி எண் (10 இலக்கம்):</label>
+            <div class="phone-input-wrapper" style="border: 1.5px solid var(--border-color); border-radius: var(--radius-sm); display: flex; align-items: center; background: var(--bg-input);">
+              <span class="country-prefix">🇮🇳 +91</span>
+              <input type="tel" id="farmerPhoneInput" class="form-input phone-field" placeholder="98412 00001" maxlength="10" inputmode="numeric" required style="border:none; outline:none; width:100%; padding:0.65rem 0.75rem;">
+            </div>
+            <small style="color:var(--text-muted); font-size:0.75rem; margin-top:0.25rem; display:block;">10 இலக்க இந்திய தொலைபேசி எண்ணை உள்ளிடவும்</small>
           </div>
           <div class="summary-box" id="saveListingSummaryBox">
             <!-- Details populated by JS -->

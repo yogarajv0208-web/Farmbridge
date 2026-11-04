@@ -118,6 +118,8 @@
     quantityInput: document.getElementById("quantityInput"),
     locLabel: document.getElementById("locLabel"),
     locationSelect: document.getElementById("locationSelect"),
+    liveLocationBtn: document.getElementById("liveLocationBtn"),
+    liveLocBtnText: document.getElementById("liveLocBtnText"),
     calculateOffersBtn: document.getElementById("calculateOffersBtn"),
     calculateBtnText: document.getElementById("calculateBtnText"),
 
@@ -241,6 +243,9 @@
     userHeaderAvatar: document.getElementById("userHeaderAvatar"),
     userHeaderName: document.getElementById("userHeaderName"),
     userHeaderRole: document.getElementById("userHeaderRole"),
+    userCreditBadge: document.getElementById("userCreditBadge"),
+    userPointsVal: document.getElementById("userPointsVal"),
+    userPointsLabel: document.getElementById("userPointsLabel"),
     logoutBtn: document.getElementById("logoutBtn"),
     logoutBtnText: document.getElementById("logoutBtnText"),
 
@@ -451,6 +456,75 @@
   }
 
   /**
+   * Live GPS Location Detection and nearest location matching.
+   */
+  function handleDetectLiveLocation() {
+    const isTa = state.lang === "ta";
+    const t = I18N[state.lang];
+
+    if (!navigator.geolocation) {
+      showToast(isTa ? "உங்கள் உலாவியில் GPS ஆதரிக்கப்படவில்லை." : "Geolocation is not supported by your browser.");
+      return;
+    }
+
+    if (DOM.liveLocBtnText) {
+      DOM.liveLocBtnText.textContent = isTa ? "கண்டறிகிறது..." : "Detecting...";
+    }
+    showToast(isTa ? (t.live_loc_detecting || "GPS இருப்பிடம் கண்டறியப்படுகிறது...") : "Detecting live GPS location...");
+
+    // Tamil Nadu Known Hub Coordinates
+    const HUB_COORDINATES = [
+      { code: "tirupporur", lat: 12.7249, lon: 80.1878, name_ta: "திருப்போரூர்", name_en: "Tirupporur" },
+      { code: "chengalpattu", lat: 12.6939, lon: 79.9757, name_ta: "செங்கல்பட்டு", name_en: "Chengalpattu" },
+      { code: "kanchipuram", lat: 12.8342, lon: 79.7036, name_ta: "காஞ்சிபுரம்", name_en: "Kanchipuram" },
+      { code: "tindivanam", lat: 12.2334, lon: 79.6508, name_ta: "திண்டிவனம்", name_en: "Tindivanam" }
+    ];
+
+    navigator.geolocation.getCurrentPosition(
+      (pos) => {
+        const userLat = pos.coords.latitude;
+        const userLon = pos.coords.longitude;
+
+        // Find nearest hub using Euclidean / Haversine distance
+        let nearestHub = HUB_COORDINATES[0];
+        let minDistance = Infinity;
+
+        HUB_COORDINATES.forEach(hub => {
+          const dLat = userLat - hub.lat;
+          const dLon = userLon - hub.lon;
+          const distSq = (dLat * dLat) + (dLon * dLon);
+          if (distSq < minDistance) {
+            minDistance = distSq;
+            nearestHub = hub;
+          }
+        });
+
+        // Set matched location in dropdown
+        DOM.locationSelect.value = nearestHub.code;
+        if (DOM.liveLocBtnText) {
+          DOM.liveLocBtnText.textContent = `📍 ${isTa ? nearestHub.name_ta : nearestHub.name_en}`;
+        }
+
+        const successMsg = isTa
+          ? `📍 நேரடி GPS கண்டறியப்பட்டது: ${nearestHub.name_ta}`
+          : `📍 Live GPS detected nearest hub: ${nearestHub.name_en}`;
+        showToast(successMsg);
+
+        // Recalculate offers with new location
+        runCalculateOffers(false);
+      },
+      (err) => {
+        console.warn("Geolocation lookup error:", err);
+        if (DOM.liveLocBtnText) {
+          DOM.liveLocBtnText.textContent = isTa ? "நேரடி இருப்பிடம்" : "Live GPS";
+        }
+        showToast(isTa ? (t.live_loc_err || "GPS அணுகல் கிடைக்கவில்லை.") : "GPS access unavailable. Please choose location manually.");
+      },
+      { timeout: 10000, enableHighAccuracy: true }
+    );
+  }
+
+  /**
    * Switches active role and view panel.
    */
   function switchRole(role, pushHash = true) {
@@ -552,6 +626,7 @@
     DOM.cropLabel.textContent = t.field_crop;
     DOM.qtyLabel.textContent = t.field_qty;
     DOM.locLabel.textContent = t.field_loc;
+    if (DOM.liveLocBtnText) DOM.liveLocBtnText.textContent = t.btn_live_location || "Live GPS";
     DOM.calculateBtnText.textContent = t.btn_calculate;
 
     // Urgent Clearance Card
@@ -650,6 +725,29 @@
    * Sets up interactive event listeners.
    */
   function setupEventListeners() {
+    // Live Location GPS Detection Button
+    if (DOM.liveLocationBtn) {
+      DOM.liveLocationBtn.addEventListener("click", handleDetectLiveLocation);
+    }
+
+    // Phone input auto-cleanup & validation in Login Portal
+    if (DOM.loginPhoneInput) {
+      DOM.loginPhoneInput.addEventListener("input", () => {
+        let val = DOM.loginPhoneInput.value.replace(/[^0-9]/g, "");
+        if (val.length > 10) val = val.slice(-10);
+        DOM.loginPhoneInput.value = val;
+      });
+    }
+
+    // Farmer Phone Modal Input auto-cleanup
+    if (DOM.farmerPhoneInput) {
+      DOM.farmerPhoneInput.addEventListener("input", () => {
+        let val = DOM.farmerPhoneInput.value.replace(/[^0-9]/g, "");
+        if (val.length > 10) val = val.slice(-10);
+        DOM.farmerPhoneInput.value = val;
+      });
+    }
+
     // Role Switcher Tabs
     DOM.tabFarmer.addEventListener("click", () => switchRole("farmer"));
     DOM.tabBuyer.addEventListener("click", () => switchRole("buyer"));
@@ -852,8 +950,22 @@
       DOM.userHeaderAvatar.textContent = roleIcons[user.role] || "🌾";
     }
     if (DOM.userHeaderRole) {
-      const phoneFormatted = user.phone ? `+91 ${user.phone.slice(-10)}` : "";
+      const phoneDigits = (user.phone || "").replace(/[^0-9]/g, "");
+      const phoneFormatted = phoneDigits.length >= 10 ? `+91 ${phoneDigits.slice(-10)}` : (user.phone ? `+91 ${user.phone}` : "");
       DOM.userHeaderRole.textContent = `${roleText[user.role] || user.role} (${phoneFormatted})`;
+    }
+
+    // Dynamic Trust & Credit Points display
+    if (DOM.userCreditBadge) {
+      const userPoints = user.creditPoints !== undefined
+        ? user.creditPoints
+        : (user.role === "buyer" ? 180 : 120);
+      if (DOM.userPointsVal) DOM.userPointsVal.textContent = userPoints;
+      if (DOM.userPointsLabel) {
+        DOM.userPointsLabel.textContent = isTa
+          ? (user.role === "buyer" ? "கொள்முதல் புள்ளிகள் (Buyer Credits)" : "நம்பகப் புள்ளிகள் (Trust Points)")
+          : (user.role === "buyer" ? "Buyer Credits" : "Trust Points");
+      }
     }
   }
 
@@ -1866,6 +1978,12 @@
               <span class="rating-stars">★ ${b.rating}</span>
               <span style="color: var(--text-muted);">(${b.review_count} ${isTa ? "விமர்சனங்கள்" : "reviews"})</span>
             </div>
+            <div class="meta-item" style="display: flex; align-items: center; gap: 0.35rem;">
+              <span>🏆</span>
+              <span style="font-weight: 700; color: #92400e; background: #fef3c7; border: 1px solid #fcd34d; padding: 0.1rem 0.45rem; border-radius: 8px; font-size: 0.75rem;">
+                ${Math.round((b.rating || 4.5) * 40)} ${isTa ? "நம்பக புள்ளிகள் (Buyer Credits)" : "Buyer Trust Credits"}
+              </span>
+            </div>
             <div class="meta-item">
               <span>⚡</span>
               <span>${payment}</span>
@@ -2263,6 +2381,9 @@
           <div>
             <span style="color: var(--text-muted);">${isTa ? "விவசாயி:" : "Farmer:"}</span>
             <div style="font-weight: 600;">${item.farmer_name || (isTa ? "உழவர்" : "Farmer")}</div>
+            <span style="display:inline-block; margin-top:2px; font-size:0.7rem; font-weight:700; color:#92400e; background:#fef3c7; border:1px solid #fcd34d; padding:0.05rem 0.35rem; border-radius:6px;">
+              ⭐ 120 ${isTa ? "நம்பக புள்ளிகள் (Farmer Trust)" : "Trust Points"}
+            </span>
           </div>
           <div>
             <span style="color: var(--text-muted);">${isTa ? "ஊர்:" : "Location:"}</span>

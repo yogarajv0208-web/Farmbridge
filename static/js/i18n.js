@@ -190,7 +190,15 @@ const I18N = {
     login_err_cred_invalid: "தயவுசெய்து பயனர் பெயர் மற்றும் கடவுச்சொல்லை உள்ளிடவும்.",
     login_success_toast: "வெற்றிகரமாக உள்நுழைந்துள்ளீர்கள்! நல்வரவு!",
     logout_btn: "வெளியேறு",
-    logout_toast: "வெற்றிகரமாக வெளியேறிவிட்டீர்கள்."
+    logout_toast: "வெற்றிகரமாக வெளியேறிவிட்டீர்கள்.",
+
+    // Live Location & Credit Points
+    btn_live_location: "நேரடி இருப்பிடம் (Live GPS)",
+    live_loc_detecting: "GPS இருப்பிடம் கண்டறியப்படுகிறது...",
+    live_loc_success: "📍 இருப்பிடம் கண்டறியப்பட்டது: {loc}",
+    live_loc_err: "GPS அணுகல் கிடைக்கவில்லை. உங்கள் ஊரைத் தேர்ந்தெடுக்கவும்.",
+    trust_points_label: "நம்பகப் புள்ளிகள் (Trust Points)",
+    trust_feedback_label: "நம்பகத்தன்மை & உடனடி பட்டுவாடா"
   },
 
   en: {
@@ -380,7 +388,15 @@ const I18N = {
     login_err_cred_invalid: "Please enter username and password.",
     login_success_toast: "Logged in successfully! Welcome to FarmBridge!",
     logout_btn: "Logout",
-    logout_toast: "You have been logged out."
+    logout_toast: "You have been logged out.",
+
+    // Live Location & Credit Points
+    btn_live_location: "Live GPS",
+    live_loc_detecting: "Detecting GPS location...",
+    live_loc_success: "📍 Location matched: {loc}",
+    live_loc_err: "Could not access GPS. Please choose location manually.",
+    trust_points_label: "Trust Points",
+    trust_feedback_label: "Trust & On-time Feedback"
   }
 };
 
