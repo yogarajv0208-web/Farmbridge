@@ -1,4 +1,4 @@
- """
+"""
 Unit tests for FarmBridge prototype.
 Uses standard library unittest.
 Covers:
@@ -203,8 +203,17 @@ class TestDatabaseAndOffers(unittest.TestCase):
                 "mandi" in buyer_type or "aggregator" in buyer_type or "collective" in buyer_type or "market" in buyer_type
             )
 
+    def test_urgent_mode_lowest_offer_is_min_net(self):
+        """Urgent mode must pick the minimum net_amount for lowest_offer."""
+        conn = get_connection(self.temp_db_path)
+        for crop, loc in [("paddy", "tirupporur"), ("sugarcane", "chengalpattu"), ("tomato", "tirupporur")]:
+            res = get_offers_for_farmer(crop, 2000, loc, db_conn=conn, is_urgent=True, discount_pct=10.0)
+            min_net = min(o["net_amount"] for o in res["offers"])
+            self.assertEqual(res["lowest_offer"]["net_amount"], min_net)
+            self.assertGreaterEqual(res["advantage_over_lowest"], 0.0)
+        conn.close()
 
-@unittest.skip("Skipping server tests in sandbox")
+
 class TestServerAPI(unittest.TestCase):
     """End-to-end integration tests for HTTP server and REST endpoints."""
 

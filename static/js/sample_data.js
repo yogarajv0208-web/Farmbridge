@@ -454,8 +454,8 @@ function calculateOffersOffline(cropCode, quantityKg, locationCode, isUrgent = f
   if (offers.length > 0) {
     offers[0].is_best_offer = true;
     best = offers[0];
-    lowest = offers[offers.length - 1];
-    diff = Math.round((best.net_amount - lowest.net_amount) * 100) / 100;
+    lowest = offers.reduce((min, o) => (o.net_amount < min.net_amount ? o : min), offers[0]);
+    diff = Math.max(0, Math.round((best.net_amount - lowest.net_amount) * 100) / 100);
   }
 
   return {

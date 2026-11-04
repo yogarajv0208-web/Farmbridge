@@ -21,6 +21,7 @@ def calculate_transport_cost(distance_km: float, quantity_kg: float) -> float:
 
 def format_price(amount: float) -> str:
     """Formats price per kg: decimals if under ₹10, clean format otherwise."""
+    amount = float(amount)
     if amount < 10.0:
         return f"₹{amount:.2f}"
     if amount.is_integer():
@@ -186,8 +187,8 @@ def get_offers_for_farmer(crop_code: str, quantity_kg: float, location: str, db_
     if offers:
         offers[0]["is_best_offer"] = True
         best_offer = offers[0]
-        lowest_offer = offers[-1]
-        advantage_over_lowest = round(best_offer["net_amount"] - lowest_offer["net_amount"], 2)
+        lowest_offer = min(offers, key=lambda x: x["net_amount"])
+        advantage_over_lowest = max(0.0, round(best_offer["net_amount"] - lowest_offer["net_amount"], 2))
         advantage_formatted = format_currency(advantage_over_lowest)
 
     if close_at_end:
