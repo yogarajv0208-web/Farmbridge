@@ -563,6 +563,40 @@
     </div>
   </div>
 
+  <!-- LIVE LOCATION & DISPATCHED VEHICLE TRACKING MODAL -->
+  <div id="liveTrackingModal" class="modal-overlay hidden" role="dialog" aria-modal="true" aria-labelledby="trackingModalTitle">
+    <div class="modal-card" style="max-width: 720px; width: 95%;">
+      <div class="modal-header" style="background: var(--green-900); color: #fff; border-radius: var(--radius-lg) var(--radius-lg) 0 0; padding: 1rem 1.25rem;">
+        <div style="display: flex; align-items: center; gap: 0.6rem;">
+          <span style="font-size: 1.5rem;">🛰️</span>
+          <div>
+            <h3 id="trackingModalTitle" class="modal-title" style="color: #fff; font-size: 1.1rem; margin: 0;">நேரடி இருப்பிடம் & லாரி கண்காணிப்பு (Live GPS & Vehicle Tracker)</h3>
+            <p id="trackingModalSub" style="font-size: 0.78rem; color: #bbf7d0; margin: 0;">விவசாயி ➔ அனுப்பப்பட்ட வாகனம் ➔ வாங்குபவர் மண்டி நேரடி வழித்தடம்</p>
+          </div>
+        </div>
+        <button id="closeTrackingModalBtn" class="close-btn" style="color: #fff;" aria-label="Close modal">&times;</button>
+      </div>
+      <div class="modal-body" style="padding: 1.25rem;">
+        <div id="liveTrackingBody">
+          <!-- Populated dynamically by JS -->
+        </div>
+        <div class="modal-actions" style="margin-top: 1rem; display: flex; justify-content: space-between; flex-wrap: wrap; gap: 0.5rem;">
+          <div style="display: flex; gap: 0.5rem; flex-wrap: wrap;">
+            <button type="button" id="simulateVehicleMoveBtn" class="btn btn-turmeric">
+              <span>🚚</span>
+              <span id="simMoveBtnText">வாகன நகர்வை உருவகப்படுத்து (Simulate Live Move)</span>
+            </button>
+            <a id="openGoogleMapsLink" href="https://www.google.com/maps" target="_blank" rel="noopener noreferrer" class="btn btn-outline" style="text-decoration: none; display: inline-flex; align-items: center; gap: 0.35rem;">
+              <span>🗺️</span>
+              <span id="googleMapsBtnText">Google Maps வழித்தடம்</span>
+            </a>
+          </div>
+          <button type="button" id="closeTrackingBtn" class="btn btn-outline">மூடு (Close)</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <!-- TOAST NOTIFICATION -->
   <div id="toastMessage" class="toast hidden" role="status" aria-live="polite"></div>
 

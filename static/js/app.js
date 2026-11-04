@@ -228,6 +228,18 @@
     printReceiptBtn: document.getElementById("printReceiptBtn"),
     printReceiptBtnText: document.getElementById("printReceiptBtnText"),
 
+    // Live Location & Vehicle Tracking Modal
+    liveTrackingModal: document.getElementById("liveTrackingModal"),
+    trackingModalTitle: document.getElementById("trackingModalTitle"),
+    trackingModalSub: document.getElementById("trackingModalSub"),
+    closeTrackingModalBtn: document.getElementById("closeTrackingModalBtn"),
+    liveTrackingBody: document.getElementById("liveTrackingBody"),
+    simulateVehicleMoveBtn: document.getElementById("simulateVehicleMoveBtn"),
+    simMoveBtnText: document.getElementById("simMoveBtnText"),
+    openGoogleMapsLink: document.getElementById("openGoogleMapsLink"),
+    googleMapsBtnText: document.getElementById("googleMapsBtnText"),
+    closeTrackingBtn: document.getElementById("closeTrackingBtn"),
+
     // Toast & Footer
     toastMessage: document.getElementById("toastMessage"),
     footerNoticeText: document.getElementById("footerNoticeText"),
@@ -900,6 +912,11 @@
     if (DOM.closeCertBtn) DOM.closeCertBtn.addEventListener("click", closePhotoCertificateModal);
     if (DOM.downloadCertBtn) DOM.downloadCertBtn.addEventListener("click", handleDownloadCertificate);
 
+    // Live Location & Dispatched Vehicle Tracking Modal
+    if (DOM.closeTrackingModalBtn) DOM.closeTrackingModalBtn.addEventListener("click", closeLiveTrackingModal);
+    if (DOM.closeTrackingBtn) DOM.closeTrackingBtn.addEventListener("click", closeLiveTrackingModal);
+    if (DOM.simulateVehicleMoveBtn) DOM.simulateVehicleMoveBtn.addEventListener("click", handleSimulateVehicleMovement);
+
     // Form submit for Save Listing
     DOM.saveListingForm.addEventListener("submit", handleSaveListingSubmit);
 
@@ -909,6 +926,7 @@
       if (e.target === DOM.savedListingsModal) closeSavedListingsModal();
       if (e.target === DOM.receiptModal) closeReceiptModal();
       if (e.target === DOM.photoCertificateModal) closePhotoCertificateModal();
+      if (e.target === DOM.liveTrackingModal) closeLiveTrackingModal();
     });
 
     // Keyboard accessibility: Escape closes modals
@@ -918,6 +936,7 @@
         closeSavedListingsModal();
         closeReceiptModal();
         closePhotoCertificateModal();
+        closeLiveTrackingModal();
       }
     });
   }
@@ -2012,6 +2031,9 @@
             <span>🤝</span>
             <span>${t.btn_deal_done}</span>
           </button>
+          <button class="btn btn-outline track-buyer-loc-btn" title="${isTa ? 'வாங்குபவர் & வழித்தடத்தை கண்காணி' : 'Track Buyer & Farmer Location'}" aria-label="Track Buyer Location">
+            <span>🛰️</span>
+          </button>
           <button class="btn btn-outline contact-buyer-btn" data-phone="${b.phone || ''}" aria-label="Call buyer">
             <span>📞</span>
           </button>
@@ -2020,6 +2042,20 @@
 
       // Accept deal action
       card.querySelector(".accept-deal-btn").addEventListener("click", () => handleAcceptDeal(b));
+
+      // Track buyer & farmer location action
+      card.querySelector(".track-buyer-loc-btn").addEventListener("click", () => {
+        openLiveTrackingModal({
+          id: "PREVIEW",
+          buyer_code: b.buyer_code,
+          buyer_name: isTa ? b.name_ta : b.name_en,
+          crop_code: DOM.cropSelect.value || "paddy",
+          quantity_kg: parseFloat(DOM.quantityInput.value) || 2000,
+          farmer_location: DOM.locationSelect.value || "tirupporur",
+          distance_km: b.distance_km || 30,
+          status: "truck_dispatched"
+        });
+      });
 
       // Contact buyer action
       card.querySelector(".contact-buyer-btn").addEventListener("click", () => {
@@ -2404,10 +2440,26 @@
             <span>🤝</span>
             <span>${t.btn_procure_lot}</span>
           </button>
+          <button class="btn btn-outline track-farmer-loc-btn" title="${isTa ? 'விவசாயி இருப்பிடம் & வழித்தடம்' : 'Track Farmer Location & Route'}">
+            <span>🛰️</span>
+            <span>${isTa ? "இருப்பிடம்" : "Track GPS"}</span>
+          </button>
         </div>
       `;
 
       card.querySelector(".procure-lot-btn").addEventListener("click", () => handleProcureLot(item));
+      card.querySelector(".track-farmer-loc-btn").addEventListener("click", () => {
+        openLiveTrackingModal({
+          id: item.id || "LOT",
+          buyer_code: item.best_buyer_code || "tn_civil_supplies_dpc",
+          buyer_name: item.best_buyer_name || (isTa ? "நேரடி கொள்முதல் மையம்" : "Procurement Hub"),
+          farmer_name: item.farmer_name || (isTa ? "உழவர் முருகன்" : "Farmer Murugan"),
+          crop_code: item.crop_code || "paddy",
+          quantity_kg: item.quantity_kg || 2000,
+          farmer_location: item.location || "tirupporur",
+          status: "truck_dispatched"
+        });
+      });
       grid.appendChild(card);
     });
   }
@@ -2627,11 +2679,58 @@
         <!-- 4-Stage Pipeline Tracker -->
         ${pipelineHtml}
 
+        <!-- Live Farmer, Buyer & Dispatched Vehicle GPS Strip -->
+        ${(() => {
+          const tInfo = getTrackingTelemetry(deal);
+          return `
+            <div class="live-gps-deal-strip" style="background: var(--bg-primary); border: 1.5px solid var(--border-color); border-radius: var(--radius-md); padding: 0.85rem 1rem; margin-top: 0.75rem;">
+              <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 0.5rem; margin-bottom: 0.6rem;">
+                <div style="display: flex; align-items: center; gap: 0.45rem;">
+                  <span style="display: inline-block; width: 9px; height: 9px; border-radius: 50%; background: #16a34a; box-shadow: 0 0 0 3px rgba(22,163,74,0.25);"></span>
+                  <strong style="font-size: 0.85rem; color: var(--green-900);">
+                    🛰️ ${isTa ? "நேரடி இருப்பிடம் & வாகன கண்காணிப்பு (Live GPS Tracker)" : "Live Farmer • Vehicle • Buyer Location Tracker"}
+                  </strong>
+                </div>
+                <span style="font-size: 0.75rem; font-weight: 700; background: #e0f2fe; color: #0369a1; padding: 0.15rem 0.55rem; border-radius: 999px; border: 1px solid #bae6fd;">
+                  🚚 ${tInfo.vehicleNo} • ${tInfo.progressPct}% (${isTa ? tInfo.checkpointTa : tInfo.checkpointEn})
+                </span>
+              </div>
+
+              <!-- Progress Bar between Farmer and Buyer -->
+              <div style="position: relative; height: 8px; background: #e2e8f0; border-radius: 999px; margin: 0.65rem 0; overflow: hidden;">
+                <div style="width: ${tInfo.progressPct}%; height: 100%; background: linear-gradient(90deg, #16a34a, #f59e0b); border-radius: 999px; transition: width 0.4s ease;"></div>
+              </div>
+
+              <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 0.6rem; font-size: 0.78rem;">
+                <div style="background: var(--bg-card); padding: 0.45rem 0.65rem; border-radius: 8px; border: 1px solid var(--border-color);">
+                  <div style="color: var(--text-muted); font-size: 0.7rem;">🌾 ${isTa ? "விவசாயி இருப்பிடம் (Farmer Location):" : "Farmer Pickup Location:"}</div>
+                  <div style="font-weight: 700; color: var(--text-primary);">${isTa ? tInfo.farmerLocTa : tInfo.farmerLocEn}</div>
+                  <div style="font-family: monospace; font-size: 0.7rem; color: var(--green-700);">📍 ${tInfo.farmerLat.toFixed(4)}° N, ${tInfo.farmerLon.toFixed(4)}° E</div>
+                </div>
+                <div style="background: var(--bg-card); padding: 0.45rem 0.65rem; border-radius: 8px; border: 1.5px solid #fcd34d;">
+                  <div style="color: #92400e; font-size: 0.7rem; font-weight: 700;">🚚 ${isTa ? "அனுப்பப்பட்ட வாகனம் (Dispatched Vehicle):" : "Dispatched Vehicle Live GPS:"}</div>
+                  <div style="font-weight: 700; color: var(--text-primary);">${isTa ? tInfo.checkpointTa : tInfo.checkpointEn}</div>
+                  <div style="font-family: monospace; font-size: 0.7rem; color: #b45309;">🛰️ ${tInfo.vehicleLat.toFixed(4)}° N, ${tInfo.vehicleLon.toFixed(4)}° E • ${tInfo.speedKmh} km/h</div>
+                </div>
+                <div style="background: var(--bg-card); padding: 0.45rem 0.65rem; border-radius: 8px; border: 1px solid var(--border-color);">
+                  <div style="color: var(--text-muted); font-size: 0.7rem;">🏢 ${isTa ? "வாங்குபவர் இருப்பிடம் (Buyer Location):" : "Buyer Mandi Location:"}</div>
+                  <div style="font-weight: 700; color: var(--text-primary);">${isTa ? tInfo.buyerLocTa : tInfo.buyerLocEn}</div>
+                  <div style="font-family: monospace; font-size: 0.7rem; color: var(--green-700);">📍 ${tInfo.buyerLat.toFixed(4)}° N, ${tInfo.buyerLon.toFixed(4)}° E</div>
+                </div>
+              </div>
+            </div>
+          `;
+        })()}
+
         <div class="deal-actions-bar" style="display: flex; justify-content: space-between; align-items: center; gap: 0.5rem; margin-top: 1rem; flex-wrap: wrap;">
-          <div style="display: flex; gap: 0.5rem; align-items: center;">
+          <div style="display: flex; gap: 0.5rem; align-items: center; flex-wrap: wrap;">
             <button class="btn btn-outline view-receipt-btn" data-id="${deal.id}">
               <span>📄</span>
               <span>${t.btn_view_receipt}</span>
+            </button>
+            <button class="btn btn-outline track-deal-gps-btn" data-id="${deal.id}" style="border-color: var(--green-600); color: var(--green-800); font-weight: 700;">
+              <span>🛰️</span>
+              <span>${isTa ? "நேரடி வாகனம் & வரைபடம் (Live Map)" : "Track Live Vehicle & Locations"}</span>
             </button>
             <span class="sim-badge" style="font-size: 0.65rem;">${t.tag_simulated_deal}</span>
           </div>
@@ -2649,6 +2748,12 @@
 
       // Event listener for View Receipt
       card.querySelector(".view-receipt-btn").addEventListener("click", () => openReceiptModal(deal));
+
+      // Event listener for Live GPS & Vehicle Tracker Modal
+      const trackBtn = card.querySelector(".track-deal-gps-btn");
+      if (trackBtn) {
+        trackBtn.addEventListener("click", () => openLiveTrackingModal(deal));
+      }
 
       container.appendChild(card);
     });
@@ -2836,6 +2941,251 @@
 
   function closeReceiptModal() {
     DOM.receiptModal.classList.add("hidden");
+  }
+
+  // Active tracking state for modal simulation
+  let activeTrackingDeal = null;
+  let activeTrackingProgress = null;
+
+  /**
+   * Computes Farmer GPS, Buyer GPS, and Live Dispatched Vehicle GPS + Route Telemetry.
+   */
+  function getTrackingTelemetry(deal, overrideProgressPct = null) {
+    const FARMER_HUBS = {
+      tirupporur: { lat: 12.7249, lon: 80.1878, en: "Tirupporur Farm Hub", ta: "திருப்போரூர் விவசாயப் பகுதி" },
+      chengalpattu: { lat: 12.6939, lon: 79.9757, en: "Chengalpattu Collection Hub", ta: "செங்கல்பட்டு வேளாண் மையம்" },
+      kanchipuram: { lat: 12.8342, lon: 79.7036, en: "Kanchipuram Ayacut Hub", ta: "காஞ்சிபுரம் விவசாய மையம்" },
+      tindivanam: { lat: 12.2334, lon: 79.6508, en: "Tindivanam Agro Cluster", ta: "திண்டிவனம் விவசாயப் பகுதி" }
+    };
+
+    const BUYER_HUBS = {
+      kanchi_ponni_rice_mill: { lat: 12.8385, lon: 79.7120, en: "Kanchi Ponni Modern Rice Mill (Kanchipuram)", ta: "காஞ்சி பொன்னி நவீன அரிசி ஆலை (காஞ்சிபுரம்)" },
+      tn_civil_supplies_dpc: { lat: 12.7012, lon: 79.9815, en: "TN Civil Supplies DPC (Chengalpattu)", ta: "நேரடி நெல் கொள்முதல் நிலையம் - DPC (செங்கல்பட்டு)" },
+      tirupporur_grain_traders: { lat: 12.7310, lon: 80.1912, en: "Tirupporur Uzhavar Grain Traders", ta: "திருப்போரூர் உழவர் தானிய வியாபாரி" },
+      tindivanam_lakshmi_mill: { lat: 12.2410, lon: 79.6590, en: "Tindivanam Lakshmi Agro Rice Mill", ta: "திண்டிவனம் லக்ஷ்மி அரிசி ஆலை" },
+      maduranthakam_delta_traders: { lat: 12.5105, lon: 79.8860, en: "Maduranthakam Delta Agro Traders", ta: "மதுராந்தகம் டெல்டா அக்ரோ டிரேடர்ஸ்" },
+      padalam_sugar_mills: { lat: 12.5920, lon: 79.9410, en: "Padalam Cooperative Sugar Mills", ta: "படாளம் கூட்டுறவு சர்க்கரை ஆலை" },
+      cheyyar_coop_sugar_mill: { lat: 12.6620, lon: 79.5430, en: "Cheyyar Co-op Sugar Mill", ta: "செய்யாறு கூட்டுறவு சர்க்கரை ஆலை" },
+      tirupporur_nattu_sakkarai: { lat: 12.7190, lon: 80.1810, en: "Tirupporur Jaggery & Cane Unit", ta: "திருப்போரூர் நாட்டுச் சர்க்கரை ஆலை" },
+      tindivanam_cane_cluster: { lat: 12.2290, lon: 79.6450, en: "Tindivanam Organic Cane Cluster", ta: "திண்டிவனம் கரும்பு & வெல்ல மையம்" },
+      kanchi_bio_sugar: { lat: 12.8280, lon: 79.6950, en: "Kanchi Bio-Cane Processing", ta: "காஞ்சி பயோ கரும்பு ஆலை" },
+      chengalpattu_uzhavar_aggregator: { lat: 12.6895, lon: 79.9802, en: "Chengalpattu Uzhavar Sandhai Aggregator", ta: "செங்கல்பட்டு உழவர் சந்தை மொத்த கொள்முதல்" },
+      koyambedu_kanchi_hub: { lat: 12.8420, lon: 79.7180, en: "Koyambedu Wholesale - Kanchi Hub", ta: "கோயம்பேடு மொத்த விற்பனை - காஞ்சி மையம்" },
+      tirupporur_green_mandi: { lat: 12.7285, lon: 80.1895, en: "Tirupporur Green Veg Mandi", ta: "திருப்போரூர் பசுமை காய்கறி மண்டி" },
+      tindivanam_highway_mandi: { lat: 12.2380, lon: 79.6540, en: "Tindivanam Highway Veg Terminal", ta: "திண்டிவனம் நெடுஞ்சாலை காய்கறி முனையம்" }
+    };
+
+    const locKey = (deal.farmer_location || "tirupporur").toLowerCase();
+    const farmerHub = FARMER_HUBS[locKey] || FARMER_HUBS.tirupporur;
+    const buyerHub = BUYER_HUBS[deal.buyer_code] || {
+      lat: 12.6939,
+      lon: 79.9757,
+      en: deal.buyer_name || "Buyer Procurement Hub",
+      ta: deal.buyer_name || "வாங்குபவர் கொள்முதல் நிலையம்"
+    };
+
+    let progressPct = 62;
+    if (overrideProgressPct !== null) {
+      progressPct = overrideProgressPct;
+    } else if (deal.live_progress !== undefined) {
+      progressPct = deal.live_progress;
+    } else if (deal.status === "confirmed") {
+      progressPct = 15;
+    } else if (deal.status === "truck_dispatched") {
+      progressPct = 62;
+    } else if (deal.status === "quality_inspected" || deal.status === "payment_completed") {
+      progressPct = 100;
+    }
+
+    const ratio = Math.max(0, Math.min(100, progressPct)) / 100;
+    const vehicleLat = farmerHub.lat + (buyerHub.lat - farmerHub.lat) * ratio;
+    const vehicleLon = farmerHub.lon + (buyerHub.lon - farmerHub.lon) * ratio;
+
+    let checkpointEn = "En Route via NH-45 GST Highway";
+    let checkpointTa = "NH-45 தேசிய நெடுஞ்சாலை வழியாகப் பயணத்தில்";
+    let speedKmh = 48;
+
+    if (progressPct <= 15) {
+      checkpointEn = `Loading at ${farmerHub.en}`;
+      checkpointTa = `${farmerHub.ta} பண்ணையில் ஏற்றப்படுகிறது`;
+      speedKmh = 0;
+    } else if (progressPct < 45) {
+      checkpointEn = "Crossing State Highway Checkpost (SH-49A)";
+      checkpointTa = "மாநில நெடுஞ்சாலை சோதனைச் சாவடியைக் கடக்கிறது (SH-49A)";
+      speedKmh = 44;
+    } else if (progressPct < 80) {
+      checkpointEn = "In Transit near NH-45 / Singaperumal Koil Bypass";
+      checkpointTa = "NH-45 சிங்கப்பெருமாள் கோவில் புறவழிச்சாலை அருகில்";
+      speedKmh = 52;
+    } else if (progressPct < 100) {
+      checkpointEn = "Approaching Buyer Mandi Weighbridge";
+      checkpointTa = "வாங்குபவர் மண்டி எடை மேடையை நெருங்குகிறது";
+      speedKmh = 28;
+    } else {
+      checkpointEn = "Arrived at Buyer Procurement Centre";
+      checkpointTa = "வாங்குபவர் கொள்முதல் நிலையத்தை அடைந்தது";
+      speedKmh = 0;
+    }
+
+    const idSuffix = String(deal.id || 4589).slice(-4).padStart(4, "4");
+    const vehicleNo = `TN-21-AX-${idSuffix}`;
+
+    return {
+      farmerLocEn: farmerHub.en,
+      farmerLocTa: farmerHub.ta,
+      farmerLat: farmerHub.lat,
+      farmerLon: farmerHub.lon,
+      buyerLocEn: buyerHub.en,
+      buyerLocTa: buyerHub.ta,
+      buyerLat: buyerHub.lat,
+      buyerLon: buyerHub.lon,
+      vehicleNo,
+      driverNameEn: "Murugesan K (Heavy Lorry Driver)",
+      driverNameTa: "முருகேசன் கே (லாரி ஓட்டுநர்)",
+      driverPhone: "+91 94430 55112",
+      vehicleLat,
+      vehicleLon,
+      progressPct,
+      checkpointEn,
+      checkpointTa,
+      speedKmh
+    };
+  }
+
+  /**
+   * Opens the Live Location & Dispatched Vehicle Tracking Modal.
+   */
+  function openLiveTrackingModal(deal) {
+    activeTrackingDeal = deal;
+    activeTrackingProgress = deal.live_progress !== undefined ? deal.live_progress : null;
+    renderTrackingModalContent();
+    if (DOM.liveTrackingModal) {
+      DOM.liveTrackingModal.classList.remove("hidden");
+    }
+  }
+
+  function renderTrackingModalContent() {
+    if (!activeTrackingDeal || !DOM.liveTrackingBody) return;
+    const isTa = state.lang === "ta";
+    const tInfo = getTrackingTelemetry(activeTrackingDeal, activeTrackingProgress);
+
+    if (DOM.trackingModalTitle) {
+      DOM.trackingModalTitle.textContent = isTa
+        ? "🛰️ நேரடி இருப்பிடம் & அனுப்பப்பட்ட வாகன கண்காணிப்பு"
+        : "🛰️ Live Farmer • Dispatched Vehicle • Buyer GPS Tracker";
+    }
+    if (DOM.simMoveBtnText) {
+      DOM.simMoveBtnText.textContent = isTa
+        ? "வாகன நகர்வை உருவகப்படுத்து (Move Truck +20%)"
+        : "Simulate Live Vehicle Move (+20%)";
+    }
+    if (DOM.openGoogleMapsLink) {
+      DOM.openGoogleMapsLink.href = `https://www.google.com/maps/dir/?api=1&origin=${tInfo.farmerLat},${tInfo.farmerLon}&destination=${tInfo.buyerLat},${tInfo.buyerLon}&travelmode=driving`;
+    }
+
+    DOM.liveTrackingBody.innerHTML = `
+      <!-- Visual Route Map Canvas -->
+      <div style="background: linear-gradient(135deg, #0f291e 0%, #143d29 100%); color: #fff; border-radius: var(--radius-md); padding: 1.25rem; position: relative; overflow: hidden; border: 2px solid #22c55e;">
+        <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 0.5rem; margin-bottom: 1rem;">
+          <span style="background: rgba(34,197,94,0.2); border: 1px solid #4ade80; color: #bbf7d0; padding: 0.2rem 0.65rem; border-radius: 999px; font-size: 0.75rem; font-weight: 700;">
+            🟢 LIVE GPS TELEMETRY • ${tInfo.vehicleNo}
+          </span>
+          <span style="font-family: monospace; font-size: 0.8rem; color: #fde047;">
+            🛰️ Vehicle Lat/Lon: ${tInfo.vehicleLat.toFixed(4)}° N, ${tInfo.vehicleLon.toFixed(4)}° E (${tInfo.speedKmh} km/h)
+          </span>
+        </div>
+
+        <!-- Visual Highway Track with Farmer, Moving Truck, and Buyer -->
+        <div style="position: relative; padding: 1.8rem 0.5rem 1.2rem 0.5rem; margin: 0.5rem 0;">
+          <!-- Dashed Highway Line -->
+          <div style="height: 10px; background: rgba(255,255,255,0.18); border-radius: 999px; position: relative;">
+            <div style="width: ${tInfo.progressPct}%; height: 100%; background: linear-gradient(90deg, #4ade80, #facc15); border-radius: 999px; transition: width 0.35s ease;"></div>
+          </div>
+
+          <!-- Moving Dispatched Vehicle Marker -->
+          <div style="position: absolute; top: 4px; left: calc(${Math.min(92, Math.max(6, tInfo.progressPct))}% - 22px); transition: left 0.35s ease; text-align: center;">
+            <div style="background: #facc15; color: #142416; font-weight: 800; font-size: 0.72rem; padding: 0.15rem 0.45rem; border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.4); white-space: nowrap;">
+              🚚 ${tInfo.progressPct}%
+            </div>
+          </div>
+
+          <div style="display: flex; justify-content: space-between; margin-top: 0.75rem; font-size: 0.8rem;">
+            <div>
+              <div style="color: #86efac; font-weight: 700;">🌾 ${isTa ? "விவசாயி (Farmer Origin)" : "Farmer Pickup"}</div>
+              <div>${isTa ? tInfo.farmerLocTa : tInfo.farmerLocEn}</div>
+              <div style="font-family: monospace; font-size: 0.72rem; color: #cbd5e1;">${tInfo.farmerLat.toFixed(4)}°N, ${tInfo.farmerLon.toFixed(4)}°E</div>
+            </div>
+            <div style="text-align: right;">
+              <div style="color: #fde047; font-weight: 700;">🏢 ${isTa ? "வாங்குபவர் மண்டி (Buyer)" : "Buyer Destination"}</div>
+              <div>${isTa ? tInfo.buyerLocTa : tInfo.buyerLocEn}</div>
+              <div style="font-family: monospace; font-size: 0.72rem; color: #cbd5e1;">${tInfo.buyerLat.toFixed(4)}°N, ${tInfo.buyerLon.toFixed(4)}°E</div>
+            </div>
+          </div>
+        </div>
+
+        <div style="background: rgba(0,0,0,0.35); padding: 0.6rem 0.85rem; border-radius: 8px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 0.5rem; font-size: 0.82rem;">
+          <div>
+            <strong>📍 ${isTa ? "தற்போதைய வாகன இருப்பிடம்:" : "Current Dispatched Vehicle Location:"}</strong>
+            <span style="color: #fef08a; margin-left: 0.35rem;">${isTa ? tInfo.checkpointTa : tInfo.checkpointEn}</span>
+          </div>
+          <div>
+            👨‍✈️ ${isTa ? tInfo.driverNameTa : tInfo.driverNameEn} • <a href="tel:${tInfo.driverPhone}" style="color: #4ade80; font-weight: 700;">${tInfo.driverPhone}</a>
+          </div>
+        </div>
+      </div>
+
+      <!-- 3-Column Detailed Location Cards -->
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 0.75rem; margin-top: 1rem;">
+        <div style="background: var(--bg-primary); border: 1.5px solid var(--border-color); border-radius: var(--radius-md); padding: 0.85rem;">
+          <div style="font-size: 0.75rem; color: var(--text-muted); font-weight: 700;">🌾 ${isTa ? "1. விவசாயி இருப்பிடம்" : "1. FARMER LOCATION"}</div>
+          <div style="font-weight: 800; font-size: 0.95rem; margin-top: 0.25rem; color: var(--green-900);">${isTa ? tInfo.farmerLocTa : tInfo.farmerLocEn}</div>
+          <div style="font-family: monospace; font-size: 0.78rem; color: var(--green-700); margin-top: 0.25rem;">GPS: ${tInfo.farmerLat.toFixed(4)}, ${tInfo.farmerLon.toFixed(4)}</div>
+          <div style="font-size: 0.75rem; color: var(--text-muted); margin-top: 0.25rem;">${isTa ? "புறப்படும் இடம் உறுதி செய்யப்பட்டது" : "Verified Pickup Coordinates"}</div>
+        </div>
+
+        <div style="background: #fffbeb; border: 1.5px solid #fcd34d; border-radius: var(--radius-md); padding: 0.85rem;">
+          <div style="font-size: 0.75rem; color: #92400e; font-weight: 700;">🚚 ${isTa ? "2. அனுப்பப்பட்ட வாகன இருப்பிடம்" : "2. DISPATCHED VEHICLE LIVE"}</div>
+          <div style="font-weight: 800; font-size: 0.95rem; margin-top: 0.25rem; color: #78350f;">${tInfo.vehicleNo} (${tInfo.speedKmh} km/h)</div>
+          <div style="font-family: monospace; font-size: 0.78rem; color: #b45309; margin-top: 0.25rem;">GPS: ${tInfo.vehicleLat.toFixed(4)}, ${tInfo.vehicleLon.toFixed(4)}</div>
+          <div style="font-size: 0.75rem; color: #92400e; margin-top: 0.25rem;">${isTa ? tInfo.checkpointTa : tInfo.checkpointEn}</div>
+        </div>
+
+        <div style="background: var(--bg-primary); border: 1.5px solid var(--border-color); border-radius: var(--radius-md); padding: 0.85rem;">
+          <div style="font-size: 0.75rem; color: var(--text-muted); font-weight: 700;">🏢 ${isTa ? "3. வாங்குபவர் இருப்பிடம்" : "3. BUYER DESTINATION"}</div>
+          <div style="font-weight: 800; font-size: 0.95rem; margin-top: 0.25rem; color: var(--green-900);">${isTa ? tInfo.buyerLocTa : tInfo.buyerLocEn}</div>
+          <div style="font-family: monospace; font-size: 0.78rem; color: var(--green-700); margin-top: 0.25rem;">GPS: ${tInfo.buyerLat.toFixed(4)}, ${tInfo.buyerLon.toFixed(4)}</div>
+          <div style="font-size: 0.75rem; color: var(--text-muted); margin-top: 0.25rem;">${isTa ? "கொள்முதல் நிலையம் & எடை மேடை" : "Verified Mandi Weighbridge"}</div>
+        </div>
+      </div>
+    `;
+  }
+
+  function handleSimulateVehicleMovement() {
+    if (!activeTrackingDeal) return;
+    const isTa = state.lang === "ta";
+    const currentT = getTrackingTelemetry(activeTrackingDeal, activeTrackingProgress);
+    let nextProg = currentT.progressPct + 20;
+    if (nextProg > 100) nextProg = 15;
+    activeTrackingProgress = nextProg;
+    activeTrackingDeal.live_progress = nextProg;
+
+    renderTrackingModalContent();
+    if (state.currentRole === "deals") {
+      renderDealsView();
+    }
+
+    const updatedT = getTrackingTelemetry(activeTrackingDeal, activeTrackingProgress);
+    showToast(
+      isTa
+        ? `🚚 வாகனம் ${updatedT.vehicleNo}: ${updatedT.progressPct}% (${updatedT.checkpointTa})`
+        : `🚚 Vehicle ${updatedT.vehicleNo}: ${updatedT.progressPct}% (${updatedT.checkpointEn})`
+    );
+  }
+
+  function closeLiveTrackingModal() {
+    if (DOM.liveTrackingModal) {
+      DOM.liveTrackingModal.classList.add("hidden");
+    }
   }
 
   /**
