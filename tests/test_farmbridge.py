@@ -25,6 +25,7 @@ PROJECT_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
 if PROJECT_DIR not in sys.path:
     sys.path.insert(0, PROJECT_DIR)
 
+import db
 from db import init_db, get_connection, get_meta
 from parser import parse_voice_sentence, extract_quantity_kg, extract_crop, extract_location
 from calculator import calculate_transport_cost, format_price, format_currency, get_offers_for_farmer
@@ -230,8 +231,11 @@ class TestServerAPI(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         cls.port = 8899
-        # Initialize default DB
-        init_db()
+        # Isolate database during integration tests to prevent modifying repository farmbridge.db
+        cls.orig_db_file = db.DB_FILE
+        cls.temp_db_fd, cls.temp_db_path = tempfile.mkstemp(suffix=".db")
+        db.DB_FILE = cls.temp_db_path
+        init_db(cls.temp_db_path)
 
         # Start server in background thread
         server.socketserver.TCPServer.allow_reuse_address = True
@@ -244,6 +248,10 @@ class TestServerAPI(unittest.TestCase):
     def tearDownClass(cls):
         cls.httpd.shutdown()
         cls.httpd.server_close()
+        db.DB_FILE = cls.orig_db_file
+        os.close(cls.temp_db_fd)
+        if os.path.exists(cls.temp_db_path):
+            os.remove(cls.temp_db_path)
 
     def url(self, path):
         return f"http://127.0.0.1:{self.port}{path}"
