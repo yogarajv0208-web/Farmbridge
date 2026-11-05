@@ -447,19 +447,44 @@
     <!-- VIEW 3: DEALS TRACKER & STATUS PIPELINE -->
     <div id="viewDeals" class="view-panel hidden" role="tabpanel" aria-labelledby="tabDeals">
       <section class="card deals-dashboard-card" aria-labelledby="secDealsHeading">
-        <div class="section-header-row">
+        <div class="section-header-row" style="align-items: flex-start; flex-wrap: wrap; gap: 0.75rem;">
           <div>
             <h2 id="secDealsHeading" class="section-title">ஒப்பந்தங்கள் & நேரடி நிலைக் கண்காணிப்பு</h2>
-            <p class="section-desc" id="secDealsSubtitle">உறுதி செய்யப்பட்ட ஒப்பந்தங்களின் படிநிலை முன்னேற்றம் (முழு மாதிரி செயல்முறை)</p>
+            <p class="section-desc" id="secDealsSubtitle">உறுதி செய்யப்பட்ட மண்டி மற்றும் குளிர்பதன கிடங்கு ஒப்பந்தங்கள் • 1.5% வெளிப்படையான இணையதள கட்டணம்</p>
           </div>
-          <button id="createDemoDealBtn" class="btn btn-turmeric">
-            <span class="btn-icon" aria-hidden="true">➕</span>
-            <span id="createDemoDealBtnText">மாதிரி ஒப்பந்தம் உருவாக்கு</span>
+          <div style="display: flex; gap: 0.5rem; flex-wrap: wrap;">
+            <button id="createDemoDealBtn" class="btn btn-turmeric">
+              <span class="btn-icon" aria-hidden="true">➕</span>
+              <span id="createDemoDealBtnText">நேரடி ஒப்பந்தம்</span>
+            </button>
+            <button id="createColdStorageDealBtn" class="btn btn-outline" style="border-color: #0284c7; color: #0369a1; font-weight: 700;">
+              <span class="btn-icon" aria-hidden="true">❄️</span>
+              <span id="createColdDealBtnText">குளிர் கிடங்கு ஒப்பந்தம்</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Deals Telemetry & Platform Commission Summary Strip -->
+        <div id="dealsCommissionStrip" class="deals-telemetry-strip" style="background: linear-gradient(135deg, #f0fdf4 0%, #e0f2fe 100%); border: 1.5px solid #86efac; border-radius: var(--radius-md); padding: 0.85rem 1rem; margin-top: 0.85rem; display: grid; grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)); gap: 0.75rem;">
+          <!-- Dynamically populated with active deals, volume, 1.5% developer commission, and farmer savings -->
+        </div>
+
+        <!-- Cold Storage & Business Shortcut Strip -->
+        <div class="deals-cold-shortcut" style="margin-top: 0.85rem; background: var(--bg-card); border: 1.5px solid #7dd3fc; border-radius: var(--radius-md); padding: 0.75rem 1rem; display: flex; justify-content: space-between; align-items: center; gap: 0.75rem; flex-wrap: wrap;">
+          <div style="display: flex; align-items: center; gap: 0.6rem;">
+            <span style="font-size: 1.5rem;">❄️</span>
+            <div>
+              <strong style="color: #0369a1; font-size: 0.9rem;">FarmBridge மத்திய குளிர்பதன கிடங்கு & உறைநிலை மையம் (-18°C IQF)</strong>
+              <span style="font-size: 0.78rem; color: var(--text-muted); display: block;">அழுகும் காய்கறிகளை 6-9 மாதங்கள் சேமிக்கும் ஒப்பந்தங்கள் மற்றும் 1.5% குறைந்தபட்ச சேவை கட்டண மாதிரி</span>
+            </div>
+          </div>
+          <button type="button" id="dealsOpenWarehouseBtn" class="btn btn-outline" style="border-color: #0284c7; color: #0369a1; font-weight: 700; padding: 0.4rem 0.8rem; font-size: 0.82rem;">
+            <span>❄️</span> <span>கிடங்கு & வணிக மாதிரி காண்க</span> ➔
           </button>
         </div>
 
         <!-- Deals List Container -->
-        <div id="dealsListContainer" class="deals-container" role="list">
+        <div id="dealsListContainer" class="deals-container" role="list" style="margin-top: 1rem;">
           <!-- Populated by JS -->
         </div>
       </section>

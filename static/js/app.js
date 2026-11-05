@@ -201,6 +201,9 @@
     secDealsSubtitle: document.getElementById("secDealsSubtitle"),
     createDemoDealBtn: document.getElementById("createDemoDealBtn"),
     createDemoDealBtnText: document.getElementById("createDemoDealBtnText"),
+    createColdStorageDealBtn: document.getElementById("createColdStorageDealBtn"),
+    dealsCommissionStrip: document.getElementById("dealsCommissionStrip"),
+    dealsOpenWarehouseBtn: document.getElementById("dealsOpenWarehouseBtn"),
     dealsListContainer: document.getElementById("dealsListContainer"),
 
     // Modals
@@ -936,6 +939,12 @@
 
     // Deals View: Create Demo Deal button
     DOM.createDemoDealBtn.addEventListener("click", handleCreateDemoDeal);
+    if (DOM.createColdStorageDealBtn) {
+      DOM.createColdStorageDealBtn.addEventListener("click", handleCreateColdStorageDeal);
+    }
+    if (DOM.dealsOpenWarehouseBtn) {
+      DOM.dealsOpenWarehouseBtn.addEventListener("click", () => switchRole("warehouse"));
+    }
 
     // Modal open/close
     DOM.viewListingsBtn.addEventListener("click", openSavedListingsModal);
@@ -2649,38 +2658,92 @@
     const container = DOM.dealsListContainer;
     container.innerHTML = "";
 
+    // Platform Commission & Telemetry Strip in Deals View
+    const totalDeals = state.deals ? state.deals.length : 0;
+    const totalVolumeKg = (state.deals || []).reduce((acc, d) => acc + (Number(d.quantity_kg) || 0), 0);
+    const totalGmv = (state.deals || []).reduce((acc, d) => acc + (Number(d.gross_amount) || 0), 0);
+    const totalDevFee = Math.round(totalGmv * 0.015);
+    const totalFarmerSaved = Math.round(totalGmv * 0.085);
+    const coldDeals = (state.deals || []).filter(d => d.deal_type === "cold_storage" || d.buyer_code === "farmbridge_cold_hub");
+    const coldStorageKg = coldDeals.reduce((acc, d) => acc + (Number(d.quantity_kg) || 0), 0);
+
+    if (DOM.dealsCommissionStrip) {
+      DOM.dealsCommissionStrip.innerHTML = `
+        <div style="background: var(--bg-card); padding: 0.6rem 0.8rem; border-radius: var(--radius-sm); border: 1px solid var(--border-color);">
+          <div style="font-size: 0.72rem; color: var(--text-muted); font-weight: 700;">🤝 ${isTa ? "செயலில் உள்ள ஒப்பந்தங்கள்:" : "Active Deals:"}</div>
+          <div style="font-size: 1.15rem; font-weight: 800; color: var(--green-900);">${totalDeals} ${isTa ? "ஒப்பந்தங்கள்" : "Deals"}</div>
+          <div style="font-size: 0.72rem; color: var(--text-muted);">${(totalVolumeKg / 1000).toFixed(1)} MT வரத்து</div>
+        </div>
+        <div style="background: var(--bg-card); padding: 0.6rem 0.8rem; border-radius: var(--radius-sm); border: 1.5px solid #93c5fd;">
+          <div style="font-size: 0.72rem; color: #1e40af; font-weight: 700;">💼 ${isTa ? "இணையதள பராமரிப்பு (1.5% Fee):" : "Platform Revenue (1.5%):"}</div>
+          <div style="font-size: 1.15rem; font-weight: 800; color: #1e40af;">₹${totalDevFee.toLocaleString()}</div>
+          <div style="font-size: 0.72rem; color: #2563eb;">${isTa ? "சர்வர் & AI பராமரிப்பு" : "Server & AI Operations"}</div>
+        </div>
+        <div style="background: var(--bg-card); padding: 0.6rem 0.8rem; border-radius: var(--radius-sm); border: 1.5px solid #86efac;">
+          <div style="font-size: 0.72rem; color: #166534; font-weight: 700;">💰 ${isTa ? "விவசாயிகள் சேமிப்பு (vs 10% மண்டி):" : "Farmer Brokerage Savings:"}</div>
+          <div style="font-size: 1.15rem; font-weight: 800; color: #166534;">+₹${totalFarmerSaved.toLocaleString()}</div>
+          <div style="font-size: 0.72rem; color: #15803d;">${isTa ? "நேரடி லாபம்" : "Saved from Brokers"}</div>
+        </div>
+        <div style="background: var(--bg-card); padding: 0.6rem 0.8rem; border-radius: var(--radius-sm); border: 1.5px solid #7dd3fc;">
+          <div style="font-size: 0.72rem; color: #0369a1; font-weight: 700;">❄️ ${isTa ? "குளிர்பதன கிடங்கு இருப்பு:" : "Cold Hub Storage:"}</div>
+          <div style="font-size: 1.15rem; font-weight: 800; color: #0284c7;">${(coldStorageKg / 1000).toFixed(1)} MT</div>
+          <div style="font-size: 0.72rem; color: #0284c7;">-18°C IQF Blast Freeze</div>
+        </div>
+      `;
+    }
+
     if (!state.deals || state.deals.length === 0) {
       container.innerHTML = `
         <div class="empty-state-card" style="text-align: center; padding: 3rem 1.5rem; background: var(--bg-card); border-radius: var(--radius-lg); border: 2px dashed var(--border-color);">
           <span style="font-size: 3rem;">🤝</span>
           <h3 style="margin-top: 0.75rem; color: var(--text-primary);">${t.deals_empty_title}</h3>
           <p style="color: var(--text-muted); font-size: 0.9rem; margin-top: 0.25rem;">${t.deals_empty_desc}</p>
-          <button id="emptyCreateDealBtn" class="btn btn-turmeric" style="margin-top: 1rem;">
-            <span>➕</span>
-            <span>${t.btn_create_demo_deal}</span>
-          </button>
+          <div style="display: flex; gap: 0.5rem; justify-content: center; flex-wrap: wrap; margin-top: 1rem;">
+            <button id="emptyCreateDealBtn" class="btn btn-turmeric">
+              <span>➕</span>
+              <span>${t.btn_create_demo_deal}</span>
+            </button>
+            <button id="emptyCreateColdDealBtn" class="btn btn-outline" style="border-color: #0284c7; color: #0369a1; font-weight: 700;">
+              <span>❄️</span>
+              <span>${isTa ? "குளிர் கிடங்கு ஒப்பந்தம்" : "Create Cold Hub Deal"}</span>
+            </button>
+          </div>
         </div>
       `;
       document.getElementById("emptyCreateDealBtn").addEventListener("click", handleCreateDemoDeal);
+      const emptyColdBtn = document.getElementById("emptyCreateColdDealBtn");
+      if (emptyColdBtn) emptyColdBtn.addEventListener("click", handleCreateColdStorageDeal);
       return;
     }
 
     state.deals.forEach(deal => {
+      const isCold = deal.deal_type === "cold_storage" || deal.buyer_code === "farmbridge_cold_hub";
       const cropMeta = CROPS_META.find(c => c.code === deal.crop_code) || { icon: "🌾", name_en: deal.crop_code, name_ta: deal.crop_code };
       const locMeta = LOCATIONS_META.find(l => l.code === deal.farmer_location) || { name_en: deal.farmer_location, name_ta: deal.farmer_location };
 
-      const stages = [
-        { key: "confirmed", ta: "உறுதி செய்யப்பட்டது", en: "Confirmed", icon: "✓" },
-        { key: "truck_dispatched", ta: "லாரி புறப்பட்டது", en: "Truck Dispatched", icon: "🚚" },
-        { key: "quality_inspected", ta: "தரப் பரிசோதனை", en: "Quality Check", icon: "🔍" },
-        { key: "payment_completed", ta: "பணம் செலுத்தப்பட்டது", en: "Payment Settled", icon: "💰" }
-      ];
+      const stages = isCold
+        ? [
+            { key: "confirmed", ta: "இடம் முன்பதிவு", en: "Slot Booked", icon: "✓" },
+            { key: "truck_dispatched", ta: "குளிர் லாரி புறப்பட்டது", en: "Cold-Van Inbound", icon: "🚚" },
+            { key: "quality_inspected", ta: "IQF உறைநிலை தரம்", en: "IQF Frozen Grade A", icon: "❄️" },
+            { key: "payment_completed", ta: "e-NWR ரசீது & கடன் தயார்", en: "e-NWR & Loan Ready", icon: "📄" }
+          ]
+        : [
+            { key: "confirmed", ta: "உறுதி செய்யப்பட்டது", en: "Confirmed", icon: "✓" },
+            { key: "truck_dispatched", ta: "லாரி புறப்பட்டது", en: "Truck Dispatched", icon: "🚚" },
+            { key: "quality_inspected", ta: "தரப் பரிசோதனை", en: "Quality Check", icon: "🔍" },
+            { key: "payment_completed", ta: "பணம் செலுத்தப்பட்டது", en: "Payment Settled", icon: "💰" }
+          ];
 
       const currentStageIndex = stages.findIndex(s => s.key === deal.status);
       const isSettled = deal.status === "payment_completed";
 
       const card = document.createElement("div");
       card.className = "deal-card";
+      if (isCold) {
+        card.style.border = "2px solid #7dd3fc";
+        card.style.background = "linear-gradient(180deg, var(--bg-card) 0%, #f0fdf4 100%)";
+      }
       card.setAttribute("role", "listitem");
 
       // Build pipeline steps HTML
@@ -2708,22 +2771,22 @@
       if (deal.status === "confirmed") {
         nextBtnHtml = `<button class="btn btn-primary advance-status-btn" data-id="${deal.id}" data-next="truck_dispatched">
           <span>🚚</span>
-          <span>${isTa ? "லாரி புறப்பட்டதாக மாற்று" : "Dispatch Truck"}</span>
+          <span>${isCold ? (isTa ? "குளிர்பதன லாரி அனுப்பவும்" : "Dispatch Cold-Van") : (isTa ? "லாரி புறப்பட்டதாக மாற்று" : "Dispatch Truck")}</span>
         </button>`;
       } else if (deal.status === "truck_dispatched") {
         nextBtnHtml = `<button class="btn btn-primary advance-status-btn" data-id="${deal.id}" data-next="quality_inspected">
-          <span>🔍</span>
-          <span>${isTa ? "தரப் பரிசோதனை முடிந்தது (Grade A)" : "Pass Inspection (Grade A)"}</span>
+          <span>${isCold ? "❄️" : "🔍"}</span>
+          <span>${isCold ? (isTa ? "IQF உறைநிலை & தரம் சரிபார்க்கப்பட்டது" : "Pass IQF Blast-Freeze (Grade A)") : (isTa ? "தரப் பரிசோதனை முடிந்தது (Grade A)" : "Pass Inspection (Grade A)")}</span>
         </button>`;
       } else if (deal.status === "quality_inspected") {
         nextBtnHtml = `<button class="btn btn-turmeric advance-status-btn" data-id="${deal.id}" data-next="payment_completed">
-          <span>💰</span>
-          <span>${isTa ? "மாதிரி பணம் செலுத்து (Simulate Payment)" : "Simulate Payout (UPI)"}</span>
+          <span>${isCold ? "📄" : "💰"}</span>
+          <span>${isCold ? (isTa ? "e-NWR ரசீது & 70% கடன் வழங்கு" : "Issue e-NWR Receipt & Loan") : (isTa ? "மாதிரி பணம் செலுத்து (Simulate Payment)" : "Simulate Payout (UPI)")}</span>
         </button>`;
       } else if (deal.status === "payment_completed") {
         nextBtnHtml = `<button class="btn btn-outline" disabled style="opacity: 0.8; border-color: var(--green-600); color: var(--green-700);">
           <span>✓</span>
-          <span>${isTa ? "பரிவர்த்தனை முடிந்தது" : "Settlement Completed"}</span>
+          <span>${isCold ? (isTa ? "e-NWR தயார் • 70% கடன் அனுமதிக்கப்பட்டது" : "e-NWR Issued • Loan Ready") : (isTa ? "பரிவர்த்தனை முடிந்தது" : "Settlement Completed")}</span>
         </button>`;
       }
 
@@ -2731,10 +2794,11 @@
         <div class="deal-card-header">
           <div>
             <div style="display: flex; align-items: center; gap: 0.5rem; flex-wrap: wrap;">
-              <span class="deal-id-badge">Deal #${deal.id}</span>
+              <span class="deal-id-badge">${isCold ? "❄️ Cold Hub #" + deal.id : "Deal #" + deal.id}</span>
               <h3 style="font-size: 1.15rem; font-weight: 800; color: var(--green-900); margin: 0;">
                 ${cropMeta.icon} ${isTa ? cropMeta.name_ta : cropMeta.name_en} • ${deal.quantity_kg} kg
               </h3>
+              ${isCold ? `<span class="badge" style="background: #e0f2fe; color: #0369a1; font-weight: 700;">❄️ உறைநிலை சேமிப்பு (-18°C)</span>` : ""}
               ${Number(deal.is_urgent) === 1 ? `<span class="urgent-tag">🚨 அவசர விற்பனை</span>` : ""}
             </div>
             <p style="color: var(--text-muted); font-size: 0.82rem; margin: 0.25rem 0 0 0;">
@@ -2742,7 +2806,7 @@
             </p>
           </div>
           <div style="text-align: right;">
-            <span style="font-size: 0.75rem; color: var(--text-muted);">${t.net_payout_label}</span>
+            <span style="font-size: 0.75rem; color: var(--text-muted);">${isCold ? (isTa ? "மதிப்பிடப்பட்ட முதிர்வு மதிப்பு:" : "Maturity Net Value:") : t.net_payout_label}</span>
             <div style="font-size: 1.3rem; font-weight: 800; color: var(--green-800);">
               ₹${Math.round(deal.net_amount || 0).toLocaleString()}
             </div>
@@ -2751,6 +2815,17 @@
 
         <!-- 4-Stage Pipeline Tracker -->
         ${pipelineHtml}
+
+        <!-- Transparent 1.5% Developer Commission & Farmer Savings Pill -->
+        <div style="background: #f0fdf4; border: 1.5px solid #86efac; border-radius: 8px; padding: 0.5rem 0.85rem; margin-top: 0.65rem; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 0.5rem; font-size: 0.82rem;">
+          <div>
+            <strong style="color: #166534;">💼 ${isTa ? "இணையதள பராமரிப்பு கட்டணம் (1.5% Developer Fee):" : "Platform Facilitation Fee (1.5%):"}</strong>
+            <span style="font-weight: 800; color: #166534; margin-left: 0.35rem;">₹${Math.round((deal.gross_amount || 0) * 0.015).toLocaleString()}</span>
+          </div>
+          <span style="background: #dcfce7; color: #166534; font-weight: 700; padding: 0.2rem 0.55rem; border-radius: 999px; font-size: 0.74rem;">
+            ✅ ${isTa ? `10% மண்டி கமிஷன் சேமிப்பு: +₹${Math.round((deal.gross_amount || 0) * 0.085).toLocaleString()}` : `Saved vs 10% Broker: +₹${Math.round((deal.gross_amount || 0) * 0.085).toLocaleString()}`}
+          </span>
+        </div>
 
         <!-- Live Farmer, Buyer & Dispatched Vehicle GPS Strip -->
         ${(() => {
@@ -2761,7 +2836,7 @@
                 <div style="display: flex; align-items: center; gap: 0.45rem;">
                   <span style="display: inline-block; width: 9px; height: 9px; border-radius: 50%; background: #16a34a; box-shadow: 0 0 0 3px rgba(22,163,74,0.25);"></span>
                   <strong style="font-size: 0.85rem; color: var(--green-900);">
-                    🛰️ ${isTa ? "நேரடி இருப்பிடம் & வாகன கண்காணிப்பு (Live GPS Tracker)" : "Live Farmer • Vehicle • Buyer Location Tracker"}
+                    🛰️ ${isCold ? (isTa ? "குளிர்பதன லாரி & கிடங்கு ஜிபிஎஸ் (Cold-Van GPS)" : "Live Cold-Van & Central Hub GPS Tracker") : (isTa ? "நேரடி இருப்பிடம் & வாகன கண்காணிப்பு (Live GPS Tracker)" : "Live Farmer • Vehicle • Buyer Location Tracker")}
                   </strong>
                 </div>
                 <span style="font-size: 0.75rem; font-weight: 700; background: #e0f2fe; color: #0369a1; padding: 0.15rem 0.55rem; border-radius: 999px; border: 1px solid #bae6fd;">
@@ -2781,12 +2856,12 @@
                   <div style="font-family: monospace; font-size: 0.7rem; color: var(--green-700);">📍 ${tInfo.farmerLat.toFixed(4)}° N, ${tInfo.farmerLon.toFixed(4)}° E</div>
                 </div>
                 <div style="background: var(--bg-card); padding: 0.45rem 0.65rem; border-radius: 8px; border: 1.5px solid #fcd34d;">
-                  <div style="color: #92400e; font-size: 0.7rem; font-weight: 700;">🚚 ${isTa ? "அனுப்பப்பட்ட வாகனம் (Dispatched Vehicle):" : "Dispatched Vehicle Live GPS:"}</div>
+                  <div style="color: #92400e; font-size: 0.7rem; font-weight: 700;">🚚 ${isCold ? (isTa ? "குளிர்பதன வாகனம் (Cold-Van GPS):" : "Cold-Van Live GPS:") : (isTa ? "அனுப்பப்பட்ட வாகனம் (Dispatched Vehicle):" : "Dispatched Vehicle Live GPS:")}</div>
                   <div style="font-weight: 700; color: var(--text-primary);">${isTa ? tInfo.checkpointTa : tInfo.checkpointEn}</div>
                   <div style="font-family: monospace; font-size: 0.7rem; color: #b45309;">🛰️ ${tInfo.vehicleLat.toFixed(4)}° N, ${tInfo.vehicleLon.toFixed(4)}° E • ${tInfo.speedKmh} km/h</div>
                 </div>
                 <div style="background: var(--bg-card); padding: 0.45rem 0.65rem; border-radius: 8px; border: 1px solid var(--border-color);">
-                  <div style="color: var(--text-muted); font-size: 0.7rem;">🏢 ${isTa ? "வாங்குபவர் இருப்பிடம் (Buyer Location):" : "Buyer Mandi Location:"}</div>
+                  <div style="color: var(--text-muted); font-size: 0.7rem;">🏢 ${isCold ? (isTa ? "மத்திய கிடங்கு இருப்பிடம் (Central Hub):" : "Central Cold Hub Location:") : (isTa ? "வாங்குபவர் இருப்பிடம் (Buyer Location):" : "Buyer Mandi Location:")}</div>
                   <div style="font-weight: 700; color: var(--text-primary);">${isTa ? tInfo.buyerLocTa : tInfo.buyerLocEn}</div>
                   <div style="font-family: monospace; font-size: 0.7rem; color: var(--green-700);">📍 ${tInfo.buyerLat.toFixed(4)}° N, ${tInfo.buyerLon.toFixed(4)}° E</div>
                 </div>
@@ -2797,21 +2872,58 @@
 
         <div class="deal-actions-bar" style="display: flex; justify-content: space-between; align-items: center; gap: 0.5rem; margin-top: 1rem; flex-wrap: wrap;">
           <div style="display: flex; gap: 0.5rem; align-items: center; flex-wrap: wrap;">
-            <button class="btn btn-outline view-receipt-btn" data-id="${deal.id}">
-              <span>📄</span>
-              <span>${t.btn_view_receipt}</span>
-            </button>
+            ${isCold ? `
+              <button class="btn btn-primary view-cold-receipt-btn" data-id="${deal.id}">
+                <span>❄️</span>
+                <span>${isTa ? "e-NWR கிடங்கு ரசீது" : "View e-NWR Receipt"}</span>
+              </button>
+            ` : `
+              <button class="btn btn-outline view-receipt-btn" data-id="${deal.id}">
+                <span>📄</span>
+                <span>${t.btn_view_receipt}</span>
+              </button>
+            `}
             <button class="btn btn-outline track-deal-gps-btn" data-id="${deal.id}" style="border-color: var(--green-600); color: var(--green-800); font-weight: 700;">
               <span>🛰️</span>
               <span>${isTa ? "நேரடி வாகனம் & வரைபடம் (Live Map)" : "Track Live Vehicle & Locations"}</span>
             </button>
-            <span class="sim-badge" style="font-size: 0.65rem;">${t.tag_simulated_deal}</span>
+            <span class="sim-badge" style="font-size: 0.65rem;">${isCold ? "❄️ Cold Storage e-NWR" : t.tag_simulated_deal}</span>
           </div>
           <div>
             ${nextBtnHtml}
           </div>
         </div>
       `;
+
+      // Event listener for Advance Status
+      const advBtn = card.querySelector(".advance-status-btn");
+      if (advBtn) {
+        advBtn.addEventListener("click", () => handleAdvanceDealStatus(deal.id, advBtn.dataset.next));
+      }
+
+      // Event listener for View Receipt
+      const receiptBtn = card.querySelector(".view-receipt-btn");
+      if (receiptBtn) {
+        receiptBtn.addEventListener("click", () => openReceiptModal(deal));
+      }
+
+      // Event listener for Cold Hub e-NWR Receipt
+      const coldReceiptBtn = card.querySelector(".view-cold-receipt-btn");
+      if (coldReceiptBtn) {
+        coldReceiptBtn.addEventListener("click", () => {
+          handleBookWarehouseSlot();
+        });
+      }
+
+      // Event listener for Live GPS & Vehicle Tracker Modal
+      const trackBtn = card.querySelector(".track-deal-gps-btn");
+      if (trackBtn) {
+        trackBtn.addEventListener("click", () => openLiveTrackingModal(deal));
+      }
+
+      container.appendChild(card);
+    });
+  }
 
       // Event listener for Advance Status
       const advBtn = card.querySelector(".advance-status-btn");
@@ -2931,6 +3043,40 @@
     addDealToLocalCache(demoDeal);
     renderDealsView();
     showToast(isTa ? "புதிய மாதிரி ஒப்பந்தம் உருவாக்கப்பட்டது!" : "New demo deal created!");
+  }
+
+  /**
+   * Creates a sample FarmBridge Central Cold Hub storage contract.
+   */
+  function handleCreateColdStorageDeal() {
+    const isTa = state.lang === "ta";
+    const coldDeal = {
+      id: Date.now(),
+      listing_id: 100 + Math.floor(Math.random() * 900),
+      buyer_code: "farmbridge_cold_hub",
+      buyer_name: isTa
+        ? "FarmBridge மத்திய குளிர்பதன கிடங்கு & உறைநிலை மையம் (IQF Blast Freeze)"
+        : "FarmBridge Central Cold Storage & IQF Frozen Veg Hub",
+      deal_type: "cold_storage",
+      crop_code: "tomato",
+      quantity_kg: 2000,
+      farmer_location: "chengalpattu",
+      price_per_kg: 30.00,
+      gross_amount: 60000.0,
+      transport_cost: 3000.0,
+      platform_fee: 900.0,
+      net_amount: 56100.0,
+      is_urgent: 0,
+      status: "truck_dispatched",
+      storage_chamber: "Chamber 1 (-18.4°C IQF Blast Freeze)",
+      e_nwr_no: `TN-WDRA-CH-0428-LOT${Math.floor(10 + Math.random() * 90)}`,
+      created_at: new Date().toLocaleString(),
+      updated_at: new Date().toLocaleString()
+    };
+
+    addDealToLocalCache(coldDeal);
+    renderDealsView();
+    showToast(isTa ? "❄️ புதிய குளிர்பதன கிடங்கு வைப்பு ஒப்பந்தம் உருவாக்கப்பட்டது!" : "❄️ New Cold Storage & Frozen Veg contract created!");
   }
 
   /**
