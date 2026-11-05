@@ -91,6 +91,14 @@ const I18N = {
     role_farmer: "🌾 உழவர் களம் (Farmer)",
     role_buyer: "🏢 வாங்குபவர் களம் (Buyer)",
     role_deals: "🤝 ஒப்பந்தங்கள் (Deals)",
+    role_warehouse: "❄️ பொதுக் கிடங்கு & வணிக மாதிரி (Cold Hub & Business)",
+
+    // Warehouse & Monetization
+    warehouse_title: "பொதுக் குளிர்பதன கிடங்கு & உறைநிலை காய்கறி மையம்",
+    warehouse_subtitle: "அழுகும் காய்கறிகளை 6-9 மாதங்கள் பாதுகாத்து அதிக லாபம் பெறுங்கள் • குறைந்தபட்ச 1.5% இணையதள பராமரிப்பு கட்டணம்",
+    platform_fee_label: "இணையதள பராமரிப்பு கட்டணம் (Platform Fee 1.5%):",
+    receipt_platform_fee: "FarmBridge குறைந்தபட்ச சேவை கட்டணம் (1.5%):",
+    warehouse_receipt_title: "மத்திய குளிர்பதன கிடங்கு வைப்பு ரசீது (e-NWR)",
 
     // Urgent Sale Workflow
     urgent_toggle_label: "🚨 அவசர விற்பனை (Urgent Clearance Sale)",
@@ -289,6 +297,14 @@ const I18N = {
     role_farmer: "🌾 Farmer View",
     role_buyer: "🏢 Buyer / Mill View",
     role_deals: "🤝 Deals Tracker",
+    role_warehouse: "❄️ Cold Hub & Monetization",
+
+    // Warehouse & Monetization
+    warehouse_title: "Central Cold Storage & Frozen Vegetable Processing Hub",
+    warehouse_subtitle: "Preserve perishable harvest for 6-9 months via IQF blast-freezing • Sustainable 1.5% platform facilitation fee",
+    platform_fee_label: "Platform Facilitation Fee (1.5% Developer / Server Fee):",
+    receipt_platform_fee: "FarmBridge Platform Facilitation Fee (1.5%):",
+    warehouse_receipt_title: "Central Cold Storage Electronic Deposit Receipt (e-NWR)",
 
     // Urgent Sale Workflow
     urgent_toggle_label: "🚨 Urgent Clearance Sale",

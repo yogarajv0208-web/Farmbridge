@@ -61,6 +61,28 @@
 - **Farmer & Buyer Credit Points**: Dynamic trust point badges (`⭐` / `🏆`) awarded for verified buyer ratings and timely payment completion feedback.
 - **Strict Indian Phone Formatting**: Clean `🇮🇳 +91` prefix with automatic 10-digit sanitization across login, header profile chip, and listing save forms.
 
+### ❄️ Central Cold Storage & Frozen Vegetables Processing Hub (IQF)
+- **Central Aggregation Hub (Chengalpattu NH-45 Agro Hub)**:
+  - 500 Metric Ton controlled atmosphere cold storage + live IoT sensor telemetry.
+  - `-18°C IQF Blast Freezing Bay`: Converts perishable tomatoes, green peas, diced onions, and chilli into frozen vegetables with **6 to 9 months shelf life**.
+  - Eliminates post-harvest distress selling (prevents selling tomatoes at ₹2–₹8/kg during market glut).
+- **Frozen Produce Value-Addition Catalog**:
+  - 🍅 IQF Diced Tomatoes: ₹8/kg fresh glut → ₹30/kg frozen off-season (+275% return).
+  - 🟢 IQF Sweet Green Peas: ₹35/kg fresh → ₹85/kg frozen (+140% return).
+  - 🧅 IQF Diced Onion & Chilli Mix: 0% spoilage loss → ₹45/kg frozen.
+  - 🥕 IQF Mixed Veg Pack: ₹25/kg fresh → ₹60/kg frozen.
+- **Farmer Deposit Calculator & Electronic Warehouse Receipt (e-NWR)**:
+  - Compares Distress Mandi Sale vs FarmBridge Cold Chain Freezing in real-time.
+  - Generates verifiable simulated e-NWR receipt eligible for 70% spot warehouse receipt loan advances from cooperative banks.
+
+### 💼 Sustainable Developer Business Motive & Minimal 1.5% Commission
+- **Zero Extortionate Brokerage**: Traditional mandi brokers take **8% to 12% commission** plus hidden deductions. FarmBridge charges **only 1.5% platform facilitation fee**.
+- **Transparent Startup Economics**:
+  - Covers cloud server hosting, Web Speech AI API quotas, live GPS telemetry, and developer platform maintenance.
+  - Itemized transparently in every offer breakdown, hero card, and electronic challan.
+- **Interactive Developer Revenue & Startup Sustainability Simulator**:
+  - Volume slider (20 to 1,000 tons/month) displaying live GMV, farmer savings (+₹2,12,500 on 100 tons), developer 1.5% facilitation revenue (₹37,500), cold hub processing share, and total bootstrap self-sufficiency.
+
 ---
 
 ## 📐 Formulas & Sample Data Specifications
@@ -157,6 +179,7 @@ All 30 unit and integration tests validate end-to-end functionality.
 |---|---|---|
 | `GET` | `/api/health` | Health check & app status |
 | `GET` | `/api/meta` | Supported crops, locations, and sample voice phrases |
+| `GET` | `/api/warehouse` | Central cold storage capacity, IoT chamber telemetry, and developer monetization formula |
 | `GET` | `/api/buyers?crop={crop}&location={loc}` | List buyers filtered by crop & calculated distances |
 | `POST` | `/api/parse-voice` | Parses natural language sentence into `{crop, quantity_kg, location}` |
 | `POST` | `/api/offers` | Computes ranked offers, transport deductions, and best offer |

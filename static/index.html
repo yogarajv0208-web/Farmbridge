@@ -90,6 +90,10 @@
         <span id="tabDealsText">ஒப்பந்தங்கள் (Deals)</span>
         <span id="dealsCountBadge" class="badge">1</span>
       </button>
+      <button class="role-tab" id="tabWarehouse" role="tab" aria-selected="false" data-view="warehouse">
+        <span class="tab-icon" aria-hidden="true">❄️</span>
+        <span id="tabWarehouseText">பொதுக் கிடங்கு & வணிக மாதிரி (Cold Hub & Business)</span>
+      </button>
     </div>
   </nav>
 
@@ -274,6 +278,20 @@
             </div>
           </div>
 
+          <!-- COLD STORAGE & FROZEN VEG RECOMMENDATION STRIP -->
+          <div class="cold-hub-prompt-card" id="coldHubPromptCard" style="margin-top: 1rem; background: linear-gradient(135deg, #f0fdf4 0%, #e0f2fe 100%); border: 1.5px solid #7dd3fc; border-radius: var(--radius-md); padding: 0.9rem 1.1rem; display: flex; align-items: center; justify-content: space-between; gap: 1rem; flex-wrap: wrap;">
+            <div style="display: flex; align-items: center; gap: 0.75rem; flex: 1; min-width: 260px;">
+              <span style="font-size: 1.8rem;">❄️</span>
+              <div>
+                <strong style="color: #0369a1; font-size: 0.95rem; display: block;" id="coldPromptTitle">காய்கறி அழுகல் அபாயமா? தற்கொலை விலைக்கு விற்க வேண்டாம்!</strong>
+                <span style="font-size: 0.8rem; color: #334155;" id="coldPromptDesc">FarmBridge பொதுக் குளிர்பதன கிடங்கில் சேமித்து, IQF உறைநிலை காய்கறிகளாக (Frozen Veg) மாற்றி 6-9 மாதங்கள் வரை பாதுகாத்து 2X - 3X லாபம் பெறுங்கள்.</span>
+              </div>
+            </div>
+            <button type="button" id="goToWarehouseBtn" class="btn btn-outline" style="border-color: #0284c7; color: #0369a1; font-weight: 700; white-space: nowrap; padding: 0.55rem 0.9rem;">
+              <span>❄️</span> <span id="goToWarehouseBtnText">கிடங்கு & உறைநிலை திட்டம்</span> ➔
+            </button>
+          </div>
+
           <!-- PRODUCE PHOTO QUALITY VERIFICATION CARD -->
           <div class="photo-verify-card" id="photoVerifyCard">
             <div class="photo-verify-header">
@@ -447,6 +465,266 @@
       </section>
     </div>
 
+    <!-- VIEW 4: CENTRAL COLD STORAGE HUB & DEVELOPER BUSINESS MODEL -->
+    <div id="viewWarehouse" class="view-panel hidden" role="tabpanel" aria-labelledby="tabWarehouse">
+      
+      <!-- HERO HUB OVERVIEW & LIVE CHAMBER TELEMETRY -->
+      <section class="card warehouse-hero-card">
+        <div class="section-header-row" style="align-items: flex-start;">
+          <div>
+            <div style="display: inline-flex; align-items: center; gap: 0.4rem; background: #e0f2fe; color: #0369a1; padding: 0.2rem 0.65rem; border-radius: 12px; font-size: 0.78rem; font-weight: 700; margin-bottom: 0.4rem;">
+              <span>❄️</span> <span>மத்திய உறைநிலை & வேளாண் கிடங்கு மையம் (Central Agro-Cold Hub)</span>
+            </div>
+            <h2 id="secWarehouseHeading" class="section-title">FarmBridge பொதுக் குளிர்பதன கிடங்கு & உறைநிலை காய்கறி மையம்</h2>
+            <p class="section-desc" id="secWarehouseSubtitle">செங்கல்பட்டு தேசிய நெடுஞ்சாலை சந்திப்பு (NH-45 Agro Hub) • அழுகும் காய்கறிகளுக்கான IQF உறைநிலை பதப்படுத்தல் & நேரடி மதிப்புக்கூட்டுதல்</p>
+          </div>
+          <span class="sim-badge" style="background: #e0f2fe; color: #0284c7; border: 1px solid #bae6fd;">நேரடி சென்சார் கண்காணிப்பு (Live IoT Telemetry)</span>
+        </div>
+
+        <!-- Live Telemetry Badges Strip -->
+        <div class="telemetry-metrics-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 0.75rem; margin-top: 1rem;">
+          <div class="stat-tile" style="border-left: 4px solid #0284c7;">
+            <span class="stat-label">❄️ IQF உறைநிலை அறை (Blast Chamber)</span>
+            <span class="stat-value" id="chamberFreezeTemp" style="color: #0284c7;">-18.4°C</span>
+            <span class="stat-sub" style="color: var(--green-700); font-weight: 600;">● உகந்த உறைநிலை இயக்கம் (Optimal)</span>
+          </div>
+          <div class="stat-tile" style="border-left: 4px solid #059669;">
+            <span class="stat-label">🌡️ புதிய காய்கறி குளிர் அறை (Cold Bay)</span>
+            <span class="stat-value" id="chamberChilledTemp" style="color: #059669;">+3.6°C</span>
+            <span class="stat-sub" style="color: var(--green-700); font-weight: 600;">● 90% ஈரப்பதம் (Fresh Retention)</span>
+          </div>
+          <div class="stat-tile" style="border-left: 4px solid #f59e0b;">
+            <span class="stat-label">📦 மொத்த சேமிப்பு கொள்ளளவு (Capacity)</span>
+            <span class="stat-value" id="hubCapacityDisplay">500 டன் (MT)</span>
+            <span class="stat-sub" id="hubOccupancySub">இருப்பு: 320 டன் • காலி இடம்: 180 டன்</span>
+          </div>
+          <div class="stat-tile" style="border-left: 4px solid #7c3aed;">
+            <span class="stat-label">💡 இணையதள குறைந்தபட்ச கட்டணம்</span>
+            <span class="stat-value" style="color: #7c3aed;">1.5%</span>
+            <span class="stat-sub" style="color: var(--green-700); font-weight: 600;">தரகர்கள் 10% சுரண்டல் இல்லை!</span>
+          </div>
+        </div>
+      </section>
+
+      <!-- FROZEN VEGETABLES VALUE-ADDITION SHOWCASE -->
+      <section class="card frozen-veg-card">
+        <div class="section-header-row">
+          <div>
+            <h3 class="section-title" id="frozenVegTitle">உறைநிலை காய்கறி தயாரிப்புகள் & மதிப்புக்கூட்டுதல் (Frozen Veg Products)</h3>
+            <p class="section-desc" id="frozenVegSubtitle">சந்தையில் விலை வீழ்ச்சி அடையும் போது காய்கறிகளை உறைநிலையில் பதப்படுத்தி (IQF) 6-9 மாதங்கள் பாதுகாத்து ஹோட்டல்கள் & பல்பொருள் அங்காடிகளுக்கு விற்பனை செய்யும் மாதிரி</p>
+          </div>
+        </div>
+
+        <div class="frozen-products-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); gap: 1rem; margin-top: 0.75rem;">
+          <!-- Product 1: Frozen Tomato -->
+          <div class="product-card" style="background: var(--bg-card); border: 1.5px solid var(--border-color); border-radius: var(--radius-md); padding: 1rem; display: flex; flex-direction: column; justify-content: space-between;">
+            <div>
+              <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
+                <span style="font-size: 2rem;">🍅</span>
+                <span class="badge" style="background: #fee2e2; color: #991b1b; font-weight: 700;">+275% மதிப்பு உயர்வு</span>
+              </div>
+              <h4 style="margin: 0 0 0.35rem 0; font-size: 1.05rem;">உறைநிலை நறுக்கிய தக்காளி (IQF Diced Tomato)</h4>
+              <p style="font-size: 0.8rem; color: var(--text-muted); margin: 0 0 0.75rem 0;">மழைக்கால தக்காளி விலை ₹8/கிலோவிலிருந்து, உறைநிலை முறையில் ₹30/கிலோவாக மதிப்புக்கூட்டப்படுகிறது.</p>
+              <div style="font-size: 0.82rem; display: flex; flex-direction: column; gap: 0.25rem; background: var(--bg-secondary); padding: 0.5rem; border-radius: var(--radius-sm);">
+                <div><strong>ஆயுட்காலம்:</strong> 9 மாதங்கள் (-18°C)</div>
+                <div><strong>வாங்குபவர்கள்:</strong> உணவகங்கள், கேட்டரிங், சாஸ் ஆலைகள்</div>
+              </div>
+            </div>
+            <div style="margin-top: 0.75rem; font-weight: 700; color: var(--green-700); font-size: 0.95rem;">
+              ₹8 ➔ ₹30 / kg <span style="font-size: 0.75rem; color: var(--text-muted); font-weight: normal;">(லாபகர உறைநிலை)</span>
+            </div>
+          </div>
+
+          <!-- Product 2: Frozen Green Peas -->
+          <div class="product-card" style="background: var(--bg-card); border: 1.5px solid var(--border-color); border-radius: var(--radius-md); padding: 1rem; display: flex; flex-direction: column; justify-content: space-between;">
+            <div>
+              <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
+                <span style="font-size: 2rem;">🟢</span>
+                <span class="badge" style="background: #dcfce7; color: #166534; font-weight: 700;">+140% மதிப்பு உயர்வு</span>
+              </div>
+              <h4 style="margin: 0 0 0.35rem 0; font-size: 1.05rem;">உறைநிலை பசுமை பட்டாணி (IQF Green Peas)</h4>
+              <p style="font-size: 0.8rem; color: var(--text-muted); margin: 0 0 0.75rem 0;">அறுவடை காலத்தில் ₹35/கிலோவுக்கு விற்ற பட்டாணியை உரித்து உறைநிலையில் ₹85/கிலோவுக்கு சந்தைப்படுத்துதல்.</p>
+              <div style="font-size: 0.82rem; display: flex; flex-direction: column; gap: 0.25rem; background: var(--bg-secondary); padding: 0.5rem; border-radius: var(--radius-sm);">
+                <div><strong>ஆயுட்காலம்:</strong> 12 மாதங்கள் (-18°C)</div>
+                <div><strong>வாங்குபவர்கள்:</strong> சூப்பர் மார்க்கெட்டுகள், ஏற்றுமதி</div>
+              </div>
+            </div>
+            <div style="margin-top: 0.75rem; font-weight: 700; color: var(--green-700); font-size: 0.95rem;">
+              ₹35 ➔ ₹85 / kg <span style="font-size: 0.75rem; color: var(--text-muted); font-weight: normal;">(வருடம் முழுவதும் தேவை)</span>
+            </div>
+          </div>
+
+          <!-- Product 3: Frozen Onion & Chilli Mix -->
+          <div class="product-card" style="background: var(--bg-card); border: 1.5px solid var(--border-color); border-radius: var(--radius-md); padding: 1rem; display: flex; flex-direction: column; justify-content: space-between;">
+            <div>
+              <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
+                <span style="font-size: 2rem;">🧅🌶️</span>
+                <span class="badge" style="background: #fef3c7; color: #92400e; font-weight: 700;">0% சேத இழப்பு</span>
+              </div>
+              <h4 style="margin: 0 0 0.35rem 0; font-size: 1.05rem;">நறுக்கிய வெங்காயம் & மிளகாய் கலவை (IQF Diced Onion/Chilli)</h4>
+              <p style="font-size: 0.8rem; color: var(--text-muted); margin: 0 0 0.75rem 0;">வெப்பத்தால் அழுகும் 30% வெங்காய விரயத்தை முற்றிலுமாகத் தவிர்த்து உறைநிலை ரெடி-டு-குக் பாக்கெட்டுகளாக மாற்றுதல்.</p>
+              <div style="font-size: 0.82rem; display: flex; flex-direction: column; gap: 0.25rem; background: var(--bg-secondary); padding: 0.5rem; border-radius: var(--radius-sm);">
+                <div><strong>ஆயுட்காலம்:</strong> 6 மாதங்கள் (-18°C)</div>
+                <div><strong>வாங்குபவர்கள்:</strong> கிளவுட் கிச்சன்கள், உணவு ஆலைகள்</div>
+              </div>
+            </div>
+            <div style="margin-top: 0.75rem; font-weight: 700; color: var(--green-700); font-size: 0.95rem;">
+              ₹18 ➔ ₹45 / kg <span style="font-size: 0.75rem; color: var(--text-muted); font-weight: normal;">(விரயம் இல்லா லாபம்)</span>
+            </div>
+          </div>
+
+          <!-- Product 4: Mixed Farm Vegetables -->
+          <div class="product-card" style="background: var(--bg-card); border: 1.5px solid var(--border-color); border-radius: var(--radius-md); padding: 1rem; display: flex; flex-direction: column; justify-content: space-between;">
+            <div>
+              <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
+                <span style="font-size: 2rem;">🥕🥔</span>
+                <span class="badge" style="background: #e0f2fe; color: #0369a1; font-weight: 700;">மதிப்புக்கூட்டு பேக்</span>
+              </div>
+              <h4 style="margin: 0 0 0.35rem 0; font-size: 1.05rem;">உறைநிலை கலவை காய்கறி பேக் (IQF Mixed Veg Pack)</h4>
+              <p style="font-size: 0.8rem; color: var(--text-muted); margin: 0 0 0.75rem 0;">கேரட், உருளை, பீன்ஸ் மற்றும் பட்டாணி கலவை. நுகர்வோருக்கு உடனடியாக சமைக்க உதவும் தயாரிப்பு.</p>
+              <div style="font-size: 0.82rem; display: flex; flex-direction: column; gap: 0.25rem; background: var(--bg-secondary); padding: 0.5rem; border-radius: var(--radius-sm);">
+                <div><strong>ஆயுட்காலம்:</strong> 9 மாதங்கள் (-18°C)</div>
+                <div><strong>வாங்குபவர்கள்:</strong> வீடுகள் & உணவகங்கள்</div>
+              </div>
+            </div>
+            <div style="margin-top: 0.75rem; font-weight: 700; color: var(--green-700); font-size: 0.95rem;">
+              ₹25 ➔ ₹60 / kg <span style="font-size: 0.75rem; color: var(--text-muted); font-weight: normal;">(உயர்தர பேக்கிங்)</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- FARMER COLD STORAGE & FROZEN PROFIT CALCULATOR -->
+      <section class="card deposit-calc-card">
+        <div class="section-header-row">
+          <div>
+            <h3 class="section-title" id="calcDepositTitle">விவசாயி சேமிப்பு & லாப மதிப்பீட்டுக் கருவி (Cold Hub Profit Calculator)</h3>
+            <p class="section-desc" id="calcDepositSubtitle">உடனடி தற்கொலை விலை விற்பனையை விட பொதுக் கிடங்கில் சேமித்து உறைநிலை காய்கறியாக விற்றால் கிடைக்கும் கூடுதல் நிகர லாபத்தை ஒப்பிடுங்கள்</p>
+          </div>
+        </div>
+
+        <div class="calc-box-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.25rem; margin-top: 1rem;">
+          <div style="background: var(--bg-card); border: 1px solid var(--border-color); border-radius: var(--radius-md); padding: 1.1rem;">
+            <div class="form-group">
+              <label for="depositCropSelect" class="form-label" id="depositCropLabel">பயிர் தேர்வு செய்க (Select Perishable Crop):</label>
+              <select id="depositCropSelect" class="form-select">
+                <option value="tomato" selected>🍅 தக்காளி (Tomato) - Glut Distress Risk</option>
+                <option value="peas">🟢 பசுமை பட்டாணி (Green Peas) - Seasonal Surplus</option>
+                <option value="onion">🧅 வெங்காயம் (Onion) - Moisture Rot Risk</option>
+                <option value="potato">🥔 உருளைக்கிழங்கு (Potato) - Sprouting Risk</option>
+                <option value="chilli">🌶️ பச்சை மிளகாய் (Green Chilli)</option>
+              </select>
+            </div>
+
+            <div class="form-group" style="margin-top: 0.85rem;">
+              <label for="depositQtyInput" class="form-label" id="depositQtyLabel">சேமிக்க விரும்பும் அளவு (Quantity in kg):</label>
+              <div class="input-with-unit">
+                <input type="number" id="depositQtyInput" class="form-input" min="100" step="100" value="2000">
+                <span class="unit-badge">kg</span>
+              </div>
+            </div>
+
+            <div class="form-group" style="margin-top: 0.85rem;">
+              <label for="depositMonthsSelect" class="form-label" id="depositMonthsLabel">சேமிப்பு காலம் (Cold Storage Duration):</label>
+              <select id="depositMonthsSelect" class="form-select">
+                <option value="1">1 மாதம் (Fresh Cold Bay +3°C)</option>
+                <option value="3" selected>3 மாதங்கள் (IQF Blast Freeze -18°C)</option>
+                <option value="6">6 மாதங்கள் (Off-Season Peak Market -18°C)</option>
+              </select>
+            </div>
+
+            <button type="button" id="bookWarehouseSlotBtn" class="btn btn-primary w-100" style="margin-top: 1.25rem;">
+              <span>📥</span>
+              <span id="bookWarehouseBtnText">மாதிரி கிடங்கு வைப்பு ரசீது பெறுக (Generate e-NWR Receipt)</span>
+            </button>
+          </div>
+
+          <!-- Comparison Display -->
+          <div id="depositComparisonResult" style="background: var(--bg-card); border: 1.5px solid var(--border-color); border-radius: var(--radius-md); padding: 1.1rem; display: flex; flex-direction: column; justify-content: space-between;">
+            <!-- Populated dynamically by JS -->
+          </div>
+        </div>
+      </section>
+
+      <!-- SUSTAINABLE BUSINESS MODEL & DEVELOPER MONETIZATION -->
+      <section class="card developer-monetization-card" style="border: 2px solid #a7f3d0; background: linear-gradient(180deg, var(--bg-card) 0%, #f0fdf4 100%);">
+        <div class="section-header-row">
+          <div>
+            <div style="display: inline-flex; align-items: center; gap: 0.4rem; background: #dcfce7; color: #166534; padding: 0.2rem 0.65rem; border-radius: 12px; font-size: 0.78rem; font-weight: 700; margin-bottom: 0.4rem;">
+              <span>💼</span> <span>நிலையான தொடக்கநிலை வணிக மாதிரி (Transparent Startup Economics)</span>
+            </div>
+            <h3 class="section-title" id="bizModelTitle">இணையதள பராமரிப்பு & குறைந்தபட்ச வருவாய் மாதிரி (Developer Monetization)</h3>
+            <p class="section-desc" id="bizModelSubtitle">மண்டி தரகர்களின் 10% சுரண்டலுக்கு மாற்றாக, வெறும் 1.5% குறைந்தபட்ச சேவை கட்டணம் மூலம் இணையதளத்தை லாபகரமாக நடத்தும் மாதிரி</p>
+          </div>
+        </div>
+
+        <!-- Explanatory Strip -->
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 1rem; margin-top: 1rem;">
+          <div style="background: var(--bg-card); padding: 1rem; border-radius: var(--radius-md); border: 1px solid var(--border-color);">
+            <h4 style="margin: 0 0 0.5rem 0; color: #b91c1c;">❌ வழக்கமான மண்டி தரகர்கள் (Mandi Middlemen)</h4>
+            <ul style="padding-left: 1.2rem; margin: 0; font-size: 0.85rem; color: var(--text-secondary); display: flex; flex-direction: column; gap: 0.35rem;">
+              <li>விவசாயிகளிடம் <strong>8% முதல் 12% வரை கமிஷன்</strong> வெட்டுதல்.</li>
+              <li>எடை குறைப்பு சாக்குப்போக்கு & அன்லோடிங் லஞ்சம்.</li>
+              <li>பணம் கொடுக்க 15 முதல் 30 நாட்கள் வரை தேவையற்ற தாமதம்.</li>
+              <li>காய்கறி அழுகும் போது மிகக் குறைந்த விலைக்கு வாங்குதல்.</li>
+            </ul>
+          </div>
+
+          <div style="background: var(--bg-card); padding: 1rem; border-radius: var(--radius-md); border: 1.5px solid var(--green-600);">
+            <h4 style="margin: 0 0 0.5rem 0; color: var(--green-800);">✅ FarmBridge குறைந்தபட்ச மாதிரி (1.5% Facilitation Fee)</h4>
+            <ul style="padding-left: 1.2rem; margin: 0; font-size: 0.85rem; color: var(--text-secondary); display: flex; flex-direction: column; gap: 0.35rem;">
+              <li>வெளிப்படையான <strong>1.5% மட்டுமே இணையதள பராமரிப்பு கட்டணம்</strong>.</li>
+              <li>கிளவுட் சர்வர்கள், பேச்சு அறிதல் AI மற்றும் GPS பராமரிப்பு செலவை ஈடுசெய்கிறது.</li>
+              <li>விவசாயிக்கு 100% நேர்மையான நேரடி எடை மற்றும் உடனடி வங்கிப் பணம்.</li>
+              <li>உறைநிலை காய்கறி மையம் மூலம் 0% உணவு விரயம் & அதிக லாபம்.</li>
+            </ul>
+          </div>
+        </div>
+
+        <!-- Interactive Developer Revenue Volume Simulator -->
+        <div style="background: var(--bg-card); border: 1px solid var(--border-color); border-radius: var(--radius-md); padding: 1.25rem; margin-top: 1.25rem;">
+          <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 0.5rem; margin-bottom: 0.75rem;">
+            <div>
+              <strong style="font-size: 1rem;">மாதாந்திர வர்த்தக அளவு உருவகப்படுத்துதல் (Simulate Monthly Volume):</strong>
+              <p style="margin: 0; font-size: 0.8rem; color: var(--text-muted);">ஸ்லைடரை நகர்த்தி இணையதள உருவாக்குநர்களுக்கான வருவாய் & விவசாயிகளின் சேமிப்பைப் பார்க்கவும்</p>
+            </div>
+            <div style="font-size: 1.2rem; font-weight: 800; color: var(--green-800);" id="sliderTonsDisplay">100 டன் (Tons / Month)</div>
+          </div>
+
+          <input type="range" id="monthlyVolumeSlider" min="20" max="1000" step="20" value="100" style="width: 100%; accent-color: var(--green-700); cursor: pointer;">
+
+          <div class="telemetry-metrics-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 0.75rem; margin-top: 1.25rem;">
+            <div class="stat-tile">
+              <span class="stat-label">மொத்த வர்த்தக மதிப்பு (GMV)</span>
+              <span class="stat-value" id="simGmvVal" style="color: var(--text-primary);">₹25,00,000</span>
+              <span class="stat-sub">மாத நேரடி விற்பனை</span>
+            </div>
+            <div class="stat-tile" style="background: #f0fdf4; border: 1px solid #86efac;">
+              <span class="stat-label">விவசாயிகள் சேமித்த தொகை</span>
+              <span class="stat-value" id="simFarmerSavedVal" style="color: #166534;">₹2,12,500</span>
+              <span class="stat-sub">(10% மண்டி கமிஷன் சேமிப்பு)</span>
+            </div>
+            <div class="stat-tile" style="background: #eff6ff; border: 1px solid #93c5fd;">
+              <span class="stat-label">1.5% இணையதள வருவாய்</span>
+              <span class="stat-value" id="simDevRevenueVal" style="color: #1e40af;">₹37,500</span>
+              <span class="stat-sub">சர்வர் & பராமரிப்பு செலவு</span>
+            </div>
+            <div class="stat-tile" style="background: #fefce8; border: 1px solid #fde047;">
+              <span class="stat-label">கிடங்கு உறைநிலை பங்கு</span>
+              <span class="stat-value" id="simColdRevenueVal" style="color: #854d0e;">₹25,000</span>
+              <span class="stat-sub">பதப்படுத்துதல் பங்கு</span>
+            </div>
+            <div class="stat-tile hero-net" style="background: #dcfce7; border: 1.5px solid var(--green-700);">
+              <span class="stat-label">மொத்த நிகர வணிக வருவாய்</span>
+              <span class="stat-value" id="simTotalStartupVal" style="color: var(--green-900);">₹62,500 / மாதம்</span>
+              <span class="stat-sub" style="color: var(--green-700); font-weight: 700;">தன்னிறைவு பெற்ற வணிகம்</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+    </div>
+
   </main>
 
   <!-- SAVED LISTINGS MODAL -->
@@ -592,6 +870,29 @@
             </a>
           </div>
           <button type="button" id="closeTrackingBtn" class="btn btn-outline">மூடு (Close)</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- WAREHOUSE ELECTRONIC RECEIPT (e-NWR) MODAL -->
+  <div id="warehouseReceiptModal" class="modal-overlay hidden" role="dialog" aria-modal="true" aria-labelledby="whReceiptModalTitle">
+    <div class="modal-card receipt-card">
+      <div class="modal-header">
+        <h3 id="whReceiptModalTitle" class="modal-title">❄️ மத்திய குளிர்பதன கிடங்கு மின்னணு வைப்பு ரசீது (e-NWR)</h3>
+        <button id="closeWhReceiptModalBtn" class="close-btn" aria-label="Close modal">&times;</button>
+      </div>
+      <div class="modal-body">
+        <div class="simulated-watermark">மத்திய வேளாண் கிடங்கு மாதிரி ரசீது / SAMPLE WAREHOUSE e-NWR RECEIPT</div>
+        <div class="receipt-content" id="whReceiptContent">
+          <!-- Populated dynamically by JS -->
+        </div>
+        <div class="modal-actions">
+          <button type="button" id="closeWhReceiptBtn" class="btn btn-outline">மூடு (Close)</button>
+          <button type="button" id="printWhReceiptBtn" class="btn btn-primary">
+            <span>🖨️</span>
+            <span>அச்சிடு / சேமி (Print e-NWR)</span>
+          </button>
         </div>
       </div>
     </div>

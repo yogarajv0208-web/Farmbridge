@@ -81,15 +81,18 @@
     tabFarmer: document.getElementById("tabFarmer"),
     tabBuyer: document.getElementById("tabBuyer"),
     tabDeals: document.getElementById("tabDeals"),
+    tabWarehouse: document.getElementById("tabWarehouse"),
     tabFarmerText: document.getElementById("tabFarmerText"),
     tabBuyerText: document.getElementById("tabBuyerText"),
     tabDealsText: document.getElementById("tabDealsText"),
+    tabWarehouseText: document.getElementById("tabWarehouseText"),
     dealsCountBadge: document.getElementById("dealsCountBadge"),
 
     // View Panels
     viewFarmer: document.getElementById("viewFarmer"),
     viewBuyer: document.getElementById("viewBuyer"),
     viewDeals: document.getElementById("viewDeals"),
+    viewWarehouse: document.getElementById("viewWarehouse"),
 
     // Voice Hero (Farmer View)
     voiceSectionHeading: document.getElementById("voiceSectionHeading"),
@@ -239,6 +242,33 @@
     openGoogleMapsLink: document.getElementById("openGoogleMapsLink"),
     googleMapsBtnText: document.getElementById("googleMapsBtnText"),
     closeTrackingBtn: document.getElementById("closeTrackingBtn"),
+
+    // Warehouse & Business Model
+    goToWarehouseBtn: document.getElementById("goToWarehouseBtn"),
+    goToWarehouseBtnText: document.getElementById("goToWarehouseBtnText"),
+    chamberFreezeTemp: document.getElementById("chamberFreezeTemp"),
+    chamberChilledTemp: document.getElementById("chamberChilledTemp"),
+    hubCapacityDisplay: document.getElementById("hubCapacityDisplay"),
+    hubOccupancySub: document.getElementById("hubOccupancySub"),
+    depositCropSelect: document.getElementById("depositCropSelect"),
+    depositQtyInput: document.getElementById("depositQtyInput"),
+    depositMonthsSelect: document.getElementById("depositMonthsSelect"),
+    depositComparisonResult: document.getElementById("depositComparisonResult"),
+    bookWarehouseSlotBtn: document.getElementById("bookWarehouseSlotBtn"),
+    bookWarehouseBtnText: document.getElementById("bookWarehouseBtnText"),
+    monthlyVolumeSlider: document.getElementById("monthlyVolumeSlider"),
+    sliderTonsDisplay: document.getElementById("sliderTonsDisplay"),
+    simGmvVal: document.getElementById("simGmvVal"),
+    simFarmerSavedVal: document.getElementById("simFarmerSavedVal"),
+    simDevRevenueVal: document.getElementById("simDevRevenueVal"),
+    simColdRevenueVal: document.getElementById("simColdRevenueVal"),
+    simTotalStartupVal: document.getElementById("simTotalStartupVal"),
+    warehouseReceiptModal: document.getElementById("warehouseReceiptModal"),
+    whReceiptModalTitle: document.getElementById("whReceiptModalTitle"),
+    closeWhReceiptModalBtn: document.getElementById("closeWhReceiptModalBtn"),
+    closeWhReceiptBtn: document.getElementById("closeWhReceiptBtn"),
+    printWhReceiptBtn: document.getElementById("printWhReceiptBtn"),
+    whReceiptContent: document.getElementById("whReceiptContent"),
 
     // Toast & Footer
     toastMessage: document.getElementById("toastMessage"),
@@ -540,7 +570,7 @@
    * Switches active role and view panel.
    */
   function switchRole(role, pushHash = true) {
-    if (role !== "farmer" && role !== "buyer" && role !== "deals") {
+    if (role !== "farmer" && role !== "buyer" && role !== "deals" && role !== "warehouse") {
       role = "farmer";
     }
 
@@ -552,7 +582,7 @@
     }
 
     // Update Tab Buttons
-    [DOM.tabFarmer, DOM.tabBuyer, DOM.tabDeals].forEach(tab => {
+    [DOM.tabFarmer, DOM.tabBuyer, DOM.tabDeals, DOM.tabWarehouse].forEach(tab => {
       if (tab) {
         tab.classList.remove("active");
         tab.setAttribute("aria-selected", "false");
@@ -560,7 +590,7 @@
     });
 
     // Update Panels
-    [DOM.viewFarmer, DOM.viewBuyer, DOM.viewDeals].forEach(panel => {
+    [DOM.viewFarmer, DOM.viewBuyer, DOM.viewDeals, DOM.viewWarehouse].forEach(panel => {
       if (panel) {
         panel.classList.add("hidden");
       }
@@ -580,6 +610,15 @@
       DOM.tabDeals.setAttribute("aria-selected", "true");
       DOM.viewDeals.classList.remove("hidden");
       renderDealsView();
+    } else if (role === "warehouse") {
+      if (DOM.tabWarehouse) {
+        DOM.tabWarehouse.classList.add("active");
+        DOM.tabWarehouse.setAttribute("aria-selected", "true");
+      }
+      if (DOM.viewWarehouse) {
+        DOM.viewWarehouse.classList.remove("hidden");
+      }
+      renderWarehouseView();
     }
 
     if (pushHash && window.location.hash !== `#${role}`) {
@@ -592,7 +631,7 @@
    */
   function handleHashRouting() {
     const hash = (window.location.hash || "").replace("#", "").toLowerCase();
-    if (hash === "buyer" || hash === "deals" || hash === "farmer") {
+    if (hash === "buyer" || hash === "deals" || hash === "farmer" || hash === "warehouse") {
       switchRole(hash, false);
     } else {
       switchRole(state.currentRole, false);
@@ -621,6 +660,11 @@
     DOM.tabFarmerText.textContent = isTa ? "உழவர் களம் (Farmer)" : "Farmer Marketplace";
     DOM.tabBuyerText.textContent = isTa ? "வாங்குபவர் களம் (Buyer)" : "Buyer Procurement";
     DOM.tabDealsText.textContent = isTa ? "ஒப்பந்தங்கள் (Deals)" : "Deals Pipeline";
+    if (DOM.tabWarehouseText) {
+      DOM.tabWarehouseText.textContent = isTa
+        ? "பொதுக் கிடங்கு & வணிக மாதிரி (Cold Hub & Business)"
+        : "Cold Hub & Monetization";
+    }
 
     // Voice hero
     DOM.voiceSectionHeading.textContent = t.voice_title;
@@ -730,6 +774,8 @@
       renderBuyerView();
     } else if (state.currentRole === "deals") {
       renderDealsView();
+    } else if (state.currentRole === "warehouse") {
+      renderWarehouseView();
     }
   }
 
@@ -764,6 +810,8 @@
     DOM.tabFarmer.addEventListener("click", () => switchRole("farmer"));
     DOM.tabBuyer.addEventListener("click", () => switchRole("buyer"));
     DOM.tabDeals.addEventListener("click", () => switchRole("deals"));
+    if (DOM.tabWarehouse) DOM.tabWarehouse.addEventListener("click", () => switchRole("warehouse"));
+    if (DOM.goToWarehouseBtn) DOM.goToWarehouseBtn.addEventListener("click", () => switchRole("warehouse"));
 
     // Hash change event listener
     window.addEventListener("hashchange", handleHashRouting);
@@ -917,6 +965,16 @@
     if (DOM.closeTrackingBtn) DOM.closeTrackingBtn.addEventListener("click", closeLiveTrackingModal);
     if (DOM.simulateVehicleMoveBtn) DOM.simulateVehicleMoveBtn.addEventListener("click", handleSimulateVehicleMovement);
 
+    // Warehouse & Business Model Event Listeners
+    if (DOM.depositCropSelect) DOM.depositCropSelect.addEventListener("change", updateDepositCalculator);
+    if (DOM.depositQtyInput) DOM.depositQtyInput.addEventListener("input", updateDepositCalculator);
+    if (DOM.depositMonthsSelect) DOM.depositMonthsSelect.addEventListener("change", updateDepositCalculator);
+    if (DOM.bookWarehouseSlotBtn) DOM.bookWarehouseSlotBtn.addEventListener("click", handleBookWarehouseSlot);
+    if (DOM.monthlyVolumeSlider) DOM.monthlyVolumeSlider.addEventListener("input", updateVolumeSimulation);
+    if (DOM.closeWhReceiptModalBtn) DOM.closeWhReceiptModalBtn.addEventListener("click", closeWarehouseReceiptModal);
+    if (DOM.closeWhReceiptBtn) DOM.closeWhReceiptBtn.addEventListener("click", closeWarehouseReceiptModal);
+    if (DOM.printWhReceiptBtn) DOM.printWhReceiptBtn.addEventListener("click", () => window.print());
+
     // Form submit for Save Listing
     DOM.saveListingForm.addEventListener("submit", handleSaveListingSubmit);
 
@@ -927,6 +985,7 @@
       if (e.target === DOM.receiptModal) closeReceiptModal();
       if (e.target === DOM.photoCertificateModal) closePhotoCertificateModal();
       if (e.target === DOM.liveTrackingModal) closeLiveTrackingModal();
+      if (e.target === DOM.warehouseReceiptModal) closeWarehouseReceiptModal();
     });
 
     // Keyboard accessibility: Escape closes modals
@@ -937,6 +996,7 @@
         closeReceiptModal();
         closePhotoCertificateModal();
         closeLiveTrackingModal();
+        closeWarehouseReceiptModal();
       }
     });
   }
@@ -1870,6 +1930,19 @@
           <span class="stat-label">${t.payment_speed_label}</span>
           <span class="stat-value" style="font-size: 1.05rem;">${isTa ? best.payment_speed_ta : best.payment_speed_en}</span>
           <span class="stat-sub">⭐ ${best.rating} (${best.review_count})</span>
+        </div>
+
+        <div class="stat-tile" style="background: #f0fdf4; border: 1.5px solid #86efac; grid-column: 1 / -1;">
+          <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 0.5rem;">
+            <div style="display: flex; align-items: center; gap: 0.5rem;">
+              <span style="font-size: 1.25rem;">💼</span>
+              <div>
+                <strong style="color: #166534; font-size: 0.88rem;">${isTa ? "குறைந்தபட்ச இணையதள பராமரிப்பு கட்டணம் (1.5% Developer Facilitation Fee):" : "Minimal Platform Facilitation Fee (1.5% Developer / Server Fee):"}</strong>
+                <span style="display: block; font-size: 0.78rem; color: #15803d;">${isTa ? "வழக்கமான மண்டி தரகர்களின் 10% சுரண்டல் இல்லை! வெறும் 1.5% மூலம் சர்வர் & AI இயக்கம்." : "No predatory 10% mandi brokerage! Just 1.5% funds cloud server & AI maintenance."}</span>
+              </div>
+            </div>
+            <span style="font-weight: 800; color: #166534; font-size: 1.05rem;">1.5% (₹${Math.round(best.gross_amount * 0.015).toLocaleString()})</span>
+          </div>
         </div>
       </div>
 
@@ -2912,6 +2985,10 @@
           <span>${t.receipt_transport}</span>
           <span style="font-weight: 600;">− ₹${Math.round(deal.transport_cost).toLocaleString()}</span>
         </div>
+        <div class="receipt-row" style="display: flex; justify-content: space-between; padding: 0.4rem 0; border-bottom: 1px solid var(--border-color); color: #059669; font-size: 0.85rem;">
+          <span>${isTa ? "FarmBridge குறைந்தபட்ச சேவை கட்டணம் (1.5%):" : "FarmBridge Platform Facilitation Fee (1.5%):"}</span>
+          <span style="font-weight: 600;">₹${Math.round(deal.gross_amount * 0.015).toLocaleString()}</span>
+        </div>
         <div class="receipt-row" style="display: flex; justify-content: space-between; padding: 0.6rem 0; border-bottom: 2px solid var(--border-color); font-size: 1.15rem; font-weight: 800; color: var(--green-800);">
           <span>${t.receipt_net}</span>
           <span>₹${Math.round(deal.net_amount).toLocaleString()}</span>
@@ -3185,6 +3262,276 @@
   function closeLiveTrackingModal() {
     if (DOM.liveTrackingModal) {
       DOM.liveTrackingModal.classList.add("hidden");
+    }
+  }
+
+  // =========================================================================
+  // CENTRAL COLD STORAGE & DEVELOPER MONETIZATION (WAREHOUSE VIEW)
+  // =========================================================================
+
+  const WAREHOUSE_CROPS_DATA = {
+    tomato: {
+      name_ta: "தக்காளி (Tomato)",
+      name_en: "Tomato",
+      icon: "🍅",
+      fresh_rate: 8.0,
+      frozen_rate: 30.0,
+      storage_rate: 0.50, // per kg per month
+      shelf_life: "9 மாதங்கள் (9 Months at -18°C)",
+      target_buyers: "உணவகங்கள், சாஸ் தொழிற்சாலைகள், கிளவுட் கிச்சன்"
+    },
+    peas: {
+      name_ta: "பசுமை பட்டாணி (Green Peas)",
+      name_en: "Green Peas",
+      icon: "🟢",
+      fresh_rate: 35.0,
+      frozen_rate: 85.0,
+      storage_rate: 0.60,
+      shelf_life: "12 மாதங்கள் (12 Months at -18°C)",
+      target_buyers: "சூப்பர் மார்க்கெட்டுகள், ஏற்றுமதி"
+    },
+    onion: {
+      name_ta: "வெங்காயம் (Onion)",
+      name_en: "Onion",
+      icon: "🧅",
+      fresh_rate: 18.0,
+      frozen_rate: 45.0,
+      storage_rate: 0.40,
+      shelf_life: "6 மாதங்கள் (6 Months at -18°C)",
+      target_buyers: "ரெடி-டு-குக் பிராண்டுகள், கேட்டரிங்"
+    },
+    potato: {
+      name_ta: "உருளைக்கிழங்கு (Potato)",
+      name_en: "Potato",
+      icon: "🥔",
+      fresh_rate: 14.0,
+      frozen_rate: 28.0,
+      storage_rate: 0.35,
+      shelf_life: "8 மாதங்கள் (Cold Bay +3°C)",
+      target_buyers: "சிப்ஸ் ஆலைகள், மொத்த விற்பனையாளர்கள்"
+    },
+    chilli: {
+      name_ta: "பச்சை மிளகாய் (Green Chilli)",
+      name_en: "Green Chilli",
+      icon: "🌶️",
+      fresh_rate: 25.0,
+      frozen_rate: 58.0,
+      storage_rate: 0.50,
+      shelf_life: "6 மாதங்கள் (IQF -18°C)",
+      target_buyers: "மசாலா நிறுவனங்கள், உணவகங்கள்"
+    }
+  };
+
+  /**
+   * Renders the Central Cold Storage & Developer Monetization view.
+   */
+  function renderWarehouseView() {
+    // Subtle realistic temperature fluctuation for IoT telemetry simulation
+    const freezeFluct = (-18.2 - Math.random() * 0.4).toFixed(1);
+    const chilledFluct = (+3.5 + Math.random() * 0.3).toFixed(1);
+
+    if (DOM.chamberFreezeTemp) DOM.chamberFreezeTemp.textContent = `${freezeFluct}°C`;
+    if (DOM.chamberChilledTemp) DOM.chamberChilledTemp.textContent = `+${chilledFluct}°C`;
+
+    updateDepositCalculator();
+    updateVolumeSimulation();
+  }
+
+  /**
+   * Updates the Farmer Cold Storage vs Mandi Distress Sale Calculator.
+   */
+  function updateDepositCalculator() {
+    if (!DOM.depositComparisonResult || !DOM.depositCropSelect) return;
+    const isTa = state.lang === "ta";
+    const cropKey = DOM.depositCropSelect.value || "tomato";
+    const cropInfo = WAREHOUSE_CROPS_DATA[cropKey] || WAREHOUSE_CROPS_DATA.tomato;
+    const qty = Math.max(50, parseFloat(DOM.depositQtyInput ? DOM.depositQtyInput.value : 2000) || 2000);
+    const months = parseInt(DOM.depositMonthsSelect ? DOM.depositMonthsSelect.value : 3, 10) || 3;
+
+    // Distress Mandi Path A
+    const mandiGross = qty * cropInfo.fresh_rate;
+    const mandiBrokerCut = mandiGross * 0.10; // 10% brokerage + unloading fee
+    const mandiNet = mandiGross - mandiBrokerCut;
+
+    // FarmBridge Cold Hub Path B
+    const frozenGross = qty * cropInfo.frozen_rate;
+    const storageFee = qty * cropInfo.storage_rate * months;
+    const platformFee = Math.round(frozenGross * 0.015); // 1.5% Developer Platform Facilitation Fee
+    const hubNet = Math.round(frozenGross - storageFee - platformFee);
+
+    const extraGain = Math.max(0, hubNet - mandiNet);
+    const gainPct = mandiNet > 0 ? Math.round((extraGain / mandiNet) * 100) : 100;
+
+    DOM.depositComparisonResult.innerHTML = `
+      <div style="margin-bottom: 0.75rem;">
+        <span style="font-size: 0.8rem; color: var(--text-muted); font-weight: 700; text-transform: uppercase;">
+          ${isTa ? "நேரடி ஒப்பீடு முடிவு (Comparison Result)" : "Direct Comparison Result"}
+        </span>
+        <h4 style="margin: 0.25rem 0 0 0; font-size: 1.15rem; color: var(--green-900);">
+          ${cropInfo.icon} ${isTa ? cropInfo.name_ta : cropInfo.name_en} — ${qty.toLocaleString()} kg (${months} ${isTa ? "மாதங்கள்" : "Months"})
+        </h4>
+      </div>
+
+      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem; margin-bottom: 0.75rem;">
+        <!-- Mandi Path A -->
+        <div style="background: #fef2f2; border: 1.5px solid #fca5a5; border-radius: var(--radius-sm); padding: 0.75rem;">
+          <div style="color: #991b1b; font-weight: 700; font-size: 0.82rem;">❌ ${isTa ? "இன்றைய மண்டி தற்கொலை விலை" : "Distress Mandi Sale"}</div>
+          <div style="font-size: 1.15rem; font-weight: 800; color: #b91c1c; margin-top: 0.25rem;">₹${Math.round(mandiNet).toLocaleString()}</div>
+          <div style="font-size: 0.75rem; color: #7f1d1d; margin-top: 0.25rem;">
+            ${isTa ? `விலை: ₹${cropInfo.fresh_rate}/kg<br>மண்டி தரகர் கமிஷன் (10%): −₹${Math.round(mandiBrokerCut).toLocaleString()}` : `Rate: ₹${cropInfo.fresh_rate}/kg<br>Mandi Broker (10%): −₹${Math.round(mandiBrokerCut).toLocaleString()}`}
+          </div>
+        </div>
+
+        <!-- Cold Hub Path B -->
+        <div style="background: #f0fdf4; border: 1.5px solid #86efac; border-radius: var(--radius-sm); padding: 0.75rem;">
+          <div style="color: #166534; font-weight: 700; font-size: 0.82rem;">❄️ ${isTa ? "FarmBridge உறைநிலை சேமிப்பு" : "Cold Hub Blast-Freeze"}</div>
+          <div style="font-size: 1.15rem; font-weight: 800; color: #15803d; margin-top: 0.25rem;">₹${hubNet.toLocaleString()}</div>
+          <div style="font-size: 0.75rem; color: #14532d; margin-top: 0.25rem;">
+            ${isTa ? `மதிப்பு: ₹${cropInfo.frozen_rate}/kg (₹${Math.round(frozenGross).toLocaleString()})<br>சேமிப்பு: −₹${Math.round(storageFee).toLocaleString()} • கட்டணம் (1.5%): −₹${platformFee.toLocaleString()}` : `Value: ₹${cropInfo.frozen_rate}/kg (₹${Math.round(frozenGross).toLocaleString()})<br>Storage: −₹${Math.round(storageFee).toLocaleString()} • Fee (1.5%): −₹${platformFee.toLocaleString()}`}
+          </div>
+        </div>
+      </div>
+
+      <!-- Gain Highlight Badge -->
+      <div style="background: linear-gradient(135deg, #fef3c7 0%, #dcfce7 100%); border: 1.5px solid #f59e0b; border-radius: var(--radius-sm); padding: 0.75rem; text-align: center;">
+        <span style="font-size: 1.3rem;">🚀</span>
+        <strong style="color: #92400e; font-size: 1rem; display: block;">
+          ${isTa ? `விவசாயிக்குக் கிடைக்கும் நிகர கூடுதல் லாபம்: +₹${extraGain.toLocaleString()} (+${gainPct}%)` : `Farmer Extra Net Profit: +₹${extraGain.toLocaleString()} (+${gainPct}%)`}
+        </strong>
+        <span style="font-size: 0.75rem; color: #78350f;">
+          ${isTa ? "அழுகல் அபாயம் இல்லை • வங்கி கடன் பெறும் தகுதி (Warehouse Receipt Financing)" : "Zero Spoilage Risk • Eligible for 70% Bank Receipt Advance"}
+        </span>
+      </div>
+    `;
+  }
+
+  /**
+   * Updates the Developer Monetization & Startup Volume Simulator.
+   */
+  function updateVolumeSimulation() {
+    if (!DOM.monthlyVolumeSlider) return;
+    const isTa = state.lang === "ta";
+    const tons = parseInt(DOM.monthlyVolumeSlider.value, 10) || 100;
+    const kg = tons * 1000;
+
+    if (DOM.sliderTonsDisplay) {
+      DOM.sliderTonsDisplay.textContent = isTa ? `${tons} டன் (Tons / Month)` : `${tons} Tons / Month`;
+    }
+
+    // Average price ₹25/kg across vegetables and grains
+    const avgRate = 25.0;
+    const gmv = kg * avgRate;
+
+    // Mandi brokers take 10% (= GMV * 0.10)
+    // FarmBridge takes 1.5% (= GMV * 0.015)
+    // Farmer saves 8.5%
+    const farmerSavings = Math.round(gmv * 0.085);
+    const devRevenue = Math.round(gmv * 0.015); // 1.5% minimum facilitation commission
+    const coldHubShare = Math.round(kg * 0.25); // Nominal handling & blast freezing share
+    const totalStartupRevenue = devRevenue + coldHubShare;
+
+    if (DOM.simGmvVal) DOM.simGmvVal.textContent = `₹${gmv.toLocaleString()}`;
+    if (DOM.simFarmerSavedVal) DOM.simFarmerSavedVal.textContent = `₹${farmerSavings.toLocaleString()}`;
+    if (DOM.simDevRevenueVal) DOM.simDevRevenueVal.textContent = `₹${devRevenue.toLocaleString()}`;
+    if (DOM.simColdRevenueVal) DOM.simColdRevenueVal.textContent = `₹${coldHubShare.toLocaleString()}`;
+    if (DOM.simTotalStartupVal) {
+      DOM.simTotalStartupVal.textContent = isTa
+        ? `₹${totalStartupRevenue.toLocaleString()} / மாதம்`
+        : `₹${totalStartupRevenue.toLocaleString()} / mo`;
+    }
+  }
+
+  /**
+   * Generates and displays simulated Warehouse Electronic Deposit Receipt (e-NWR).
+   */
+  function handleBookWarehouseSlot() {
+    const isTa = state.lang === "ta";
+    const cropKey = DOM.depositCropSelect ? DOM.depositCropSelect.value : "tomato";
+    const cropInfo = WAREHOUSE_CROPS_DATA[cropKey] || WAREHOUSE_CROPS_DATA.tomato;
+    const qty = Math.max(50, parseFloat(DOM.depositQtyInput ? DOM.depositQtyInput.value : 2000) || 2000);
+    const months = parseInt(DOM.depositMonthsSelect ? DOM.depositMonthsSelect.value : 3, 10) || 3;
+    const farmerName = state.currentUser ? state.currentUser.name : (isTa ? "உழவர் முருகன்" : "Farmer Murugan");
+    const farmerPhone = state.currentUser ? state.currentUser.phone : "9841200001";
+    const lotId = `TN-WH-LOT-${Math.floor(1000 + Math.random() * 9000)}`;
+
+    const frozenGross = qty * cropInfo.frozen_rate;
+    const storageFee = qty * cropInfo.storage_rate * months;
+    const platformFee = Math.round(frozenGross * 0.015);
+    const netValue = Math.round(frozenGross - storageFee - platformFee);
+    const eligibleLoan = Math.round(netValue * 0.70); // 70% warehouse loan advance
+
+    if (DOM.whReceiptContent) {
+      DOM.whReceiptContent.innerHTML = `
+        <div style="text-align: center; border-bottom: 2px dashed var(--border-color); padding-bottom: 0.9rem; margin-bottom: 1rem;">
+          <h4 style="margin: 0; color: #0284c7; font-size: 1.15rem;">
+            ❄️ ${isTa ? "தமிழ்நாடு மத்திய குளிர்பதன கிடங்கு மின்னணு வைப்பு ரசீது" : "Tamil Nadu Central Agro-Cold Storage Electronic Receipt"}
+          </h4>
+          <p style="margin: 0.25rem 0 0 0; font-size: 0.82rem; color: var(--text-muted);">
+            WDRA Reg: <strong>TN-WDRA-CH-0428</strong> • செங்கல்பட்டு NH-45 மத்திய வேளாண் வளாகம்
+          </p>
+          <div style="display: flex; justify-content: center; gap: 1rem; font-size: 0.78rem; margin-top: 0.4rem; color: var(--text-muted);">
+            <span><strong>e-NWR No:</strong> ${lotId}</span>
+            <span><strong>Date:</strong> ${new Date().toLocaleDateString()}</span>
+          </div>
+        </div>
+
+        <div class="receipt-table" style="font-size: 0.9rem;">
+          <div class="receipt-row" style="display: flex; justify-content: space-between; padding: 0.4rem 0; border-bottom: 1px solid var(--border-color);">
+            <span style="color: var(--text-muted);">${isTa ? "விவசாயி பெயர் & மொபைல்:" : "Farmer Details:"}</span>
+            <span style="font-weight: 600;">${farmerName} • +91 ${farmerPhone}</span>
+          </div>
+          <div class="receipt-row" style="display: flex; justify-content: space-between; padding: 0.4rem 0; border-bottom: 1px solid var(--border-color);">
+            <span style="color: var(--text-muted);">${isTa ? "சேமிக்கப்பட்ட பயிர் & தரம்:" : "Commodity & Grade:"}</span>
+            <span style="font-weight: 600;">${cropInfo.icon} ${isTa ? cropInfo.name_ta : cropInfo.name_en} (Grade A)</span>
+          </div>
+          <div class="receipt-row" style="display: flex; justify-content: space-between; padding: 0.4rem 0; border-bottom: 1px solid var(--border-color);">
+            <span style="color: var(--text-muted);">${isTa ? "வைப்பு அளவு & காலம்:" : "Quantity & Period:"}</span>
+            <span style="font-weight: 600;">${qty.toLocaleString()} kg (${months} ${isTa ? "மாதங்கள்" : "Months"})</span>
+          </div>
+          <div class="receipt-row" style="display: flex; justify-content: space-between; padding: 0.4rem 0; border-bottom: 1px solid var(--border-color);">
+            <span style="color: var(--text-muted);">${isTa ? "பதப்படுத்தும் முறை & அறை:" : "Processing & Chamber:"}</span>
+            <span style="font-weight: 600; color: #0284c7;">IQF Blast Freezing (-18.4°C Chamber 1)</span>
+          </div>
+          <div class="receipt-row" style="display: flex; justify-content: space-between; padding: 0.4rem 0; border-bottom: 1px solid var(--border-color);">
+            <span style="color: var(--text-muted);">${isTa ? "மதிப்பிடப்பட்ட சந்தை மதிப்பு:" : "Est. Frozen Market Value:"}</span>
+            <span style="font-weight: 700;">₹${Math.round(frozenGross).toLocaleString()} (@ ₹${cropInfo.frozen_rate}/kg)</span>
+          </div>
+          <div class="receipt-row" style="display: flex; justify-content: space-between; padding: 0.4rem 0; border-bottom: 1px solid var(--border-color); color: #0284c7;">
+            <span>${isTa ? "குளிர்பதன & IQF சேவை கட்டணம்:" : "Cold Chain & IQF Fee:"}</span>
+            <span>− ₹${Math.round(storageFee).toLocaleString()}</span>
+          </div>
+          <div class="receipt-row" style="display: flex; justify-content: space-between; padding: 0.4rem 0; border-bottom: 1px solid var(--border-color); color: #059669;">
+            <span>${isTa ? "இணையதள குறைந்தபட்ச பராமரிப்பு கட்டணம் (1.5%):" : "Platform Facilitation Fee (1.5%):"}</span>
+            <span>− ₹${platformFee.toLocaleString()}</span>
+          </div>
+          <div class="receipt-row" style="display: flex; justify-content: space-between; padding: 0.6rem 0; border-bottom: 2px solid var(--border-color); font-size: 1.15rem; font-weight: 800; color: var(--green-800);">
+            <span>${isTa ? "விவசாயி நிகர தீர்வு மதிப்பு:" : "Farmer Net Maturity Value:"}</span>
+            <span>₹${netValue.toLocaleString()}</span>
+          </div>
+        </div>
+
+        <!-- Warehouse Financing Callout -->
+        <div style="background: #ecfdf5; border: 1.5px solid #6ee7b7; padding: 0.75rem; border-radius: var(--radius-md); margin-top: 1rem; font-size: 0.82rem;">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.25rem;">
+            <strong style="color: #065f46;">🏦 ${isTa ? "உடனடி ரசீது கடன் தகுதி (70% Instant Advance):" : "Instant Warehouse Receipt Advance (70%):"}</strong>
+            <span style="font-weight: 800; color: #047857; font-size: 1rem;">₹${eligibleLoan.toLocaleString()}</span>
+          </div>
+          <div style="color: #065f46; font-size: 0.78rem;">
+            ${isTa ? "இந்த மின்னணு ரசீதை அடமானமாக வைத்து கூட்டுறவு வங்கியிலிருந்து இன்றே 70% பணத்தைப் பெறலாம்." : "Farmers can avail 70% instant bank credit against this electronic receipt today."}
+          </div>
+        </div>
+      `;
+    }
+
+    if (DOM.warehouseReceiptModal) {
+      DOM.warehouseReceiptModal.classList.remove("hidden");
+    }
+    showToast(isTa ? `❄️ வைப்பு ரசீது ${lotId} வெற்றிகரமாக உருவாக்கப்பட்டது!` : `❄️ Warehouse receipt ${lotId} generated!`);
+  }
+
+  function closeWarehouseReceiptModal() {
+    if (DOM.warehouseReceiptModal) {
+      DOM.warehouseReceiptModal.classList.add("hidden");
     }
   }
 

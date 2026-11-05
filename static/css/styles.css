@@ -2948,5 +2948,55 @@ body.theme-dark .verified-tag-pill {
   border-color: #22c55e;
 }
 
+/* ==========================================================================
+   CENTRAL COLD STORAGE & DEVELOPER MONETIZATION (WAREHOUSE VIEW)
+   ========================================================================== */
+.cold-hub-prompt-card {
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.cold-hub-prompt-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(2, 132, 199, 0.15);
+}
+
+body.theme-dark .cold-hub-prompt-card {
+  background: linear-gradient(135deg, #064e3b 0%, #0c4a6e 100%) !important;
+  border-color: #0284c7 !important;
+}
+
+body.theme-dark .cold-hub-prompt-card strong {
+  color: #7dd3fc !important;
+}
+
+body.theme-dark .cold-hub-prompt-card span {
+  color: #e2e8f0 !important;
+}
+
+.product-card {
+  transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+}
+
+.product-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.08);
+  border-color: var(--green-600) !important;
+}
+
+body.theme-dark .developer-monetization-card {
+  background: linear-gradient(180deg, var(--bg-card) 0%, #064e3b 100%) !important;
+  border-color: #059669 !important;
+}
+
+body.theme-dark .product-card {
+  background: var(--bg-card) !important;
+  border-color: var(--border-color) !important;
+}
+
+body.theme-dark #depositComparisonResult {
+  background: var(--bg-card) !important;
+}
+
+
 
 

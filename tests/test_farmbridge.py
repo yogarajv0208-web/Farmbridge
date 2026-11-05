@@ -213,6 +213,16 @@ class TestDatabaseAndOffers(unittest.TestCase):
             self.assertGreaterEqual(res["advantage_over_lowest"], 0.0)
         conn.close()
 
+    def test_platform_fee_is_one_point_five_percent(self):
+        """Offers must compute minimal 1.5% developer platform facilitation fee."""
+        conn = get_connection(self.temp_db_path)
+        res = get_offers_for_farmer("paddy", 2000, "tirupporur", db_conn=conn)
+        for o in res["offers"]:
+            expected_fee = round(o["gross_amount"] * 0.015, 2)
+            self.assertEqual(o["platform_fee"], expected_fee)
+            self.assertIn("₹", o["platform_fee_formatted"])
+        conn.close()
+
 
 class TestServerAPI(unittest.TestCase):
     """End-to-end integration tests for HTTP server and REST endpoints."""
@@ -263,6 +273,13 @@ class TestServerAPI(unittest.TestCase):
         self.assertIn("crops", data)
         self.assertIn("locations", data)
         self.assertIn("sample_phrases", data)
+
+    def test_api_warehouse_telemetry(self):
+        status, data = self.get_json("/api/warehouse")
+        self.assertEqual(status, 200)
+        self.assertEqual(data["status"], "ok")
+        self.assertEqual(data["total_capacity_mt"], 500)
+        self.assertEqual(data["developer_monetization"]["facilitation_fee_pct"], 1.5)
 
     def test_api_parse_voice_tamil(self):
         status, data = self.post_json("/api/parse-voice", {
