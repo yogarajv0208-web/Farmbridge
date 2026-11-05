@@ -3,3 +3,4 @@
 # (http.server, sqlite3, json, os, urllib are all built-in)
 # pytest is only needed for running the test suite locally
 pytest>=7.0
+

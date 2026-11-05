@@ -419,3 +419,4 @@ def handler(request, context):
         return _error(404, "not_found", f"POST endpoint '{path}' does not exist.")
 
     return _error(405, "method_not_allowed", f"Method '{method}' is not supported.")
+
