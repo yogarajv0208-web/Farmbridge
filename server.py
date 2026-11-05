@@ -132,15 +132,18 @@ class FarmBridgeRequestHandler(http.server.SimpleHTTPRequestHandler):
                 "total_capacity_mt": 500,
                 "current_occupancy_mt": 320,
                 "available_capacity_mt": 180,
+                "coordinates": {"lat": 12.6819, "lon": 79.9880},
+                "wdra_reg_no": "TN-WDRA-CH-0428",
                 "chambers": [
                     {"name": "IQF Blast Freezing Bay", "target_temp": -18.0, "current_temp": -18.4, "status": "active"},
                     {"name": "Controlled Atmosphere Cold Bay", "target_temp": 3.5, "current_temp": 3.6, "status": "active"}
                 ],
                 "developer_monetization": {
                     "facilitation_fee_pct": 1.5,
+                    "warehouse_handling_per_kg": 0.15,
+                    "cold_chain_handling_per_kg_month": 0.50,
                     "mandi_broker_avg_pct": 10.0,
-                    "farmer_savings_pct": 8.5,
-                    "cold_chain_handling_per_kg_month": 0.50
+                    "farmer_savings_pct": 8.5
                 }
             })
             return

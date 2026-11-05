@@ -137,6 +137,10 @@ def get_offers_for_farmer(crop_code: str, quantity_kg: float, location: str, db_
         net_amount = round(gross_amount - transport_cost, 2)
         net_per_kg = round(net_amount / quantity_kg, 2) if quantity_kg > 0 else 0.0
         platform_fee = round(gross_amount * 0.015, 2)
+        warehouse_handling_fee = round(quantity_kg * 0.15, 2)
+        total_developer_profit = round(platform_fee + warehouse_handling_fee, 2)
+        traditional_broker_cut = round(gross_amount * 0.10, 2)
+        farmer_savings_vs_broker = round(traditional_broker_cut - total_developer_profit, 2)
 
         payment_speed_en = r["payment_speed_en"]
         is_spot_cash = any(word in payment_speed_en.lower() for word in ["spot cash", "instant", "24 hours", "same day"])
@@ -166,6 +170,12 @@ def get_offers_for_farmer(crop_code: str, quantity_kg: float, location: str, db_
             "transport_formatted": format_currency(transport_cost),
             "platform_fee": platform_fee,
             "platform_fee_formatted": format_currency(platform_fee),
+            "warehouse_handling_fee": warehouse_handling_fee,
+            "warehouse_handling_formatted": format_currency(warehouse_handling_fee),
+            "total_developer_profit": total_developer_profit,
+            "total_developer_profit_formatted": format_currency(total_developer_profit),
+            "farmer_savings_vs_broker": farmer_savings_vs_broker,
+            "farmer_savings_formatted": format_currency(farmer_savings_vs_broker),
             "net_amount": net_amount,
             "net_formatted": format_currency(net_amount),
             "net_per_kg": net_per_kg,

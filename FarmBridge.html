@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="ta">
 <head>
   <meta charset="UTF-8">
@@ -3872,13 +3872,13 @@ body.theme-dark #depositComparisonResult {
 
   <!-- LIVE LOCATION & DISPATCHED VEHICLE TRACKING MODAL -->
   <div id="liveTrackingModal" class="modal-overlay hidden" role="dialog" aria-modal="true" aria-labelledby="trackingModalTitle">
-    <div class="modal-card" style="max-width: 720px; width: 95%;">
+    <div class="modal-card" style="max-width: 820px; width: 95%;">
       <div class="modal-header" style="background: var(--green-900); color: #fff; border-radius: var(--radius-lg) var(--radius-lg) 0 0; padding: 1rem 1.25rem;">
         <div style="display: flex; align-items: center; gap: 0.6rem;">
           <span style="font-size: 1.5rem;">🛰️</span>
           <div>
-            <h3 id="trackingModalTitle" class="modal-title" style="color: #fff; font-size: 1.1rem; margin: 0;">நேரடி இருப்பிடம் & லாரி கண்காணிப்பு (Live GPS & Vehicle Tracker)</h3>
-            <p id="trackingModalSub" style="font-size: 0.78rem; color: #bbf7d0; margin: 0;">விவசாயி ➔ அனுப்பப்பட்ட வாகனம் ➔ வாங்குபவர் மண்டி நேரடி வழித்தடம்</p>
+            <h3 id="trackingModalTitle" class="modal-title" style="color: #fff; font-size: 1.1rem; margin: 0;">நேரடி இருப்பிடம் & வாகன கண்காணிப்பு (Live GPS Tracker)</h3>
+            <p id="trackingModalSub" style="font-size: 0.78rem; color: #bbf7d0; margin: 0;">விவசாயி ➔ மத்திய குளிர்பதன கிடங்கு ➔ வாங்குபவர் மண்டி நேரடி வழித்தடம்</p>
           </div>
         </div>
         <button id="closeTrackingModalBtn" class="close-btn" style="color: #fff;" aria-label="Close modal">&times;</button>
@@ -3961,7 +3961,7 @@ body.theme-dark #depositComparisonResult {
 
   </div> <!-- END MAIN APPLICATION WRAPPER -->
 
-  <!-- INLINE SCRIPTS (STANDALONE OFFLINE BUNDLE) -->
+  <!-- SCRIPTS -->
   <script>
 /**
  * FarmBridge Localization (தமிழ் & English)
@@ -4064,6 +4064,18 @@ const I18N = {
     platform_fee_label: "இணையதள பராமரிப்பு கட்டணம் (Platform Fee 1.5%):",
     receipt_platform_fee: "FarmBridge குறைந்தபட்ச சேவை கட்டணம் (1.5%):",
     warehouse_receipt_title: "மத்திய குளிர்பதன கிடங்கு வைப்பு ரசீது (e-NWR)",
+    tracking_modal_title: "🛰️ நேரடி இருப்பிடம் & அனுப்பப்பட்ட வாகன கண்காணிப்பு",
+    tracking_modal_subtitle: "விவசாயி ➔ மத்திய குளிர்பதன கிடங்கு ➔ வாங்குபவர் மண்டி நேரடி வழித்தடம்",
+    tracking_farmer_label: "விவசாயி இருப்பிடம் (Farmer Origin)",
+    tracking_whse_label: "மத்திய குளிர்பதன கிடங்கு (Central Cold Hub)",
+    tracking_vehicle_label: "அனுப்பப்பட்ட வாகன நேரடி இருப்பிடம் (Dispatched Vehicle Live)",
+    tracking_buyer_label: "வாங்குபவர் மண்டி (Buyer Mandi)",
+    tracking_dev_profit_title: "இணையதள உருவாக்குநர்களின் குறைந்தபட்ச லாபம் & வணிக மாதிரி",
+    tracking_dev_fee: "1.5% இணையதள பராமரிப்பு கட்டணம்:",
+    tracking_whse_handling: "கிடங்கு தரம் & e-NWR பதிவு (₹0.15/கிலோ):",
+    tracking_total_profit: "மொத்த உருவாக்குநர் குறைந்தபட்ச லாபம்:",
+    tracking_farmer_savings: "தரகர்கள் கமிஷன் சேமிப்பு:",
+    tracking_farmer_payout: "விவசாயி நிகர வரவு:",
 
     // Urgent Sale Workflow
     urgent_toggle_label: "🚨 அவசர விற்பனை (Urgent Clearance Sale)",
@@ -4270,6 +4282,18 @@ const I18N = {
     platform_fee_label: "Platform Facilitation Fee (1.5% Developer / Server Fee):",
     receipt_platform_fee: "FarmBridge Platform Facilitation Fee (1.5%):",
     warehouse_receipt_title: "Central Cold Storage Electronic Deposit Receipt (e-NWR)",
+    tracking_modal_title: "🛰️ Live GPS & Vehicle Tracker",
+    tracking_modal_subtitle: "Farmer ➔ Central Cold Hub ➔ Buyer Mandi Live Route",
+    tracking_farmer_label: "Farmer Origin Location",
+    tracking_whse_label: "Central Cold Warehouse Hub",
+    tracking_vehicle_label: "Dispatched Vehicle Live GPS",
+    tracking_buyer_label: "Buyer Mandi Destination",
+    tracking_dev_profit_title: "Developer Platform Minimum Profit & Value-Addition",
+    tracking_dev_fee: "1.5% Platform Facilitation Fee:",
+    tracking_whse_handling: "Warehouse Quality & e-NWR Tag (₹0.15/kg):",
+    tracking_total_profit: "Total Developer Minimum Profit:",
+    tracking_farmer_savings: "Farmer Saved vs Mandi Brokers:",
+    tracking_farmer_payout: "Farmer Net Protected Payout:",
 
     // Urgent Sale Workflow
     urgent_toggle_label: "🚨 Urgent Clearance Sale",
@@ -4404,7 +4428,7 @@ const LOCATIONS_META = [
   { code: "tindivanam", name_en: "Tindivanam", name_ta: "திண்டிவனம்", district_en: "Villupuram", district_ta: "விழுப்புரம்" }
 ];
 
-  </script>
+</script>
   <script>
 /**
  * FarmBridge Sample Dataset & Offline Calculation Fallback
@@ -4970,7 +4994,7 @@ SAMPLE_DATA.initial_deals = [
   }
 ];
 
-  </script>
+</script>
   <script>
 /**
  * FarmBridge Client-Side Voice and Text Parser
@@ -5252,7 +5276,7 @@ const Parser = (function () {
   };
 })();
 
-  </script>
+</script>
   <script>
 /**
  * FarmBridge Speech Engine: SpeechRecognition & SpeechSynthesis (TTS)
@@ -5503,7 +5527,7 @@ const SpeechEngine = (function() {
   };
 })();
 
-  </script>
+</script>
   <script>
 /**
  * FarmBridge Main Application Logic
@@ -8323,27 +8347,28 @@ const SpeechEngine = (function() {
         <!-- 4-Stage Pipeline Tracker -->
         ${pipelineHtml}
 
-        <!-- Transparent 1.5% Developer Commission & Farmer Savings Pill -->
-        <div style="background: #f0fdf4; border: 1.5px solid #86efac; border-radius: 8px; padding: 0.5rem 0.85rem; margin-top: 0.65rem; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 0.5rem; font-size: 0.82rem;">
-          <div>
-            <strong style="color: #166534;">💼 ${isTa ? "இணையதள பராமரிப்பு கட்டணம் (1.5% Developer Fee):" : "Platform Facilitation Fee (1.5%):"}</strong>
-            <span style="font-weight: 800; color: #166534; margin-left: 0.35rem;">₹${Math.round((deal.gross_amount || 0) * 0.015).toLocaleString()}</span>
-          </div>
-          <span style="background: #dcfce7; color: #166534; font-weight: 700; padding: 0.2rem 0.55rem; border-radius: 999px; font-size: 0.74rem;">
-            ✅ ${isTa ? `10% மண்டி கமிஷன் சேமிப்பு: +₹${Math.round((deal.gross_amount || 0) * 0.085).toLocaleString()}` : `Saved vs 10% Broker: +₹${Math.round((deal.gross_amount || 0) * 0.085).toLocaleString()}`}
-          </span>
-        </div>
-
-        <!-- Live Farmer, Buyer & Dispatched Vehicle GPS Strip -->
+        <!-- Live Farmer, Central Warehouse, Buyer & Dispatched Vehicle GPS Strip -->
         ${(() => {
           const tInfo = getTrackingTelemetry(deal);
           return `
+            <!-- Transparent Developer Minimum Profit & Farmer Savings Pill -->
+            <div style="background: #f0fdf4; border: 1.5px solid #86efac; border-radius: 8px; padding: 0.5rem 0.85rem; margin-top: 0.65rem; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 0.5rem; font-size: 0.82rem;">
+              <div>
+                <strong style="color: #166534;">💼 ${isTa ? "இணையதள உருவாக்குநரின் குறைந்தபட்ச லாபம் (Developer Profit):" : "Developer Minimum Profit (1.5% + Whse Margin):"}</strong>
+                <span style="font-weight: 800; color: #166534; margin-left: 0.35rem;">₹${tInfo.totalDevMinProfit.toLocaleString()}</span>
+                <span style="font-size: 0.72rem; color: #15803d; margin-left: 0.25rem;">(1.5% fee ₹${tInfo.platformFee1_5} + ₹${tInfo.whseHandlingFee} Whse Tag)</span>
+              </div>
+              <span style="background: #dcfce7; color: #166534; font-weight: 700; padding: 0.2rem 0.55rem; border-radius: 999px; font-size: 0.74rem;">
+                ✅ ${isTa ? `10% மண்டி கமிஷன் சேமிப்பு: +₹${tInfo.farmerSavings.toLocaleString()}` : `Saved vs 10% Broker: +₹${tInfo.farmerSavings.toLocaleString()}`}
+              </span>
+            </div>
+
             <div class="live-gps-deal-strip" style="background: var(--bg-primary); border: 1.5px solid var(--border-color); border-radius: var(--radius-md); padding: 0.85rem 1rem; margin-top: 0.75rem;">
               <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 0.5rem; margin-bottom: 0.6rem;">
                 <div style="display: flex; align-items: center; gap: 0.45rem;">
                   <span style="display: inline-block; width: 9px; height: 9px; border-radius: 50%; background: #16a34a; box-shadow: 0 0 0 3px rgba(22,163,74,0.25);"></span>
                   <strong style="font-size: 0.85rem; color: var(--green-900);">
-                    🛰️ ${isCold ? (isTa ? "குளிர்பதன லாரி & கிடங்கு ஜிபிஎஸ் (Cold-Van GPS)" : "Live Cold-Van & Central Hub GPS Tracker") : (isTa ? "நேரடி இருப்பிடம் & வாகன கண்காணிப்பு (Live GPS Tracker)" : "Live Farmer • Vehicle • Buyer Location Tracker")}
+                    🛰️ ${isCold ? (isTa ? "குளிர்பதன லாரி & மத்திய கிடங்கு ஜிபிஎஸ் (Cold-Van GPS)" : "Live Cold-Van & Central Hub GPS Tracker") : (isTa ? "நேரடி இருப்பிடம் & வாகன கண்காணிப்பு (Live GPS Tracker)" : "Live Farmer • Warehouse • Vehicle • Buyer Location Tracker")}
                   </strong>
                 </div>
                 <span style="font-size: 0.75rem; font-weight: 700; background: #e0f2fe; color: #0369a1; padding: 0.15rem 0.55rem; border-radius: 999px; border: 1px solid #bae6fd;">
@@ -8351,26 +8376,34 @@ const SpeechEngine = (function() {
                 </span>
               </div>
 
-              <!-- Progress Bar between Farmer and Buyer -->
+              <!-- Route Progress Bar with Central Warehouse Checkpoint -->
               <div style="position: relative; height: 8px; background: #e2e8f0; border-radius: 999px; margin: 0.65rem 0; overflow: hidden;">
-                <div style="width: ${tInfo.progressPct}%; height: 100%; background: linear-gradient(90deg, #16a34a, #f59e0b); border-radius: 999px; transition: width 0.4s ease;"></div>
+                <div style="width: ${tInfo.progressPct}%; height: 100%; background: linear-gradient(90deg, #16a34a, #0284c7 50%, #f59e0b 100%); border-radius: 999px; transition: width 0.4s ease;"></div>
               </div>
 
-              <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 0.6rem; font-size: 0.78rem;">
+              <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 0.55rem; font-size: 0.78rem;">
                 <div style="background: var(--bg-card); padding: 0.45rem 0.65rem; border-radius: 8px; border: 1px solid var(--border-color);">
-                  <div style="color: var(--text-muted); font-size: 0.7rem;">🌾 ${isTa ? "விவசாயி இருப்பிடம் (Farmer Location):" : "Farmer Pickup Location:"}</div>
-                  <div style="font-weight: 700; color: var(--text-primary);">${isTa ? tInfo.farmerLocTa : tInfo.farmerLocEn}</div>
-                  <div style="font-family: monospace; font-size: 0.7rem; color: var(--green-700);">📍 ${tInfo.farmerLat.toFixed(4)}° N, ${tInfo.farmerLon.toFixed(4)}° E</div>
+                  <div style="color: var(--text-muted); font-size: 0.7rem;">🌾 ${isTa ? "1. விவசாயி (Farmer):" : "1. Farmer Pickup:"}</div>
+                  <div style="font-weight: 700; color: var(--text-primary); font-size: 0.82rem;">${isTa ? tInfo.farmerLocTa : tInfo.farmerLocEn}</div>
+                  <div style="font-family: monospace; font-size: 0.68rem; color: var(--green-700);">📍 ${tInfo.farmerLat.toFixed(4)}° N, ${tInfo.farmerLon.toFixed(4)}° E</div>
                 </div>
+
+                <div style="background: #f0f9ff; padding: 0.45rem 0.65rem; border-radius: 8px; border: 1px solid #7dd3fc;">
+                  <div style="color: #0369a1; font-size: 0.7rem; font-weight: 700;">❄️ ${isTa ? "2. மத்திய கிடங்கு (Hub):" : "2. Central Cold Hub:"}</div>
+                  <div style="font-weight: 700; color: #0c4a6e; font-size: 0.82rem;">${isTa ? "செங்கல்பட்டு NH-45" : "Chengalpattu Hub"}</div>
+                  <div style="font-family: monospace; font-size: 0.68rem; color: #0284c7;">📍 ${tInfo.warehouseLat.toFixed(4)}° N, ${tInfo.warehouseLon.toFixed(4)}° E</div>
+                </div>
+
                 <div style="background: var(--bg-card); padding: 0.45rem 0.65rem; border-radius: 8px; border: 1.5px solid #fcd34d;">
-                  <div style="color: #92400e; font-size: 0.7rem; font-weight: 700;">🚚 ${isCold ? (isTa ? "குளிர்பதன வாகனம் (Cold-Van GPS):" : "Cold-Van Live GPS:") : (isTa ? "அனுப்பப்பட்ட வாகனம் (Dispatched Vehicle):" : "Dispatched Vehicle Live GPS:")}</div>
-                  <div style="font-weight: 700; color: var(--text-primary);">${isTa ? tInfo.checkpointTa : tInfo.checkpointEn}</div>
-                  <div style="font-family: monospace; font-size: 0.7rem; color: #b45309;">🛰️ ${tInfo.vehicleLat.toFixed(4)}° N, ${tInfo.vehicleLon.toFixed(4)}° E • ${tInfo.speedKmh} km/h</div>
+                  <div style="color: #92400e; font-size: 0.7rem; font-weight: 700;">🚚 ${isTa ? "3. நேரடி லாரி (Truck):" : "3. Dispatched Truck:"}</div>
+                  <div style="font-weight: 700; color: var(--text-primary); font-size: 0.82rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">${tInfo.vehicleNo}</div>
+                  <div style="font-family: monospace; font-size: 0.68rem; color: #b45309;">🛰️ ${tInfo.vehicleLat.toFixed(4)}° N, ${tInfo.vehicleLon.toFixed(4)}° E • ${tInfo.speedKmh} km/h</div>
                 </div>
+
                 <div style="background: var(--bg-card); padding: 0.45rem 0.65rem; border-radius: 8px; border: 1px solid var(--border-color);">
-                  <div style="color: var(--text-muted); font-size: 0.7rem;">🏢 ${isCold ? (isTa ? "மத்திய கிடங்கு இருப்பிடம் (Central Hub):" : "Central Cold Hub Location:") : (isTa ? "வாங்குபவர் இருப்பிடம் (Buyer Location):" : "Buyer Mandi Location:")}</div>
-                  <div style="font-weight: 700; color: var(--text-primary);">${isTa ? tInfo.buyerLocTa : tInfo.buyerLocEn}</div>
-                  <div style="font-family: monospace; font-size: 0.7rem; color: var(--green-700);">📍 ${tInfo.buyerLat.toFixed(4)}° N, ${tInfo.buyerLon.toFixed(4)}° E</div>
+                  <div style="color: var(--text-muted); font-size: 0.7rem;">🏢 ${isCold ? (isTa ? "4. சேமிப்பு முனையம்:" : "4. Cold Terminal:") : (isTa ? "4. வாங்குபவர் (Buyer):" : "4. Buyer Destination:")}</div>
+                  <div style="font-weight: 700; color: var(--text-primary); font-size: 0.82rem;">${isTa ? tInfo.buyerLocTa : tInfo.buyerLocEn}</div>
+                  <div style="font-family: monospace; font-size: 0.68rem; color: var(--green-700);">📍 ${tInfo.buyerLat.toFixed(4)}° N, ${tInfo.buyerLon.toFixed(4)}° E</div>
                 </div>
               </div>
             </div>
@@ -8678,7 +8711,8 @@ const SpeechEngine = (function() {
   let activeTrackingProgress = null;
 
   /**
-   * Computes Farmer GPS, Buyer GPS, and Live Dispatched Vehicle GPS + Route Telemetry.
+   * Computes Farmer GPS, Central Warehouse GPS, Buyer GPS, and Live Dispatched Vehicle GPS + Route Telemetry.
+   * Includes transparent Developer Platform Minimum Profit & Value-Addition breakdown.
    */
   function getTrackingTelemetry(deal, overrideProgressPct = null) {
     const FARMER_HUBS = {
@@ -8688,7 +8722,24 @@ const SpeechEngine = (function() {
       tindivanam: { lat: 12.2334, lon: 79.6508, en: "Tindivanam Agro Cluster", ta: "திண்டிவனம் விவசாயப் பகுதி" }
     };
 
+    const CENTRAL_WAREHOUSE = {
+      code: "farmbridge_cold_hub",
+      lat: 12.6819,
+      lon: 79.9880,
+      en: "FarmBridge Central Cold Storage & IQF Hub (Chengalpattu NH-45)",
+      ta: "FarmBridge மத்திய குளிர்பதன கிடங்கு & IQF உறைநிலை மையம் (செங்கல்பட்டு NH-45)",
+      reg_no: "TN-WDRA-CH-0428",
+      chamber_temp: "-18.4°C (IQF Blast Freeze)",
+      handling_rate_per_kg: 0.15
+    };
+
     const BUYER_HUBS = {
+      farmbridge_cold_hub: {
+        lat: 12.6819,
+        lon: 79.9880,
+        en: "FarmBridge Central Cold Storage & IQF Hub (Chengalpattu NH-45)",
+        ta: "FarmBridge மத்திய குளிர்பதன கிடங்கு & IQF மையம் (செங்கல்பட்டு NH-45)"
+      },
       kanchi_ponni_rice_mill: { lat: 12.8385, lon: 79.7120, en: "Kanchi Ponni Modern Rice Mill (Kanchipuram)", ta: "காஞ்சி பொன்னி நவீன அரிசி ஆலை (காஞ்சிபுரம்)" },
       tn_civil_supplies_dpc: { lat: 12.7012, lon: 79.9815, en: "TN Civil Supplies DPC (Chengalpattu)", ta: "நேரடி நெல் கொள்முதல் நிலையம் - DPC (செங்கல்பட்டு)" },
       tirupporur_grain_traders: { lat: 12.7310, lon: 80.1912, en: "Tirupporur Uzhavar Grain Traders", ta: "திருப்போரூர் உழவர் தானிய வியாபாரி" },
@@ -8727,58 +8778,105 @@ const SpeechEngine = (function() {
       progressPct = 100;
     }
 
-    const ratio = Math.max(0, Math.min(100, progressPct)) / 100;
-    const vehicleLat = farmerHub.lat + (buyerHub.lat - farmerHub.lat) * ratio;
-    const vehicleLon = farmerHub.lon + (buyerHub.lon - farmerHub.lon) * ratio;
+    const isColdStorageDeal = deal.deal_type === "cold_storage" || deal.buyer_code === "farmbridge_cold_hub";
+    let vehicleLat, vehicleLon;
+
+    if (isColdStorageDeal) {
+      // Direct leg from Farmer to Central Cold Hub
+      const ratio = Math.max(0, Math.min(100, progressPct)) / 100;
+      vehicleLat = farmerHub.lat + (CENTRAL_WAREHOUSE.lat - farmerHub.lat) * ratio;
+      vehicleLon = farmerHub.lon + (CENTRAL_WAREHOUSE.lon - farmerHub.lon) * ratio;
+    } else {
+      // 2-segment path: Farmer -> Central Warehouse Hub (0-50%) -> Buyer Mandi (50-100%)
+      if (progressPct <= 50) {
+        const segRatio = progressPct / 50.0;
+        vehicleLat = farmerHub.lat + (CENTRAL_WAREHOUSE.lat - farmerHub.lat) * segRatio;
+        vehicleLon = farmerHub.lon + (CENTRAL_WAREHOUSE.lon - farmerHub.lon) * segRatio;
+      } else {
+        const segRatio = (progressPct - 50.0) / 50.0;
+        vehicleLat = CENTRAL_WAREHOUSE.lat + (buyerHub.lat - CENTRAL_WAREHOUSE.lat) * segRatio;
+        vehicleLon = CENTRAL_WAREHOUSE.lon + (buyerHub.lon - CENTRAL_WAREHOUSE.lon) * segRatio;
+      }
+    }
 
     let checkpointEn = "En Route via NH-45 GST Highway";
     let checkpointTa = "NH-45 தேசிய நெடுஞ்சாலை வழியாகப் பயணத்தில்";
     let speedKmh = 48;
 
     if (progressPct <= 15) {
-      checkpointEn = `Loading at ${farmerHub.en}`;
-      checkpointTa = `${farmerHub.ta} பண்ணையில் ஏற்றப்படுகிறது`;
+      checkpointEn = `Loading at ${farmerHub.en} (Farm-Gate Inspection)`;
+      checkpointTa = `${farmerHub.ta} பண்ணையில் சரக்கு ஏற்றப்படுகிறது (பண்ணை ஆய்வு)`;
       speedKmh = 0;
     } else if (progressPct < 45) {
-      checkpointEn = "Crossing State Highway Checkpost (SH-49A)";
-      checkpointTa = "மாநில நெடுஞ்சாலை சோதனைச் சாவடியைக் கடக்கிறது (SH-49A)";
-      speedKmh = 44;
-    } else if (progressPct < 80) {
-      checkpointEn = "In Transit near NH-45 / Singaperumal Koil Bypass";
-      checkpointTa = "NH-45 சிங்கப்பெருமாள் கோவில் புறவழிச்சாலை அருகில்";
+      checkpointEn = "In Transit towards FarmBridge Central Cold Hub (GST Highway)";
+      checkpointTa = "FarmBridge மத்திய குளிர்பதன கிடங்கை நோக்கி பயணத்தில் (GST நெடுஞ்சாலை)";
+      speedKmh = 50;
+    } else if (progressPct <= 55) {
+      checkpointEn = "At FarmBridge Central Cold Hub: Pre-cooling, IQF Sorting & e-NWR Receipt Issued";
+      checkpointTa = "FarmBridge மத்திய கிடங்கில்: தரம் பிரிப்பு, IQF உறைநிலை பரிசோதனை & e-NWR ரசீது வழங்கப்பட்டது";
+      speedKmh = 0;
+    } else if (progressPct < 85) {
+      checkpointEn = `Dispatched from Central Hub towards ${buyerHub.en} (Certified Reefer Transit)`;
+      checkpointTa = `மத்திய கிடங்கிலிருந்து ${buyerHub.ta} நோக்கி புறப்பட்டது (குளிர்சாதன லாரிப் பயணம்)`;
       speedKmh = 52;
     } else if (progressPct < 100) {
-      checkpointEn = "Approaching Buyer Mandi Weighbridge";
-      checkpointTa = "வாங்குபவர் மண்டி எடை மேடையை நெருங்குகிறது";
+      checkpointEn = "Approaching Buyer Mandi Weighbridge & Unloading Bay";
+      checkpointTa = "வாங்குபவர் மண்டி எடை மேடை மற்றும் இறக்குமிடம் நெருங்குகிறது";
       speedKmh = 28;
     } else {
-      checkpointEn = "Arrived at Buyer Procurement Centre";
-      checkpointTa = "வாங்குபவர் கொள்முதல் நிலையத்தை அடைந்தது";
+      checkpointEn = "Arrived at Buyer Procurement Centre (Grade-A Verified & Payment Settled)";
+      checkpointTa = "வாங்குபவர் கொள்முதல் மையத்தை அடைந்தது (தரம் ஒப்புதல் & பணத் தீர்வு நிறைவு)";
       speedKmh = 0;
     }
 
     const idSuffix = String(deal.id || 4589).slice(-4).padStart(4, "4");
     const vehicleNo = `TN-21-AX-${idSuffix}`;
 
+    // Developer Platform Minimum Profit & Farmer Protection Economics
+    const qty = Number(deal.quantity_kg) || 2000;
+    const pricePerKg = Number(deal.price_per_kg) || 25;
+    const grossAmount = Number(deal.gross_amount) || (qty * pricePerKg);
+    const transportCost = Number(deal.transport_cost) || 1220;
+    const platformFee1_5 = Math.round(grossAmount * 0.015);
+    const whseHandlingFee = Math.round(qty * 0.15); // ₹0.15/kg for digital e-NWR tagging & grading
+    const totalDevMinProfit = platformFee1_5 + whseHandlingFee;
+    const traditionalBrokerCut = Math.round(grossAmount * 0.10);
+    const farmerSavings = Math.max(0, traditionalBrokerCut - totalDevMinProfit);
+    const farmerNetPayout = Math.max(0, grossAmount - transportCost - totalDevMinProfit);
+
     return {
       farmerLocEn: farmerHub.en,
       farmerLocTa: farmerHub.ta,
       farmerLat: farmerHub.lat,
       farmerLon: farmerHub.lon,
+      warehouseLocEn: CENTRAL_WAREHOUSE.en,
+      warehouseLocTa: CENTRAL_WAREHOUSE.ta,
+      warehouseLat: CENTRAL_WAREHOUSE.lat,
+      warehouseLon: CENTRAL_WAREHOUSE.lon,
+      warehouseReg: CENTRAL_WAREHOUSE.reg_no,
+      warehouseTemp: CENTRAL_WAREHOUSE.chamber_temp,
       buyerLocEn: buyerHub.en,
       buyerLocTa: buyerHub.ta,
       buyerLat: buyerHub.lat,
       buyerLon: buyerHub.lon,
       vehicleNo,
-      driverNameEn: "Murugesan K (Heavy Lorry Driver)",
-      driverNameTa: "முருகேசன் கே (லாரி ஓட்டுநர்)",
+      driverNameEn: "Murugesan K (Heavy Reefer Truck Driver)",
+      driverNameTa: "முருகேசன் கே (குளிர்சாதன லாரி ஓட்டுநர்)",
       driverPhone: "+91 94430 55112",
       vehicleLat,
       vehicleLon,
       progressPct,
       checkpointEn,
       checkpointTa,
-      speedKmh
+      speedKmh,
+      grossAmount,
+      platformFee1_5,
+      whseHandlingFee,
+      totalDevMinProfit,
+      traditionalBrokerCut,
+      farmerSavings,
+      farmerNetPayout,
+      isColdStorageDeal
     };
   }
 
@@ -8802,7 +8900,12 @@ const SpeechEngine = (function() {
     if (DOM.trackingModalTitle) {
       DOM.trackingModalTitle.textContent = isTa
         ? "🛰️ நேரடி இருப்பிடம் & அனுப்பப்பட்ட வாகன கண்காணிப்பு"
-        : "🛰️ Live Farmer • Dispatched Vehicle • Buyer GPS Tracker";
+        : "🛰️ Live Farmer • Central Warehouse • Dispatched Vehicle • Buyer GPS Tracker";
+    }
+    if (DOM.trackingModalSub) {
+      DOM.trackingModalSub.textContent = isTa
+        ? "விவசாயி ➔ மத்திய குளிர்பதன கிடங்கு ➔ வாங்குபவர் மண்டி நேரடி வழித்தடம்"
+        : "Farmer ➔ Central Cold Hub ➔ Buyer Mandi Certified Route";
     }
     if (DOM.simMoveBtnText) {
       DOM.simMoveBtnText.textContent = isTa
@@ -8810,84 +8913,177 @@ const SpeechEngine = (function() {
         : "Simulate Live Vehicle Move (+20%)";
     }
     if (DOM.openGoogleMapsLink) {
-      DOM.openGoogleMapsLink.href = `https://www.google.com/maps/dir/?api=1&origin=${tInfo.farmerLat},${tInfo.farmerLon}&destination=${tInfo.buyerLat},${tInfo.buyerLon}&travelmode=driving`;
+      DOM.openGoogleMapsLink.href = `https://www.google.com/maps/dir/?api=1&origin=${tInfo.farmerLat},${tInfo.farmerLon}&destination=${tInfo.buyerLat},${tInfo.buyerLon}&waypoints=${tInfo.warehouseLat},${tInfo.warehouseLon}&travelmode=driving`;
     }
 
     DOM.liveTrackingBody.innerHTML = `
-      <!-- Visual Route Map Canvas -->
-      <div style="background: linear-gradient(135deg, #0f291e 0%, #143d29 100%); color: #fff; border-radius: var(--radius-md); padding: 1.25rem; position: relative; overflow: hidden; border: 2px solid #22c55e;">
-        <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 0.5rem; margin-bottom: 1rem;">
-          <span style="background: rgba(34,197,94,0.2); border: 1px solid #4ade80; color: #bbf7d0; padding: 0.2rem 0.65rem; border-radius: 999px; font-size: 0.75rem; font-weight: 700;">
-            🟢 LIVE GPS TELEMETRY • ${tInfo.vehicleNo}
+      <!-- Visual Route Map Canvas with 3 Hubs and Moving Truck -->
+      <div style="background: linear-gradient(135deg, #091f16 0%, #113622 100%); color: #fff; border-radius: var(--radius-md); padding: 1.25rem; position: relative; overflow: hidden; border: 2px solid #22c55e; box-shadow: 0 8px 24px rgba(0,0,0,0.35);">
+        <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 0.5rem; margin-bottom: 0.85rem;">
+          <span style="background: rgba(34,197,94,0.22); border: 1px solid #4ade80; color: #bbf7d0; padding: 0.25rem 0.75rem; border-radius: 999px; font-size: 0.78rem; font-weight: 700; display: inline-flex; align-items: center; gap: 0.35rem;">
+            <span style="width: 8px; height: 8px; background: #22c55e; border-radius: 50%; box-shadow: 0 0 8px #22c55e;"></span>
+            LIVE COLD-CHAIN GPS • ${tInfo.vehicleNo}
           </span>
-          <span style="font-family: monospace; font-size: 0.8rem; color: #fde047;">
-            🛰️ Vehicle Lat/Lon: ${tInfo.vehicleLat.toFixed(4)}° N, ${tInfo.vehicleLon.toFixed(4)}° E (${tInfo.speedKmh} km/h)
+          <span style="font-family: monospace; font-size: 0.82rem; color: #fde047;">
+            🛰️ Truck GPS: ${tInfo.vehicleLat.toFixed(4)}° N, ${tInfo.vehicleLon.toFixed(4)}° E (${tInfo.speedKmh} km/h)
           </span>
         </div>
 
-        <!-- Visual Highway Track with Farmer, Moving Truck, and Buyer -->
-        <div style="position: relative; padding: 1.8rem 0.5rem 1.2rem 0.5rem; margin: 0.5rem 0;">
-          <!-- Dashed Highway Line -->
+        <!-- 3-Milestone Route: Farmer -> Central Warehouse Hub -> Buyer Mandi -->
+        <div style="position: relative; padding: 2rem 0.75rem 1.25rem 0.75rem; margin: 0.5rem 0;">
+          <!-- Highway Track Line -->
           <div style="height: 10px; background: rgba(255,255,255,0.18); border-radius: 999px; position: relative;">
-            <div style="width: ${tInfo.progressPct}%; height: 100%; background: linear-gradient(90deg, #4ade80, #facc15); border-radius: 999px; transition: width 0.35s ease;"></div>
+            <div style="width: ${tInfo.progressPct}%; height: 100%; background: linear-gradient(90deg, #4ade80, #38bdf8 50%, #facc15 100%); border-radius: 999px; transition: width 0.35s ease;"></div>
           </div>
 
-          <!-- Moving Dispatched Vehicle Marker -->
-          <div style="position: absolute; top: 4px; left: calc(${Math.min(92, Math.max(6, tInfo.progressPct))}% - 22px); transition: left 0.35s ease; text-align: center;">
-            <div style="background: #facc15; color: #142416; font-weight: 800; font-size: 0.72rem; padding: 0.15rem 0.45rem; border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.4); white-space: nowrap;">
+          <!-- 3 Station Milestone Nodes on the Line -->
+          <div style="position: absolute; top: 1.55rem; left: 0%; transform: translateX(0); text-align: left;">
+            <span style="display: inline-block; width: 14px; height: 14px; background: #4ade80; border: 2.5px solid #fff; border-radius: 50%; box-shadow: 0 0 6px rgba(0,0,0,0.5);"></span>
+          </div>
+          <div style="position: absolute; top: 1.55rem; left: 50%; transform: translateX(-50%); text-align: center;">
+            <span style="display: inline-block; width: 16px; height: 16px; background: #38bdf8; border: 2.5px solid #fff; border-radius: 50%; box-shadow: 0 0 8px #38bdf8;"></span>
+          </div>
+          <div style="position: absolute; top: 1.55rem; right: 0%; text-align: right;">
+            <span style="display: inline-block; width: 14px; height: 14px; background: #facc15; border: 2.5px solid #fff; border-radius: 50%; box-shadow: 0 0 6px rgba(0,0,0,0.5);"></span>
+          </div>
+
+          <!-- Floating Moving Truck Indicator -->
+          <div style="position: absolute; top: 4px; left: calc(${Math.min(92, Math.max(4, tInfo.progressPct))}% - 26px); transition: left 0.35s ease; text-align: center; z-index: 5;">
+            <div style="background: #facc15; color: #142416; font-weight: 800; font-size: 0.74rem; padding: 0.18rem 0.5rem; border-radius: 8px; box-shadow: 0 4px 14px rgba(0,0,0,0.5); white-space: nowrap; border: 1px solid #eab308;">
               🚚 ${tInfo.progressPct}%
             </div>
           </div>
 
-          <div style="display: flex; justify-content: space-between; margin-top: 0.75rem; font-size: 0.8rem;">
+          <!-- Milestone Labels under the Line -->
+          <div style="display: grid; grid-template-columns: 1fr 1.2fr 1fr; gap: 0.5rem; margin-top: 0.9rem; font-size: 0.78rem;">
             <div>
-              <div style="color: #86efac; font-weight: 700;">🌾 ${isTa ? "விவசாயி (Farmer Origin)" : "Farmer Pickup"}</div>
-              <div>${isTa ? tInfo.farmerLocTa : tInfo.farmerLocEn}</div>
-              <div style="font-family: monospace; font-size: 0.72rem; color: #cbd5e1;">${tInfo.farmerLat.toFixed(4)}°N, ${tInfo.farmerLon.toFixed(4)}°E</div>
+              <div style="color: #86efac; font-weight: 800;">🌾 ${isTa ? "1. விவசாயி (Origin)" : "1. Farmer Origin"}</div>
+              <div style="color: #f1f5f9; font-size: 0.76rem;">${isTa ? tInfo.farmerLocTa : tInfo.farmerLocEn}</div>
+              <div style="font-family: monospace; font-size: 0.7rem; color: #cbd5e1;">📍 ${tInfo.farmerLat.toFixed(4)}°N, ${tInfo.farmerLon.toFixed(4)}°E</div>
+            </div>
+            <div style="text-align: center;">
+              <div style="color: #7dd3fc; font-weight: 800;">❄️ ${isTa ? "2. மத்திய கிடங்கு (Cold Hub)" : "2. Central Cold Hub"}</div>
+              <div style="color: #e0f2fe; font-size: 0.76rem;">${isTa ? "செங்கல்பட்டு NH-45" : "Chengalpattu NH-45 Hub"}</div>
+              <div style="font-family: monospace; font-size: 0.7rem; color: #bae6fd;">📍 ${tInfo.warehouseLat.toFixed(4)}°N, ${tInfo.warehouseLon.toFixed(4)}°E • -18.4°C</div>
             </div>
             <div style="text-align: right;">
-              <div style="color: #fde047; font-weight: 700;">🏢 ${isTa ? "வாங்குபவர் மண்டி (Buyer)" : "Buyer Destination"}</div>
-              <div>${isTa ? tInfo.buyerLocTa : tInfo.buyerLocEn}</div>
-              <div style="font-family: monospace; font-size: 0.72rem; color: #cbd5e1;">${tInfo.buyerLat.toFixed(4)}°N, ${tInfo.buyerLon.toFixed(4)}°E</div>
+              <div style="color: #fde047; font-weight: 800;">🏢 ${isTa ? "3. வாங்குபவர் (Destination)" : "3. Buyer Mandi"}</div>
+              <div style="color: #fef08a; font-size: 0.76rem;">${isTa ? tInfo.buyerLocTa : tInfo.buyerLocEn}</div>
+              <div style="font-family: monospace; font-size: 0.7rem; color: #cbd5e1;">📍 ${tInfo.buyerLat.toFixed(4)}°N, ${tInfo.buyerLon.toFixed(4)}°E</div>
             </div>
           </div>
         </div>
 
-        <div style="background: rgba(0,0,0,0.35); padding: 0.6rem 0.85rem; border-radius: 8px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 0.5rem; font-size: 0.82rem;">
+        <!-- Current Checkpoint & Driver Details -->
+        <div style="background: rgba(0,0,0,0.45); padding: 0.65rem 0.95rem; border-radius: 8px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 0.5rem; font-size: 0.82rem; border-top: 1px solid rgba(255,255,255,0.1);">
           <div>
-            <strong>📍 ${isTa ? "தற்போதைய வாகன இருப்பிடம்:" : "Current Dispatched Vehicle Location:"}</strong>
-            <span style="color: #fef08a; margin-left: 0.35rem;">${isTa ? tInfo.checkpointTa : tInfo.checkpointEn}</span>
+            <strong>📍 ${isTa ? "தற்போதைய வாகன நிலை:" : "Current Checkpoint:"}</strong>
+            <span style="color: #fef08a; margin-left: 0.35rem; font-weight: 700;">${isTa ? tInfo.checkpointTa : tInfo.checkpointEn}</span>
           </div>
           <div>
-            👨‍✈️ ${isTa ? tInfo.driverNameTa : tInfo.driverNameEn} • <a href="tel:${tInfo.driverPhone}" style="color: #4ade80; font-weight: 700;">${tInfo.driverPhone}</a>
+            👨‍✈️ ${isTa ? tInfo.driverNameTa : tInfo.driverNameEn} • <a href="tel:${tInfo.driverPhone}" style="color: #4ade80; font-weight: 700; text-decoration: underline;">${tInfo.driverPhone}</a>
           </div>
         </div>
       </div>
 
-      <!-- 3-Column Detailed Location Cards -->
-      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 0.75rem; margin-top: 1rem;">
-        <div style="background: var(--bg-primary); border: 1.5px solid var(--border-color); border-radius: var(--radius-md); padding: 0.85rem;">
-          <div style="font-size: 0.75rem; color: var(--text-muted); font-weight: 700;">🌾 ${isTa ? "1. விவசாயி இருப்பிடம்" : "1. FARMER LOCATION"}</div>
-          <div style="font-weight: 800; font-size: 0.95rem; margin-top: 0.25rem; color: var(--green-900);">${isTa ? tInfo.farmerLocTa : tInfo.farmerLocEn}</div>
-          <div style="font-family: monospace; font-size: 0.78rem; color: var(--green-700); margin-top: 0.25rem;">GPS: ${tInfo.farmerLat.toFixed(4)}, ${tInfo.farmerLon.toFixed(4)}</div>
-          <div style="font-size: 0.75rem; color: var(--text-muted); margin-top: 0.25rem;">${isTa ? "புறப்படும் இடம் உறுதி செய்யப்பட்டது" : "Verified Pickup Coordinates"}</div>
+      <!-- 4-Column Detailed Location Cards: Farmer -> Warehouse -> Truck -> Buyer -->
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 0.65rem; margin-top: 1rem;">
+        <!-- Card 1: Farmer -->
+        <div style="background: var(--bg-primary); border: 1.5px solid var(--border-color); border-radius: var(--radius-md); padding: 0.75rem;">
+          <div style="font-size: 0.72rem; color: var(--text-muted); font-weight: 700;">🌾 ${isTa ? "1. விவசாயி இருப்பிடம்" : "1. FARMER ORIGIN"}</div>
+          <div style="font-weight: 800; font-size: 0.9rem; margin-top: 0.2rem; color: var(--green-900);">${isTa ? tInfo.farmerLocTa : tInfo.farmerLocEn}</div>
+          <div style="font-family: monospace; font-size: 0.74rem; color: var(--green-700); margin-top: 0.2rem;">GPS: ${tInfo.farmerLat.toFixed(4)}, ${tInfo.farmerLon.toFixed(4)}</div>
+          <div style="font-size: 0.72rem; color: var(--text-muted); margin-top: 0.2rem;">${isTa ? "பண்ணை வாயில் புறப்பாடு" : "Farm-gate loading point"}</div>
         </div>
 
-        <div style="background: #fffbeb; border: 1.5px solid #fcd34d; border-radius: var(--radius-md); padding: 0.85rem;">
-          <div style="font-size: 0.75rem; color: #92400e; font-weight: 700;">🚚 ${isTa ? "2. அனுப்பப்பட்ட வாகன இருப்பிடம்" : "2. DISPATCHED VEHICLE LIVE"}</div>
-          <div style="font-weight: 800; font-size: 0.95rem; margin-top: 0.25rem; color: #78350f;">${tInfo.vehicleNo} (${tInfo.speedKmh} km/h)</div>
-          <div style="font-family: monospace; font-size: 0.78rem; color: #b45309; margin-top: 0.25rem;">GPS: ${tInfo.vehicleLat.toFixed(4)}, ${tInfo.vehicleLon.toFixed(4)}</div>
-          <div style="font-size: 0.75rem; color: #92400e; margin-top: 0.25rem;">${isTa ? tInfo.checkpointTa : tInfo.checkpointEn}</div>
+        <!-- Card 2: Central Warehouse -->
+        <div style="background: #f0f9ff; border: 1.5px solid #7dd3fc; border-radius: var(--radius-md); padding: 0.75rem;">
+          <div style="font-size: 0.72rem; color: #0369a1; font-weight: 700;">❄️ ${isTa ? "2. மத்திய கிடங்கு (Cold Hub)" : "2. CENTRAL WAREHOUSE"}</div>
+          <div style="font-weight: 800; font-size: 0.9rem; margin-top: 0.2rem; color: #0c4a6e;">${isTa ? "செங்கல்பட்டு NH-45 கிடங்கு" : "Chengalpattu Cold Hub"}</div>
+          <div style="font-family: monospace; font-size: 0.74rem; color: #0284c7; margin-top: 0.2rem;">GPS: ${tInfo.warehouseLat.toFixed(4)}, ${tInfo.warehouseLon.toFixed(4)}</div>
+          <div style="font-size: 0.72rem; color: #0369a1; margin-top: 0.2rem;">${tInfo.warehouseReg} • ${tInfo.warehouseTemp}</div>
         </div>
 
-        <div style="background: var(--bg-primary); border: 1.5px solid var(--border-color); border-radius: var(--radius-md); padding: 0.85rem;">
-          <div style="font-size: 0.75rem; color: var(--text-muted); font-weight: 700;">🏢 ${isTa ? "3. வாங்குபவர் இருப்பிடம்" : "3. BUYER DESTINATION"}</div>
-          <div style="font-weight: 800; font-size: 0.95rem; margin-top: 0.25rem; color: var(--green-900);">${isTa ? tInfo.buyerLocTa : tInfo.buyerLocEn}</div>
-          <div style="font-family: monospace; font-size: 0.78rem; color: var(--green-700); margin-top: 0.25rem;">GPS: ${tInfo.buyerLat.toFixed(4)}, ${tInfo.buyerLon.toFixed(4)}</div>
-          <div style="font-size: 0.75rem; color: var(--text-muted); margin-top: 0.25rem;">${isTa ? "கொள்முதல் நிலையம் & எடை மேடை" : "Verified Mandi Weighbridge"}</div>
+        <!-- Card 3: Dispatched Truck -->
+        <div style="background: #fffbeb; border: 1.5px solid #fcd34d; border-radius: var(--radius-md); padding: 0.75rem;">
+          <div style="font-size: 0.72rem; color: #92400e; font-weight: 700;">🚚 ${isTa ? "3. நேரடி லாரி இருப்பிடம்" : "3. DISPATCHED TRUCK LIVE"}</div>
+          <div style="font-weight: 800; font-size: 0.9rem; margin-top: 0.2rem; color: #78350f;">${tInfo.vehicleNo} (${tInfo.speedKmh} km/h)</div>
+          <div style="font-family: monospace; font-size: 0.74rem; color: #b45309; margin-top: 0.2rem;">GPS: ${tInfo.vehicleLat.toFixed(4)}, ${tInfo.vehicleLon.toFixed(4)}</div>
+          <div style="font-size: 0.72rem; color: #92400e; margin-top: 0.2rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">${isTa ? tInfo.checkpointTa : tInfo.checkpointEn}</div>
+        </div>
+
+        <!-- Card 4: Buyer Mandi -->
+        <div style="background: var(--bg-primary); border: 1.5px solid var(--border-color); border-radius: var(--radius-md); padding: 0.75rem;">
+          <div style="font-size: 0.72rem; color: var(--text-muted); font-weight: 700;">🏢 ${isTa ? "4. வாங்குபவர் மண்டி" : "4. BUYER DESTINATION"}</div>
+          <div style="font-weight: 800; font-size: 0.9rem; margin-top: 0.2rem; color: var(--green-900);">${isTa ? tInfo.buyerLocTa : tInfo.buyerLocEn}</div>
+          <div style="font-family: monospace; font-size: 0.74rem; color: var(--green-700); margin-top: 0.2rem;">GPS: ${tInfo.buyerLat.toFixed(4)}, ${tInfo.buyerLon.toFixed(4)}</div>
+          <div style="font-size: 0.72rem; color: var(--text-muted); margin-top: 0.2rem;">${isTa ? "எடை மேடை & கொள்முதல்" : "Verified Mandi Weighbridge"}</div>
+        </div>
+      </div>
+
+      <!-- Developer Platform Minimum Profit & Value-Addition Card -->
+      <div style="background: linear-gradient(135deg, #f0fdf4 0%, #ecfdf5 100%); border: 2px solid #86efac; border-radius: var(--radius-md); padding: 1rem 1.15rem; margin-top: 1rem; box-shadow: 0 4px 12px rgba(22,163,74,0.08);">
+        <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 0.5rem; border-bottom: 1px dashed #86efac; padding-bottom: 0.65rem; margin-bottom: 0.75rem;">
+          <div>
+            <strong style="color: #166534; font-size: 0.95rem; display: flex; align-items: center; gap: 0.4rem;">
+              <span>💰</span>
+              <span>${isTa ? "இணையதள உருவாக்குநர்களின் குறைந்தபட்ச லாபம் & வணிக மாதிரி" : "Developer Platform Minimum Profit & Sustainable Monetization"}</span>
+            </strong>
+            <p style="margin: 0.2rem 0 0 0; font-size: 0.76rem; color: #15803d;">
+              ${isTa ? "தரகர்களின் 10% கமிஷனைத் தவிர்த்து, இணையதள உருவாக்குநர்களுக்கு மிகக் குறைந்தபட்ச லாபம் ஈட்டும் வெளிப்படையான கட்டமைப்பு" : "Eliminating 10% broker exploitation while generating transparent minimum profit for platform developers"}
+            </p>
+          </div>
+          <span style="background: #22c55e; color: #fff; font-weight: 800; font-size: 0.78rem; padding: 0.25rem 0.65rem; border-radius: 999px;">
+            ${isTa ? "குறைந்தபட்ச லாப மாதிரி" : "Fair Minimum Margin"}
+          </span>
+        </div>
+
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 0.65rem; font-size: 0.82rem;">
+          <div style="background: #ffffff; padding: 0.6rem 0.75rem; border-radius: 8px; border: 1px solid #bbf7d0;">
+            <div style="font-size: 0.7rem; color: #166534; font-weight: 700;">💼 ${isTa ? "1.5% இணையதள கட்டணம்:" : "1.5% Platform Fee:"}</div>
+            <div style="font-size: 1.05rem; font-weight: 800; color: #15803d; margin-top: 0.15rem;">₹${tInfo.platformFee1_5.toLocaleString()}</div>
+            <div style="font-size: 0.68rem; color: var(--text-muted);">${isTa ? "சர்வர் & பராமரிப்பு" : "Hosting & Server ops"}</div>
+          </div>
+
+          <div style="background: #ffffff; padding: 0.6rem 0.75rem; border-radius: 8px; border: 1px solid #bbf7d0;">
+            <div style="font-size: 0.7rem; color: #0284c7; font-weight: 700;">❄️ ${isTa ? "கிடங்கு தரம் & e-NWR:" : "Warehouse Handling & e-NWR:"}</div>
+            <div style="font-size: 1.05rem; font-weight: 800; color: #0369a1; margin-top: 0.15rem;">₹${tInfo.whseHandlingFee.toLocaleString()}</div>
+            <div style="font-size: 0.68rem; color: var(--text-muted);">${isTa ? "₹0.15/கிலோ ஆய்வு கட்டணம்" : "₹0.15/kg digital tag"}</div>
+          </div>
+
+          <div style="background: #dcfce7; padding: 0.6rem 0.75rem; border-radius: 8px; border: 1.5px solid #4ade80;">
+            <div style="font-size: 0.7rem; color: #14532d; font-weight: 800;">🚀 ${isTa ? "மொத்த உருவாக்குநர் லாபம்:" : "Total Developer Profit:"}</div>
+            <div style="font-size: 1.15rem; font-weight: 800; color: #14532d; margin-top: 0.15rem;">₹${tInfo.totalDevMinProfit.toLocaleString()}</div>
+            <div style="font-size: 0.68rem; color: #166534; font-weight: 700;">${isTa ? "உறுதியான குறைந்தபட்ச வருமானம்" : "Guaranteed Minimum Margin"}</div>
+          </div>
+
+          <div style="background: #ffffff; padding: 0.6rem 0.75rem; border-radius: 8px; border: 1px solid #bbf7d0;">
+            <div style="font-size: 0.7rem; color: #166534; font-weight: 700;">🌾 ${isTa ? "விவசாயி நேரடி சேமிப்பு:" : "Farmer Direct Savings:"}</div>
+            <div style="font-size: 1.05rem; font-weight: 800; color: #16a34a; margin-top: 0.15rem;">+₹${tInfo.farmerSavings.toLocaleString()}</div>
+            <div style="font-size: 0.68rem; color: #15803d; font-weight: 700;">${isTa ? "10% தரகர் கமிஷன் மிச்சம்" : "Saved vs 10% Broker"}</div>
+          </div>
+        </div>
+
+        <div style="margin-top: 0.75rem; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 0.5rem; font-size: 0.78rem;">
+          <span style="color: #166534;">
+            🛡️ ${isTa ? "விவசாயியின் பாதுகாக்கப்பட்ட நிகர வரவு:" : "Farmer Protected Net Payout:"} <strong>₹${tInfo.farmerNetPayout.toLocaleString()}</strong>
+          </span>
+          <button type="button" id="trackingGoToWarehouseBtn" class="btn btn-outline" style="padding: 0.25rem 0.65rem; font-size: 0.74rem; border-color: #16a34a; color: #166534; font-weight: 700; background: #fff;">
+            <span>❄️</span>
+            <span>${isTa ? "குளிர்பதன கிடங்கு விவரங்களை காண்க" : "View Cold Warehouse & IQF Hub"}</span>
+          </button>
         </div>
       </div>
     `;
+
+    // Connect View Warehouse button inside tracking modal
+    const whBtn = DOM.liveTrackingBody.querySelector("#trackingGoToWarehouseBtn");
+    if (whBtn) {
+      whBtn.addEventListener("click", () => {
+        closeLiveTrackingModal();
+        switchRole("warehouse");
+      });
+    }
   }
 
   function handleSimulateVehicleMovement() {
@@ -9207,6 +9403,6 @@ const SpeechEngine = (function() {
   }
 })();
 
-  </script>
+</script>
 </body>
 </html>

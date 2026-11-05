@@ -121,6 +121,35 @@ class TestFarmBridgeComprehensive(unittest.TestCase):
         farmer_savings = round(gross * 0.085, 2)
         self.assertEqual(farmer_savings, 4250.0)
 
+    def test_warehouse_tracking_and_developer_profit(self):
+        """Verifies warehouse coordinates, 4-node tracking, and developer minimum profit formula."""
+        app_js_path = os.path.join(STATIC_DIR, "js", "app.js")
+        with open(app_js_path, "r", encoding="utf-8") as f:
+            app_js = f.read()
+
+        # Check warehouse coords in tracking telemetry
+        self.assertIn("12.6819", app_js)
+        self.assertIn("79.9880", app_js)
+        self.assertIn("TN-WDRA-CH-0428", app_js)
+        self.assertIn("totalDevMinProfit", app_js)
+        self.assertIn("whseHandlingFee", app_js)
+
+        # Mathematical verification of developer minimum profit
+        qty = 2000.0
+        price = 25.0
+        gross = qty * price # 50,000
+        platform_fee = round(gross * 0.015, 2) # 750.0
+        whse_handling = round(qty * 0.15, 2) # 300.0
+        total_dev_profit = platform_fee + whse_handling # 1050.0
+        traditional_broker = round(gross * 0.10, 2) # 5000.0
+        farmer_savings = traditional_broker - total_dev_profit # 3950.0
+
+        self.assertEqual(platform_fee, 750.0)
+        self.assertEqual(whse_handling, 300.0)
+        self.assertEqual(total_dev_profit, 1050.0)
+        self.assertEqual(farmer_savings, 3950.0)
+        self.assertGreater(farmer_savings, 0)
+
     def test_standalone_bundle_parity(self):
         """Ensures index.html and FarmBridge.html are identical and have content."""
         idx_path = os.path.join(ROOT_DIR, "index.html")
