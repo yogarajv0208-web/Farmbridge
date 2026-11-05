@@ -47,5 +47,10 @@ class TestBrowserRuntimeBundle(unittest.TestCase):
         for elem in ["createColdStorageDealBtn", "dealsCommissionStrip", "warehouseReceiptModal"]:
             self.assertIn(f'id="{elem}"', self.content, f"Missing element: {elem}")
 
+    def test_live_tracking_modal_elements_exist(self):
+        """Live location and vehicle tracking modal elements must exist in standalone bundle."""
+        for elem in ["liveTrackingModal", "trackingModalTitle", "simulateVehicleMoveBtn", "openGoogleMapsLink", "closeTrackingBtn"]:
+            self.assertIn(f'id="{elem}"', self.content, f"Missing tracking element: {elem}")
+
 if __name__ == "__main__":
     unittest.main()

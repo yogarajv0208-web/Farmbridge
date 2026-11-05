@@ -33,7 +33,12 @@ class TestLiveVercelDeployment(unittest.TestCase):
             ("dealsCommissionStrip", "Deals Platform Commission Summary Strip"),
             ("chamberFreezeTemp", "IQF Blast Freezing Temperature Sensor"),
             ("warehouseReceiptModal", "Electronic Warehouse Receipt Modal"),
-            ("farmbridge_cold_hub", "Central Cold Storage Sample Deal")
+            ("farmbridge_cold_hub", "Central Cold Storage Sample Deal"),
+            ("trackingGoToWarehouseBtn", "Live Tracker Warehouse View Button"),
+            ("totalDevMinProfit", "Developer Platform Minimum Profit Telemetry"),
+            ("12.6819", "Central Warehouse Latitude Coordinate"),
+            ("79.9880", "Central Warehouse Longitude Coordinate"),
+            ("TN-WDRA-CH-0428", "Warehouse WDRA Electronic Registration")
         ]
 
         for check_str, desc in checks:
