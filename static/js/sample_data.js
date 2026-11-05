@@ -403,6 +403,8 @@ function calculateOffersOffline(cropCode, quantityKg, locationCode, isUrgent = f
     const dist = distanceMap[b.code] !== undefined ? distanceMap[b.code] : 25.0;
     const gross = Math.round(qty * pricePerKg * 100) / 100;
     const transport = calculateClientTransport(dist, qty);
+    const platformFee = Math.round(gross * 0.015 * 100) / 100;
+    // Net = Gross − Transport (platform fee shown separately; consistent with backend calculator.py)
     const net = Math.round((gross - transport) * 100) / 100;
     const netPerKg = Math.round((net / qty) * 100) / 100;
 
@@ -431,8 +433,8 @@ function calculateOffersOffline(cropCode, quantityKg, locationCode, isUrgent = f
       gross_formatted: formatClientCurrency(gross),
       transport_cost: transport,
       transport_formatted: formatClientCurrency(transport),
-      platform_fee: Math.round(gross * 0.015 * 100) / 100,
-      platform_fee_formatted: formatClientCurrency(Math.round(gross * 0.015)),
+      platform_fee: platformFee,
+      platform_fee_formatted: formatClientCurrency(platformFee),
       net_amount: net,
       net_formatted: formatClientCurrency(net),
       net_per_kg: netPerKg,
